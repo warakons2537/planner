@@ -2828,6 +2828,12 @@ html,body{overflow-x:clip}
 /* phone: the course search box gets its own full row (it was squeezed to two letters) */
 @media (max-width:640px){#courses .toolbar>.field.grow{flex:1 1 100%;min-width:0}#courses .toolbar>.field.grow input{width:100%}}
 
+/* V24.24: "จัดการแผน ›" under the plan switcher (sidebar); in the page header / phone it sits beside it */
+.ux-plan-manage{all:unset;box-sizing:border-box;display:block;margin:-4px 0 8px;padding:4px 8px;border-radius:8px;font-size:var(--ux-fs-sm);font-weight:600;color:var(--ux-brand);cursor:pointer}
+.ux-plan-manage:hover{background:var(--ux-brand-soft)}
+.ux-plan-manage:focus-visible{box-shadow:var(--ux-focus)}
+#uxHeadPlan .ux-plan-manage{margin:0 0 0 4px;align-self:center;white-space:nowrap}
+
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0a5a9c"></head>
 <body class=""><noscript id="ux-noscript"><style>body>*:not(noscript){display:none!important}</style><div style="max-width:560px;margin:40px auto;padding:24px;font:17px/1.6 -apple-system,Sukhumvit Set,Tahoma,sans-serif;color:#152a3c"><h1 style="font-size:22px;margin:0 0 12px">WL Scheduler ต้องเปิดในเบราว์เซอร์</h1><p>ไฟล์นี้เป็นโปรแกรม ตัวดูไฟล์ (แอปไฟล์ของ iPhone/iPad, LINE, Messenger, อีเมล) แสดงได้เพียงภาพนิ่งของหน้าจอ จึงกดใช้งานไม่ได้ และไม่บันทึกอะไร</p><p style="margin:16px 0 6px"><b>วิธีเปิด</b></p><ul style="margin:0;padding-left:22px"><li><b>Mac / คอมพิวเตอร์:</b> ดับเบิลคลิกไฟล์ (Safari หรือ Chrome)</li><li><b>iPad / iPhone:</b> ใช้ WL Scheduler แบบเว็บแอปที่ติดตั้งบนหน้าจอโฮม (ดู WEBAPP.md) แล้วนำเข้าไฟล์สำรอง .json หรือเปิดไฟล์ในแอปที่มีเบราว์เซอร์ในตัว</li></ul></div></noscript><header><div><div class="eyebrow">TEACHING PLANNER V12.4 · DOCUMENT WORKSPACE</div><h1>ระบบวางแผนรายวิชาและอัตรากำลังครู</h1><p>จัดสรรวิชา · จัดการเรียนรวม · ตรวจสอบภาระงาน · เปรียบเทียบแผน</p></div><div class="header-actions"><button class="btn dark" disabled="" id="undoBtn" title="ย้อนกลับการแก้ไขล่าสุด (Ctrl+Z เมื่อไม่ได้พิมพ์ข้อความ)">↶ ย้อนกลับ</button><button class="btn dark" disabled="" id="redoBtn" title="ทำซ้ำการแก้ไขที่ย้อนกลับไป (Ctrl+Y)">↷ ทำซ้ำ</button><button class="btn dark" id="v11HelpQuick" title="เปิดคำแนะนำการใช้งานสำหรับผู้ใช้ใหม่" type="button">? วิธีใช้</button><span class="undo-info" id="undoInfo">ย้อนกลับได้ 100 ขั้นในครั้งที่เปิดใช้งาน</span><button class="btn dark" id="exportHtml" title="บันทึกข้อมูลลงในโปรแกรม HTML เพื่อเปิดต่อได้แม้เปลี่ยนเครื่อง">💾 บันทึกแผนพร้อมโปรแกรม .html</button><button class="btn dark" id="connectFile" title="เลือกไฟล์ JSON ที่ให้โปรแกรมเขียนทุกครั้งเมื่อแก้ไข (รองรับใน Chrome / Edge บางสภาพแวดล้อม)">เชื่อมไฟล์บันทึกอัตโนมัติ</button><button class="btn dark" id="exportJson">สำรองข้อมูล .json</button><button class="btn dark" id="exportCsv">ส่งออก Excel (.csv)</button><button class="btn dark" id="importBtn">นำเข้าข้อมูล</button><input accept=".json,application/json" hidden="" id="importFile" type="file"><details class="v11-save-details no-print" id="v11SaveDetails"><summary>บันทึก / นำเข้า ▾</summary><div class="v11-save-buttons" id="v11SaveButtons"></div></details></div></header>
 <dialog class="co-dialog" id="coDialog"><h2 id="coDialogTitle" style="margin:0">เลือกครูร่วมสอน</h2><p class="hint" id="coDialogHint">เลือกได้หลายคน และนับชั่วโมงตามเวลาที่ร่วมสอนจริง</p><div class="callout" id="coLeadHours" style="display:none;margin-bottom:12px"></div><div class="co-picks" id="coPicks"></div><div class="button-row" style="justify-content:flex-end"><button class="btn" id="coCancel" type="button">ยกเลิก</button><button class="btn primary" id="coSave" type="button">บันทึกครูร่วม</button></div></dialog><div aria-live="polite" class="alert warn" id="saveStatus" role="status">กำลังตรวจข้อมูลที่บันทึกไว้…</div><main><section aria-label="ตัวเลือกแผน" class="scenario-bar no-print"><div class="scenario-bar-top"><div><b>แผนที่กำลังแก้ไข: <span id="activeScenarioName"></span></b><p class="hint" id="activeScenarioNote" style="margin:3px 0 0"></p></div><button class="btn primary" id="newScenarioQuick">+ คัดลอกเป็นแผนใหม่</button><button class="btn" id="openCompareQuick">เปรียบเทียบทุกแผน</button></div><div class="scenario-chips" id="scenarioChips"></div></section><nav aria-label="เมนูหลัก" class="v11-main-nav no-print" id="v11MainNav">
@@ -13691,7 +13697,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.23',inits:[],syncs:[]};
+var UX=window.UX={version:'24.24',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -13825,6 +13831,7 @@ function build(){
   '</div>'+
   '<div id="uxMenu" class="ux-menu" role="menu" hidden>'+
     '<div class="ux-mh" role="presentation">แผน</div>'+
+    '<button role="menuitem" data-go="scenarios" id="uxMenuPlans">☰ จัดการแผน (เลื่อนขึ้น-ลง · ลบ · เลือกเสนอ)</button>'+
     '<button role="menuitem" data-t="'+L.renamePlan+'">✎ เปลี่ยนชื่อแผน</button>'+
     '<button role="menuitem" data-t="'+L.duplicatePlan+'">＋ คัดลอกเป็นแผนใหม่</button>'+
     '<button role="menuitem" data-go="compare">⇄ เปรียบเทียบทุกแผน</button>'+
@@ -13883,6 +13890,10 @@ function build(){
 
   /* plan switcher mirrors the original select */
   var ps=$('uxPlan');
+  /* V24.24: the original's plan page (order ↑↓, rename, delete, choose the proposed plan) had no way in */
+  if(!$('uxPlanManage')){var pm=document.createElement('button');pm.type='button';pm.id='uxPlanManage';pm.className='ux-plan-manage';
+    pm.textContent='จัดการแผน ›';pm.setAttribute('aria-label','จัดการแผน: เลื่อนลำดับ เปลี่ยนชื่อ ลบ เลือกแผนเสนอ');
+    pm.onclick=function(){UX.go('scenarios')};ps.insertAdjacentElement('afterend',pm)}
   ps.onchange=function(){var o=$(E.planSelect)||$(E.planSelectAlt);if(o){o.value=ps.value;o.dispatchEvent(new Event('change',{bubbles:true}))}};
 }
 
@@ -15235,11 +15246,11 @@ function moveTo(id,parentId){var n=$(id),p=$(parentId);if(n&&p&&n.parentNode!==p
 function moveBack(id){var n=$(id),h=home[id];if(n&&h&&n.parentNode!==h.parent)h.parent.insertBefore(n,h.next&&h.next.parentNode===h.parent?h.next:null)}
 function place(){
   if(!head()||!$('uxTTActions'))return;
-  ['uxTTActions','uxPlan','uxActions','uxCmdBtn'].forEach(remember);
+  ['uxTTActions','uxPlan','uxPlanManage','uxActions','uxCmdBtn'].forEach(remember);
   var m=mode(),rail=m==='side'&&window.innerWidth<1280,b=document.body.classList;
   b.toggle('ux-side',m==='side');b.toggle('ux-rail',rail);b.toggle('ux-bottom',m==='bottom');
   moveTo('uxTTActions','uxHeadSlot');
-  if(m==='bottom'||rail)moveTo('uxPlan','uxHeadPlan');else moveBack('uxPlan');
+  if(m==='bottom'||rail){moveTo('uxPlan','uxHeadPlan');moveTo('uxPlanManage','uxHeadPlan')}else{moveBack('uxPlan');moveBack('uxPlanManage')}
   if(m==='bottom'){moveTo('uxCmdBtn','uxHeadAct');moveTo('uxActions','uxHeadAct')}else{moveBack('uxCmdBtn');moveBack('uxActions')}
   if(m!==lastMode){lastMode=m;centerActive(true);setTimeout(sync,0)}
   menuChecks();
@@ -15295,7 +15306,7 @@ function build(){
 /* ---- every 500 ms: title, badges, header height ------------------------------------------------------------------ */
 function sync(){
   var bar=$('uxBar'),h=$('uxPageHead');if(!bar||!h)return;
-  var c=UX.cur(),st=UX.STEPS.filter(function(s){return s.k===c})[0],t=$('uxPageTitle'),lbl=st?st.l:'';
+  var c=UX.cur(),st=UX.STEPS.filter(function(s){return s.k===c})[0],t=$('uxPageTitle'),lbl=st?st.l:({scenarios:'จัดการแผน',compare:'เปรียบเทียบทุกแผน',board:'กระดานรายวิชา',bundles:'ชุดรายวิชา',changes:'ประวัติการแก้ไข',help:'วิธีใช้'})[c]||'';
   if(t&&t.textContent!==lbl)t.textContent=lbl;
   h.classList.toggle('ux-head-tt',c==='timetable');
   var fl=UX.facts();
@@ -15344,6 +15355,7 @@ function items(){
     cmd('import','นำเข้าข้อมูลจากไฟล์',function(){UX.clickId(B.importData)},['import','เปิดไฟล์']),
     cmd('csv','ส่งออก Excel (.csv)',function(){UX.clickId(B.exportCsv)},['excel','export']),
     cmd('docs','พิมพ์ / ส่งออก Word หรือ PDF',function(){UX.go('documents')},['word','pdf','docx','print','พิมพ์','เอกสาร']),
+    cmd('plans','จัดการแผน: เลื่อนขึ้น-ลง เปลี่ยนชื่อ ลบ เลือกเสนอ',function(){UX.go('scenarios')},['plan','plans','แผน','เลื่อนแผน','ลบแผน','ลำดับแผน','scenarios']),
     cmd('compare','เปรียบเทียบทุกแผน',function(){UX.go('compare')},['compare']),
     cmd('recovery','จุดกู้คืน / ประวัติ',function(){UX.clickId(B.recovery)},['history','restore']),
     cmd('search','ค้นหาแบบเดิม (ในข้อมูลทั้งหมด)',function(){UX.clickId(B.search)},['search'])
@@ -16934,7 +16946,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 
 </script><script id="ux-webapp">
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website) */
-(function(){window.__UX_WEBAPP="b73f9b5d4ae7";
+(function(){window.__UX_WEBAPP="f02b329ca6f1";
   if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).catch(function(){});   /* same file as the original's */
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 })();
