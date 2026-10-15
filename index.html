@@ -2076,6 +2076,10 @@ body.ux-asg-on #courseTable{display:none!important}
 .ux-asg-grid tr.ux-asg-mine>th{box-shadow:inset 4px 0 0 var(--ux-brand)}
 .ux-asg-freen{all:unset;cursor:pointer;color:var(--ux-brand-dark);text-decoration:underline;text-underline-offset:3px;min-height:28px}
 .ux-asg-freen:focus-visible{box-shadow:var(--ux-focus);border-radius:4px}
+/* V24.23: teacher count under the subject name */
+.ux-asg-sn{display:block}
+.ux-asg-tc{display:block;font-size:var(--ux-fs-xs);font-weight:500;color:var(--ux-ink-soft)}
+.ux-asg-tc.warn{color:var(--ux-warn)}
 
 /* >>> 49-ask.css */
 /* 49-ask.css — in-app questions for the original's confirm() / prompt() (js/49-ask.js). Frame = .ux-opt dialog. */
@@ -13687,7 +13691,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.22',inits:[],syncs:[]};
+var UX=window.UX={version:'24.23',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -14677,7 +14681,13 @@ function render(){
     subjects=subjects.filter(has).concat(subjects.filter(function(s){return !has(s)}))}           /* V24.17: the teacher's subjects first */
   focusBar(mine);
   subjects.forEach(function(s){var tr=el('tr'),th=el('th');th.scope='row';if(mine&&m.grades.some(function(g){return (m.cells[C.cellKey(s,g)]||[]).some(function(id){return mine.has(id)})}))tr.className='ux-asg-mine';
-    var sb=el('button','ux-asg-sh',s);sb.type='button';sb.setAttribute('aria-label',s+' — เลือกทุกชั้นของวิชานี้');
+    var sb=el('button','ux-asg-sh');sb.type='button';sb.appendChild(el('span','ux-asg-sn',s));
+    /* V24.23: how many different teachers teach this subject (main + co-teachers, every grade) */
+    var who={},none=0;m.grades.forEach(function(g){(m.cells[C.cellKey(s,g)]||[]).forEach(function(id){var r=byId[id];if(!r)return;
+      if(r.teacher)who[r.teacher]=1;else none++;r.coTeachers.forEach(function(t){if(t)who[t]=1})})});
+    var tids=Object.keys(who),tc=el('span','ux-asg-tc'+(none?' warn':''),(tids.length?'ครู '+tids.length+' คน':'ยังไม่มีครู')+(none&&tids.length?' · ว่าง '+none:''));
+    tc.title=tids.map(function(t){return short(tName(t))}).join(', ');sb.appendChild(tc);sb.dataset.teachers=tids.length;
+    sb.setAttribute('aria-label',s+' — ครูสอน '+tids.length+' คน'+(tids.length?' ('+tc.title+')':'')+(none?' ยังไม่มีครู '+none+' ช่อง':'')+' — เลือกทุกชั้นของวิชานี้');
     sb.onclick=function(){if(!S.select){S.select=true}toggleMany(m.grades.map(function(g){return m.cells[C.cellKey(s,g)]||[]}).reduce(function(a,b){return a.concat(b)},[]))};
     th.appendChild(sb);tr.appendChild(th);
     m.grades.forEach(function(g){var td=el('td'),ids=m.cells[C.cellKey(s,g)];
@@ -16924,7 +16934,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 
 </script><script id="ux-webapp">
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website) */
-(function(){window.__UX_WEBAPP="530325f187df";
+(function(){window.__UX_WEBAPP="b73f9b5d4ae7";
   if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).catch(function(){});   /* same file as the original's */
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 })();
