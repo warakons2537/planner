@@ -1892,6 +1892,15 @@ body.ux-hide-recovery #v185Recovery{display:none!important}
 .ux-drive[data-state="ok"]{color:var(--ux-ok)}
 .ux-drive[data-state="expired"],.ux-drive[data-state="offline"],.ux-drive[data-state="setup"]{color:var(--ux-warn)}
 .ux-drive[data-state="error"]{color:var(--ux-bad)}
+/* V24.29: both sides of "ข้อมูลไม่ตรงกัน" */
+.ux-drive-sides{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 4px}
+.ux-drive-side{border:1px solid var(--ux-line);border-radius:12px;padding:10px 12px;background:#fff}
+.ux-drive-side p{margin:3px 0;font-size:var(--ux-fs-sm)}
+.ux-drive-side.newer{border-color:var(--ux-brand);box-shadow:0 0 0 2px var(--ux-brand-soft)}
+.ux-drive-side-h{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.ux-drive-badge{font-size:var(--ux-fs-xs);font-weight:700;background:var(--ux-brand);color:#fff;border-radius:999px;padding:1px 8px}
+.ux-drive-nums{color:var(--ux-ink-soft)}
+@media (max-width:520px){.ux-drive-sides{grid-template-columns:1fr}}
 
 /* >>> 30-timetable.css */
 /* 30-timetable.css — timetable page */
@@ -2781,6 +2790,51 @@ body.ux-docs-on #documents.active>:not(#uxDocs){display:none!important}
 .ux-tt-setupbtn.on{background:var(--ux-brand);border-color:var(--ux-brand);color:#fff}
 @media (max-width:640px){.ux-ts-rule{grid-template-columns:1fr auto}.ux-ts-rule .ux-ts-num:nth-child(3){grid-column:2}.ux-ts-trow{grid-template-columns:1fr 1fr}.ux-ts-trow .ux-ts-tn{grid-column:1 / -1}
   .ux-ts-grid{display:block;overflow-x:auto}.ux-ts-cell{width:48px}}
+
+/* >>> 65-ttversions.css */
+/* 65-ttversions.css — "⧉ ฉบับ" tab of the timetable page (V24.28) */
+.ux-tv{display:flex;flex-direction:column;gap:12px;max-width:1180px}
+.ux-tv-acts{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;background:#fff;border:1px solid var(--ux-line);border-radius:14px;padding:12px 16px;box-shadow:var(--ux-shadow)}
+.ux-tv-make{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto}
+.ux-tv-make select{font:inherit;font-size:var(--ux-fs-md);min-height:38px;padding:0 10px;border:1px solid var(--ux-line);border-radius:9px;background:#fff;color:var(--ux-ink)}
+.ux-tv-wrap{overflow-x:auto;background:#fff;border:1px solid var(--ux-line);border-radius:14px;box-shadow:var(--ux-shadow)}
+.ux-tv-tbl{border-collapse:collapse;width:100%;font-size:var(--ux-fs-sm)}
+.ux-tv-tbl th,.ux-tv-tbl td{padding:8px 12px;border-bottom:1px solid #eef2f6;text-align:center;vertical-align:middle}
+.ux-tv-tbl tbody th{text-align:left;font-weight:600;color:var(--ux-ink-soft);white-space:nowrap}
+.ux-tv-tbl thead th{vertical-align:top;background:var(--ux-brand-soft);min-width:150px}
+.ux-tv-tbl thead th:first-child{background:#fff;min-width:0}
+.ux-tv-tbl thead th.cur{background:#eef2f6}
+.ux-tv-tbl thead small{display:block;font-weight:400;color:var(--ux-ink-soft);margin-top:3px}
+.ux-tv-tbl .ux-tv-stale{color:var(--ux-saffron-ink)}
+.ux-tv-name{font:inherit;font-weight:700;width:100%;box-sizing:border-box;border:1px solid transparent;border-radius:7px;padding:3px 6px;background:transparent;color:var(--ux-navy);text-align:center}
+.ux-tv-name:hover,.ux-tv-name:focus{border-color:var(--ux-line);background:#fff}
+.ux-tv-tbl td{font-variant-numeric:tabular-nums;font-size:var(--ux-fs-md)}
+.ux-tv-tbl td.best{background:#e7f6ec;color:#11602f;font-weight:700}
+.ux-tv-tbl td.best::after{content:" ★";font-size:.8em}
+.ux-tv-tbl td.bad{color:var(--ux-bad);font-weight:700}
+.ux-tv-actrow td{display:table-cell;white-space:nowrap}
+.ux-tv-actrow .ux-btn{margin:2px}
+.ux-tv-pick.on{background:var(--ux-saffron-soft);border-color:var(--ux-saffron);color:var(--ux-saffron-ink)}
+.ux-tv-side{background:#fff;border:1px solid var(--ux-line);border-radius:14px;padding:14px 16px;box-shadow:var(--ux-shadow);display:flex;flex-direction:column;gap:10px}
+.ux-tv-side h3{margin:0;font-family:var(--ux-font-head);color:var(--ux-navy)}
+.ux-tv-sbar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.ux-tv-sbar select{font:inherit;min-height:38px;padding:0 10px;border:1px solid var(--ux-line);border-radius:9px;background:#fff;color:var(--ux-ink);max-width:100%}
+.ux-tv-vs{color:var(--ux-ink-soft)}
+.ux-tv-sum{margin:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ux-tv-chip{font:inherit;font-size:var(--ux-fs-sm);border:1px solid var(--ux-line);background:#fff;border-radius:999px;padding:3px 10px;cursor:pointer;color:var(--ux-ink)}
+.ux-tv-chip.on{background:var(--ux-brand);border-color:var(--ux-brand);color:#fff}
+.ux-tv-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ux-tv-week{min-width:0;overflow-x:auto}
+.ux-tv-week h4{margin:0 0 6px;font-size:var(--ux-fs-md);color:var(--ux-navy)}
+.ux-tv-grid{border-collapse:collapse;width:100%;table-layout:fixed;font-size:var(--ux-fs-xs)}
+.ux-tv-grid th,.ux-tv-grid td{border:1px solid #e3e9f0;padding:4px 3px;text-align:center;overflow:hidden;text-overflow:ellipsis}
+.ux-tv-grid thead th{background:#f3f6fa;color:var(--ux-ink-soft)}
+.ux-tv-grid tbody th{width:2.6em;background:#f3f6fa}
+.ux-tv-grid td{height:2.6em;line-height:1.25}
+.ux-tv-grid td.free{background:#fafbfc}
+.ux-tv-grid td.chg{background:var(--ux-saffron-soft);box-shadow:inset 0 0 0 2px var(--ux-saffron);color:var(--ux-saffron-ink);font-weight:600}
+@media (max-width:860px){.ux-tv-pair{grid-template-columns:1fr}.ux-tv-make{margin-left:0}}
+@media print{.ux-tv-acts,.ux-tv-actrow{display:none}}
 
 /* >>> 70-look.css */
 /* 70-look.css — V24.21 look: the school's colours (logo blue + saffron), embedded Thai type, quieter chrome.
@@ -10636,9 +10690,11 @@ var ASPCore = (() => {
     RULE_LABELS: () => RULE_LABELS,
     SCHEMA_VERSION: () => SCHEMA_VERSION,
     SHEET_TITLE: () => SHEET_TITLE,
+    SILENT_AUTH_ERRORS: () => SILENT_AUTH_ERRORS,
     STAFF_STATUS: () => STAFF_STATUS,
     SUBJECT_WORDS: () => SUBJECT_WORDS,
     VERSION: () => VERSION,
+    VERSION_PRESETS: () => VERSION_PRESETS,
     WL_CURRICULUM_2567: () => WL_CURRICULUM_2567,
     WL_CURRICULUM_LABEL: () => WL_CURRICULUM_LABEL,
     WORK_CATS: () => WORK_CATS,
@@ -10673,6 +10729,7 @@ var ASPCore = (() => {
     documentXml: () => documentXml,
     doubleReport: () => doubleReport,
     emu: () => emu,
+    entityWeek: () => entityWeek,
     eventBuilding: () => eventBuilding,
     explainUnplaced: () => explainUnplaced,
     fill: () => fill,
@@ -10698,6 +10755,7 @@ var ASPCore = (() => {
     mobilityConfig: () => mobilityConfig,
     moveLesson: () => moveLesson,
     movementCost: () => movementCost,
+    newerSide: () => newerSide,
     optimizeTimetable: () => optimizeTimetable,
     para: () => para,
     parseCommands: () => parseCommands,
@@ -10705,7 +10763,9 @@ var ASPCore = (() => {
     periodIndex: () => periodIndex,
     placeRemaining: () => placeRemaining,
     planCommands: () => planCommands,
+    planSummary: () => planSummary,
     policyConfig: () => policyConfig,
+    presetInput: () => presetInput,
     projectProblems: () => projectProblems,
     projectShapeOk: () => projectShapeOk,
     projectSummary: () => projectSummary,
@@ -10723,6 +10783,7 @@ var ASPCore = (() => {
     setItemHours: () => setItemHours,
     sheetLabel: () => sheetLabel,
     sheetSection: () => sheetSection,
+    shouldRenew: () => shouldRenew,
     slotOf: () => slotOf,
     slotOptions: () => slotOptions,
     slotPosition: () => slotPosition,
@@ -10740,9 +10801,12 @@ var ASPCore = (() => {
     teacherWeek: () => teacherWeek,
     textHash: () => textHash,
     thaiDigits: () => thaiDigits,
+    timetableDiff: () => timetableDiff,
+    timetableMetrics: () => timetableMetrics,
     toggleItem: () => toggleItem,
     toggleTeacherBlock: () => toggleTeacherBlock,
     twip: () => twip,
+    versionPlacements: () => versionPlacements,
     whyNoSlot: () => whyNoSlot,
     workTotals: () => workTotals,
     workloadCheck: () => workloadCheck,
@@ -13807,7 +13871,7 @@ var ASPCore = (() => {
       include_granted_scopes: "true"
     });
     if (o.hint) q.set("login_hint", o.hint);
-    q.set("prompt", o.consent ? "consent select_account" : "select_account");
+    q.set("prompt", o.silent ? "none" : o.consent ? "consent select_account" : "select_account");
     return "https://accounts.google.com/o/oauth2/v2/auth?" + q.toString();
   }
   function readAuthReturn(hash) {
@@ -13815,6 +13879,36 @@ var ASPCore = (() => {
     if (!/(?:^|&)(?:access_token|error)=/.test(h2)) return null;
     const p = new URLSearchParams(h2);
     return { token: p.get("access_token") ?? void 0, expiresIn: Number(p.get("expires_in")) || void 0, state: p.get("state") ?? void 0, error: p.get("error") ?? void 0 };
+  }
+  function shouldRenew(o) {
+    if (!o.linked || !o.online) return false;
+    const soon = o.soonMs ?? 10 * 6e4, gap = o.gapMs ?? 10 * 6e4;
+    if (o.exp && o.exp - o.now > soon) return false;
+    return !(o.lastTry && o.now - o.lastTry < gap);
+  }
+  var SILENT_AUTH_ERRORS = ["interaction_required", "login_required", "consent_required", "account_selection_required"];
+  function planSummary(text) {
+    let o;
+    try {
+      o = JSON.parse(String(text ?? "").replace(/^\uFEFF/, ""));
+    } catch {
+      return null;
+    }
+    const list2 = Array.isArray(o?.scenarios) ? o.scenarios : [];
+    if (!list2.length) return null;
+    const a = list2.find((s) => s && s.id === o.activeScenarioId) ?? list2[0], d = a?.data ?? {};
+    const pl = d.timetable?.placements ?? {};
+    return {
+      plans: list2.length,
+      name: String(a?.name ?? ""),
+      teachers: (d.teachers ?? []).filter((t) => t && !t.team).length,
+      courses: (d.rows ?? []).length,
+      placed: Object.values(pl).filter((p) => p && Number.isInteger(p.slot)).length
+    };
+  }
+  function newerSide(localAt, remoteAt) {
+    if (!localAt || !remoteAt || !Number.isFinite(localAt) || !Number.isFinite(remoteAt)) return "unknown";
+    return localAt >= remoteAt ? "local" : "remote";
   }
 
   // core/src/curriculum.ts
@@ -13909,8 +14003,95 @@ var ASPCore = (() => {
     return out;
   }
 
+  // core/src/versions.ts
+  function versionPlacements(input, placements) {
+    const ids = new Set(input.events.map((e) => e.id)), out = {};
+    let stale = 0;
+    for (const [id, p] of Object.entries(placements ?? {})) {
+      if (!ids.has(id)) {
+        stale++;
+        continue;
+      }
+      if (p && Number.isInteger(p.slot)) out[id] = { ...p };
+    }
+    return { placements: out, stale };
+  }
+  function timetableMetrics(input, placements) {
+    const v = versionPlacements(input, placements), inp = { ...input, placements: v.placements };
+    const check2 = checkTimetable(inp, { requireComplete: false });
+    const s = optimizeTimetable(inp, { maxSteps: 0 }).before;
+    const total = input.events.length, placed = Object.keys(v.placements).length;
+    const coverOn = !!(input.setup.substituteCoverage && input.setup.substituteCoverage.enabled);
+    return {
+      total,
+      placed,
+      missing: total - placed,
+      stale: v.stale,
+      clashes: check2.hardCount,
+      policyHard: s.violations,
+      policy: round2(s.policy),
+      mobility: round2(s.mobility),
+      coverOn,
+      uncovered: s.uncovered,
+      coverable: s.coverable,
+      score: round2(s.total)
+    };
+  }
+  var round2 = (x) => Math.round(x * 10) / 10;
+  function timetableDiff(input, a, b) {
+    const out = [];
+    for (const e of input.events) {
+      const x = a?.[e.id], y = b?.[e.id];
+      const sx = x && Number.isInteger(x.slot) ? x.slot : null, sy = y && Number.isInteger(y.slot) ? y.slot : null;
+      if (sx !== sy) out.push(e.id);
+    }
+    return out;
+  }
+  function entityWeek(input, placements, view, key2) {
+    const P3 = input.setup.periods, D = input.setup.days.length;
+    const cells = Array.from({ length: D }, () => Array.from({ length: P3 }, () => []));
+    const ids = Array.from({ length: D }, () => Array.from({ length: P3 }, () => []));
+    for (const e of input.events) {
+      if (view === "grade" ? !e.grades.includes(key2) : !e.teachers.includes(key2)) continue;
+      const p = placements?.[e.id];
+      if (!p || !Number.isInteger(p.slot)) continue;
+      const seen = /* @__PURE__ */ new Set();
+      for (const c of cellsOf(e.duration, p.slot)) {
+        const pos = slotPosition(c, P3), k = pos.day + "|" + pos.period;
+        if (pos.day >= D || seen.has(k)) continue;
+        seen.add(k);
+        const name = (e.subjects[0] ?? e.id).replace(/^(?:ป|ม|อ)\.\d+\s*/, "");
+        cells[pos.day][pos.period].push(name);
+        ids[pos.day][pos.period].push(e.id);
+      }
+    }
+    return { cells: cells.map((d) => d.map((c) => c.join(" / "))), ids };
+  }
+  var VERSION_PRESETS = [
+    { id: "now", label: "ตามเงื่อนไขปัจจุบัน", hint: "ใช้น้ำหนักทุกอย่างตามที่ตั้งไว้ในแท็บเงื่อนไข" },
+    { id: "walk", label: "เน้นเดินน้อย", hint: "ให้น้ำหนักการเดินข้ามอาคารของครูและนักเรียนมากขึ้น 3 เท่า" },
+    { id: "teacher", label: "เน้นนโยบายครู", hint: "เน้นคาบต่อวัน คาบว่าง คาบติดกันของครู · ลดน้ำหนักการเดิน" },
+    { id: "cover", label: "เน้นเผื่อครูสอนแทน", hint: "ให้ทุกคาบมีครูว่างในอาคารเดียวกันสำรองไว้ (สำคัญมาก)" }
+  ];
+  function presetInput(input, preset) {
+    if (preset === "now") return input;
+    const setup = { ...input.setup };
+    const mob = setup.mobility ?? {};
+    const w = { ...MOBILITY_WEIGHTS, ...mob.weights ?? {} };
+    const scale = (f) => Object.fromEntries(Object.entries(w).map(([k, x]) => [k, Number(x) * f]));
+    if (preset === "walk") setup.mobility = { ...mob, weights: scale(3) };
+    if (preset === "teacher") {
+      setup.mobility = { ...mob, weights: scale(0.25) };
+    }
+    if (preset === "cover") {
+      const c = setup.substituteCoverage ?? {};
+      setup.substituteCoverage = { ...c, enabled: true, importance: "high", targetBackups: Math.max(1, Number(c.targetBackups) || 1) };
+    }
+    return { ...input, setup };
+  }
+
   // core/src/index.ts
-  var VERSION = "0.15.0";
+  var VERSION = "0.17.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -13919,7 +14100,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.27',inits:[],syncs:[]};
+var UX=window.UX={version:'24.29',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -14378,14 +14559,22 @@ UX.onInit(menu);UX.onSync(menu);
      getting online pulls changes made on other devices. Decisions: ASPCore.decide (unit-tested).
    · Taking data from Drive first makes a restore point of this device's data. Changed in both places → the user chooses
      (the other side is kept as a restore point or as a copy in Drive). Nothing is overwritten silently.
-   · The access token lasts about an hour; then the chip says "แตะเพื่อซิงก์" and one tap signs in again. */
+   · The access token lasts about an hour; then the chip says "แตะเพื่อซิงก์" and one tap signs in again.
+   V24.29: · renewed WITHOUT a tap when the app is opened / brought back (or the token is about to end and nobody is typing):
+     a prompt=none redirect (ASPCore.shouldRenew — at most once per 10 min, never while a window is open, someone types or a
+     timetable is being made) · the page you were on comes back · if Google needs the user, the chip asks as before
+   · every minute while the app is on screen it checks Drive (one small request) and takes changes from other devices —
+     only when nobody is typing and no window is open; local edits still go up 4 s after saving
+   · "ข้อมูลไม่ตรงกัน" shows both sides: when each was last changed, the plan's teachers / courses / placed lessons,
+     and the newer side first (ASPCore.planSummary / newerSide) */
 (function(UX){'use strict';
 var $=UX.$;
 if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
 var C=window.ASPCore,meta=document.querySelector('meta[name="wl-drive"]');
 if(!meta||!/^https?:$/.test(location.protocol))return;                       /* the local file: no Drive */
 var KEY='wl_drive_v1',FILE='WL_Scheduler_data.json',API='https://www.googleapis.com/drive/v3/files',UP='https://www.googleapis.com/upload/drive/v3/files';
-var S={busy:false,timer:0,status:'',note:'',again:false};
+var S={busy:false,timer:0,status:'',note:'',again:false,hold:false,pollMs:+window.__WL_DRIVE_POLL_MS||60000,touched:Date.now(),polls:0};
+var SOON=10*60000,GAP=10*60000;
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
 function store(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
 function st(){return load()}
@@ -14395,17 +14584,37 @@ function token(){var s=st();return s.token&&s.exp&&Date.now()<s.exp-60000?s.toke
 function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
 function btn(cls,text,fn){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;return b}
 function time(t){try{return new Date(t).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+function when(t){if(!t)return 'ไม่ทราบเวลา';try{var d=new Date(t),today=new Date().toDateString()===d.toDateString();return (today?'วันนี้ ':d.toLocaleDateString('th-TH',{day:'numeric',month:'short'})+' ')+time(t)}catch(e){return ''}}
 
 /* ---- sign-in (redirect) ------------------------------------------------------------------------------------------------ */
-function signIn(consent){
+function signIn(consent,silent){
   var id=clientId();if(!id){open();return}
-  var state=Math.random().toString(36).slice(2);try{sessionStorage.setItem('wl_drive_state',state)}catch(e){}
-  location.href=C.authUrl({clientId:id,redirectUri:redirectUri(),state:state,hint:st().email||'',consent:!!consent})}
+  var state=Math.random().toString(36).slice(2);
+  try{sessionStorage.setItem('wl_drive_state',state);sessionStorage.setItem('wl_drive_resume',JSON.stringify({page:UX.cur(),y:window.scrollY||0,silent:!!silent}))}catch(e){}
+  if(typeof persist==='function')try{persist()}catch(e){}                   /* everything is in this device before leaving the page */
+  location.href=C.authUrl({clientId:id,redirectUri:redirectUri(),state:state,hint:st().email||'',consent:!!consent,silent:!!silent})}
+/* nobody is in the middle of something: no window open, no typing, no timetable being made, page on screen */
+function quiet(){
+  if(document.visibilityState==='hidden')return false;
+  if(document.querySelector('dialog[open]'))return false;
+  var a=document.activeElement;if(a&&(/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)||a.isContentEditable))return false;
+  if(UX.gen&&UX.gen.state&&UX.gen.state.busy)return false;if(UX.ttver&&UX.ttver.state&&UX.ttver.state.busy)return false;
+  return true}
+/* renew the token without a tap (prompt=none redirect) — true when the page is leaving for Google */
+function renew(why){
+  var s=st();
+  if(!clientId()||!C.shouldRenew({linked:!!s.mem,online:navigator.onLine!==false,exp:token()?s.exp:0,now:Date.now(),lastTry:s.silentAt,soonMs:SOON,gapMs:GAP}))return false;
+  if(!quiet())return false;
+  if(why==='idle'&&Date.now()-S.touched<2*60000)return false;              /* someone is working: wait */
+  s.silentAt=Date.now();store(s);S.renewing=why;signIn(false,true);return true}
 function returned(){
   var r=C.readAuthReturn(location.hash);if(!r)return false;
   history.replaceState(null,'',location.pathname+location.search);
-  var want='';try{want=sessionStorage.getItem('wl_drive_state')||''}catch(e){}
-  if(r.error){UX.toast('เชื่อม Google Drive ไม่สำเร็จ: '+r.error);return true}
+  var want='',back=null;try{want=sessionStorage.getItem('wl_drive_state')||'';back=JSON.parse(sessionStorage.getItem('wl_drive_resume')||'null');sessionStorage.removeItem('wl_drive_resume')}catch(e){}
+  if(back&&back.page)setTimeout(function(){try{if(back.page!==UX.cur())UX.go(back.page);setTimeout(function(){window.scrollTo(0,back.y||0)},300)}catch(e){}},400);   /* after the other modules have started */
+  if(r.error){
+    if(back&&back.silent&&C.SILENT_AUTH_ERRORS.indexOf(r.error)>-1){S.silentFail=r.error;return true}   /* Google needs the user: the chip asks, no alarm */
+    UX.toast('เชื่อม Google Drive ไม่สำเร็จ: '+r.error);return true}
   if(!r.token||(want&&r.state!==want)){UX.toast('เชื่อม Google Drive ไม่สำเร็จ (ข้อมูลการเข้าสู่ระบบไม่ตรง) — ลองอีกครั้ง');return true}
   var s=st();s.token=r.token;s.exp=Date.now()+(r.expiresIn||3600)*1000;store(s);return true}
 function signOut(){var s=st();delete s.token;delete s.exp;delete s.mem;delete s.email;delete s.last;store(s);paint('off');UX.toast('ตัดการเชื่อม Google Drive แล้ว — ข้อมูลในเครื่องนี้ยังอยู่ครบ')}
@@ -14419,10 +14628,10 @@ function call(url,opt){
     return r})}
 function findFile(){
   var m=(st().mem||{}).fileId;
-  var byId=m?call(API+'/'+encodeURIComponent(m)+'?fields=id,version,trashed').then(function(r){return r.json()}).then(function(f){return f.trashed?null:f},function(e){if(e&&e.http===404)return null;throw e}):Promise.resolve(null);
+  var byId=m?call(API+'/'+encodeURIComponent(m)+'?fields=id,version,trashed,modifiedTime').then(function(r){return r.json()}).then(function(f){return f.trashed?null:f},function(e){if(e&&e.http===404)return null;throw e}):Promise.resolve(null);
   return byId.then(function(f){if(f)return f;
     var q="name='"+FILE+"' and trashed=false";
-    return call(API+'?q='+encodeURIComponent(q)+'&orderBy=modifiedTime desc&fields=files(id,version)&spaces=drive').then(function(r){return r.json()}).then(function(j){return (j.files||[])[0]||null})})}
+    return call(API+'?q='+encodeURIComponent(q)+'&orderBy=modifiedTime desc&fields=files(id,version,modifiedTime)&spaces=drive').then(function(r){return r.json()}).then(function(j){return (j.files||[])[0]||null})})}
 function download(id){return call(API+'/'+encodeURIComponent(id)+'?alt=media').then(function(r){return r.text()})}
 function create(text,name){
   var b='wl'+Math.random().toString(36).slice(2),body='--'+b+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+JSON.stringify({name:name||FILE,mimeType:'application/json'})+
@@ -14434,18 +14643,20 @@ function who(){return call('https://www.googleapis.com/drive/v3/about?fields=use
 /* ---- the sync itself ------------------------------------------------------------------------------------------------------ */
 function blank(){try{return project.scenarios.every(function(s){var d=s.id===project.activeScenarioId?db:s.data;return !(d.teachers||[]).length&&!(d.rows||[]).length})}catch(e){return false}}
 function local(){var t=snapshot();return {text:t,hash:C.textHash(t)}}
-function remember(fileId,version,hash){var s=st();s.mem={fileId:fileId,version:String(version),hash:hash};s.last=Date.now();store(s)}
+function remember(fileId,version,hash){var s=st();s.mem={fileId:fileId,version:String(version),hash:hash};s.last=s.checked=Date.now();store(s)}
 function take(text,fileId,version,label){
   var r=C.readBackupText(text);if(!r.ok)throw {bad:r.error};
   if(typeof v135AddCheckpoint==='function')try{v135AddCheckpoint(snapshot(),label||'ก่อนรับข้อมูลจาก Google Drive')}catch(e){}
   adoptProject(r.project);persist();all();if(typeof updateHistory==='function')updateHistory();
-  remember(fileId,version,local().hash)}
+  remember(fileId,version,local().hash);var s=st();s.localAt=Date.now();store(s)}
 function sync(why){
-  if(S.busy){S.again=true;return Promise.resolve()}
+  var poll=why==='poll';
+  if(S.busy){if(!poll)S.again=true;return Promise.resolve()}
   if(!clientId()){paint('setup');return Promise.resolve()}
-  if(!token()){paint(st().mem?'expired':'off');return Promise.resolve()}
+  if(!token()){paint(st().mem?'expired':'off',S.silentFail?'Google ขอให้ยืนยันบัญชีอีกครั้ง — แตะครั้งเดียว':'');return Promise.resolve()}
   if(navigator.onLine===false){paint('offline');return Promise.resolve()}
-  S.busy=true;paint('busy');
+  if(!poll&&why!=='edit')S.hold=false;                                      /* asked again by the user / app: the question may come back */
+  S.busy=true;if(!poll)paint('busy');
   var me=local(),mem=st().mem||null;
   var p=(st().email?Promise.resolve():who().then(function(e){var s=st();s.email=e;store(s)}))
   .then(findFile).then(function(f){
@@ -14458,26 +14669,50 @@ function sync(why){
       if(d.action==='link'){remember(f.id,f.version,me.hash);return 'same'}
       if(d.action==='conflict'&&!mem&&blank())d={action:'download'};      /* a new device with nothing in it: just take the plan */
       if(d.action==='download'){take(text,f.id,f.version);return 'down'}
+      if(poll&&S.hold)return 'later';                                        /* the user said "later": the minute check does not ask again */
       return conflict(text,f,d.why)})})
-  .then(function(r){S.busy=false;
+  .then(function(r){S.busy=false;if(r==='same'){var s=st();s.checked=Date.now();store(s)}
+    if(r==='later')S.hold=true;
     if(r==='later'||r==='err'){paint('error',r==='later'?'ข้อมูลไม่ตรงกับ Drive — แตะ แล้วกด "ซิงก์ตอนนี้" เพื่อเลือก':'ซิงก์ไม่สำเร็จ');return}
     paint('ok');
-    if(r==='down')UX.toast('รับข้อมูลล่าสุดจาก Google Drive แล้ว (ข้อมูลเดิมของเครื่องนี้เก็บเป็นจุดกู้คืน)');
+    if(r==='down')UX.toast(poll?'มีการแก้จากเครื่องอื่น — รับข้อมูลล่าสุดจาก Google Drive แล้ว':'รับข้อมูลล่าสุดจาก Google Drive แล้ว (ข้อมูลเดิมของเครื่องนี้เก็บเป็นจุดกู้คืน)');
     if(S.again){S.again=false;schedule(1500)}},
     function(e){S.busy=false;
       if(e&&e.auth){paint('expired');return}
       if(e&&e.bad){paint('error','ไฟล์ใน Drive อ่านไม่ได้: '+e.bad);return}
       if(e&&e.http){paint('error','Google Drive ตอบกลับ '+e.http);return}
+      if(poll)return;                                                        /* a missed minute check is not an error */
       paint(navigator.onLine===false?'offline':'error','เชื่อมต่อไม่ได้ — จะลองใหม่')});
   return p}
+/* every minute while on screen: renew the token when it is about to end and nobody works, then check Drive */
+function tick(){
+  S.polls++;
+  if(document.visibilityState==='hidden'||navigator.onLine===false||S.busy)return 'skip';
+  if(!token()){return renew('idle')?'renew':'skip'}
+  if(st().exp-Date.now()<SOON&&renew('idle'))return 'renew';
+  if(!quiet())return 'skip';
+  void sync('poll');return 'sync'}
 function schedule(ms){clearTimeout(S.timer);S.timer=setTimeout(function(){sync('edit')},ms==null?4000:ms)}
 
 /* both changed: the user chooses; the side not chosen is kept */
+function side(title,sum,at,isNewer,k){
+  var c=el('div','ux-drive-side'+(isNewer?' newer':''));c.dataset.k=k;
+  var h=el('div','ux-drive-side-h');h.appendChild(el('b',null,title));if(isNewer)h.appendChild(el('span','ux-drive-badge','ใหม่กว่า'));c.appendChild(h);
+  c.appendChild(el('p',null,'แก้ล่าสุด: '+when(at)));
+  if(sum){c.appendChild(el('p',null,'แผน "'+sum.name+'"'+(sum.plans>1?' (จาก '+sum.plans+' แผน)':'')));
+    c.appendChild(el('p','ux-drive-nums','ครู '+sum.teachers+' · รายวิชา '+sum.courses+' · คาบที่จัดแล้ว '+sum.placed))}
+  else c.appendChild(el('p',null,'อ่านรายละเอียดไม่ได้'));
+  return c}
 function conflict(text,f,why){
   return new Promise(function(done){
     var d=dlg('ข้อมูลไม่ตรงกับใน Google Drive');
     var b=d.querySelector('.ux-drive-body');b.textContent='';
     b.appendChild(el('p',null,why+' — เลือกว่าจะใช้ชุดไหน อีกชุดจะถูกเก็บไว้ ไม่หาย'));
+    var la=st().localAt,ra=f.modifiedTime?Date.parse(f.modifiedTime):0,nw=C.newerSide(la,ra);
+    var two=el('div','ux-drive-sides');
+    var cm=side('เครื่องนี้',C.planSummary(local().text),la,nw==='local','drive-side-mine'),cr=side('Google Drive (เครื่องอื่น)',C.planSummary(text),ra,nw==='remote','drive-side-theirs');
+    if(nw==='remote'){two.appendChild(cr);two.appendChild(cm)}else{two.appendChild(cm);two.appendChild(cr)}
+    b.appendChild(two);d.dataset.newer=nw;
     var me=btn('ux-btn ux-primary','ใช้ข้อมูลในเครื่องนี้ (ส่งขึ้น Drive)',function(){d.onclose=null;d.close();
       create(text,'WL_Scheduler_สำเนาก่อนทับ_'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.json')
         .then(function(){var x=local();return upload(f.id,x.text).then(function(n){remember(n.id,n.version,x.hash)})})
@@ -14486,7 +14721,8 @@ function conflict(text,f,why){
     var th=btn('ux-btn','ใช้ข้อมูลจาก Drive (เครื่องนี้เก็บเป็นจุดกู้คืน)',function(){d.onclose=null;d.close();
       try{take(text,f.id,f.version,'ก่อนใช้ข้อมูลจาก Google Drive (ข้อมูลไม่ตรงกัน)');done('down')}catch(e){UX.toast('ไฟล์ใน Drive อ่านไม่ได้');done('err')}});
     th.dataset.k='drive-theirs';
-    var row=el('div','ux-drive-acts');row.appendChild(me);row.appendChild(th);b.appendChild(row);
+    if(nw==='remote'){me.className='ux-btn';th.className='ux-btn ux-primary'}
+    var row=el('div','ux-drive-acts');if(nw==='remote'){row.appendChild(th);row.appendChild(me)}else{row.appendChild(me);row.appendChild(th)}b.appendChild(row);
     b.appendChild(el('p','ux-tt-hint','ตัดสินใจทีหลังได้ — ปิดหน้าต่างนี้ ข้อมูลทั้งสองชุดยังอยู่'));
     d.onclose=function(){d.onclose=null;done('later')};if(!d.open)d.showModal()})}
 
@@ -14495,7 +14731,7 @@ var LABEL={off:'เชื่อม Google Drive',setup:'ตั้งค่า Go
 function paint(status,note){
   S.status=status;S.note=note||'';
   var c=$('uxDrive');if(!c)return;
-  var s=st(),txt=status==='ok'&&s.last?'ซิงก์ '+time(s.last):LABEL[status]||'';
+  var s=st(),seen=Math.max(s.last||0,s.checked||0),txt=status==='ok'&&seen?'ซิงก์ '+time(seen):LABEL[status]||'';
   c.dataset.state=status;c.querySelector('small').textContent=txt;
   c.setAttribute('aria-label','Google Drive: '+txt+(S.note?' — '+S.note:''));c.title='Google Drive: '+txt+(S.note?'\n'+S.note:'');
   var d=$('uxDriveDlg');if(d&&d.open&&!d.dataset.conflict)fill(d)}
@@ -14513,8 +14749,8 @@ function dlg(title){
   d.querySelector('h2').textContent=title;delete d.dataset.conflict;if(/ไม่ตรง/.test(title))d.dataset.conflict='1';return d}
 function fill(d){
   var b=d.querySelector('.ux-drive-body'),s=st();b.textContent='';
-  b.appendChild(el('p',null,'ใช้แผนชุดเดียวกันบน Mac, iPad และ iPhone: ข้อมูลเก็บเป็นไฟล์ '+FILE+' ใน Google Drive ของคุณ แก้ที่เครื่องไหน อีกเครื่องได้รับเมื่อเปิดแอป'));
-  var line=el('p','ux-drive-st');line.appendChild(el('b',null,'สถานะ: '+(LABEL[S.status]||'—')+(S.status==='ok'&&s.last?' เวลา '+time(s.last):'')));
+  b.appendChild(el('p',null,'ใช้แผนชุดเดียวกันบน Mac, iPad และ iPhone: ข้อมูลเก็บเป็นไฟล์ '+FILE+' ใน Google Drive ของคุณ · แก้ที่เครื่องไหน ส่งขึ้นภายในไม่กี่วินาที · เครื่องอื่นที่เปิดแอปอยู่ตรวจทุก 1 นาทีและรับเอง (ถ้าไม่ได้พิมพ์อะไรค้างอยู่) · สิทธิ์ Google ต่ออายุเองเมื่อเปิดหรือกลับมาที่แอป'));
+  var line=el('p','ux-drive-st');line.appendChild(el('b',null,'สถานะ: '+(LABEL[S.status]||'—')+(S.status==='ok'&&s.last?' · ส่ง/รับล่าสุด '+time(s.last):'')+(S.status==='ok'&&s.checked?' · ตรวจล่าสุด '+time(s.checked):'')));
   if(S.note)line.appendChild(el('span',null,' · '+S.note));b.appendChild(line);
   if(s.email)b.appendChild(el('p',null,'บัญชี: '+s.email));
   var acts=el('div','ux-drive-acts');
@@ -14535,13 +14771,16 @@ function fill(d){
   b.appendChild(info)}
 function open(){var d=dlg('Google Drive — ซิงก์ทุกเครื่อง');fill(d);if(!d.open)d.showModal()}
 
-UX.drive={sync:sync,open:open,state:S,status:function(){return S.status},memory:function(){return st().mem||null},signIn:signIn};
+UX.drive={sync:sync,open:open,state:S,status:function(){return S.status},memory:function(){return st().mem||null},signIn:signIn,renew:renew,tick:tick,quiet:quiet};
 UX.onInit(function(){
   chip();
   var back=returned();
-  if(typeof SavePipeline!=='undefined')SavePipeline.add({name:'Google Drive (ซิงก์หลังบันทึก, หน่วง 4 วินาที)',after:function(){if(token())schedule()}});
+  if(typeof SavePipeline!=='undefined')SavePipeline.add({name:'Google Drive (ซิงก์หลังบันทึก, หน่วง 4 วินาที)',after:function(){var s=st();s.localAt=Date.now();store(s);if(token())schedule()}});
   window.addEventListener('online',function(){sync('online')});window.addEventListener('offline',function(){paint('offline')});
-  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')sync('back')});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){if(!renew('back'))sync('back')}});
+  ['pointerdown','keydown'].forEach(function(t){document.addEventListener(t,function(){S.touched=Date.now()},{capture:true,passive:true})});
+  setInterval(tick,S.pollMs);
+  if(!back&&renew('open'))return;                                            /* leaving for Google: sync after coming back */
   sync(back?'signin':'open')});
 UX.onSync(chip);
 })(window.UX);
@@ -15250,7 +15489,7 @@ function build(){
   if(menu&&!menu.querySelector('[data-legacy-gen]')){var b=document.createElement('button');b.setAttribute('role','menuitem');b.dataset.id=UX.ORIG.buttons.generate;b.dataset.legacyGen='1';
     b.textContent='✦ Generate แบบเดิม (หน้าจอค้างระหว่างสร้าง)';var first=menu.querySelector('button');menu.insertBefore(b,first)}
 }
-UX.gen={start:start,state:S,why:why,repair:repair,relax:relax};
+UX.gen={start:start,state:S,why:why,repair:repair,relax:relax,POST:POST};
 UX.onInit(build);
 })(window.UX);
 
@@ -15581,6 +15820,7 @@ function items(){
     cmd('csv','ส่งออก Excel (.csv)',function(){UX.clickId(B.exportCsv)},['excel','export']),
     cmd('docs','พิมพ์ / ส่งออก Word หรือ PDF',function(){UX.go('documents')},['word','pdf','docx','print','พิมพ์','เอกสาร']),
     cmd('codes','รหัสวิชาจากหลักสูตรของโรงเรียน',function(){UX.go('courses');setTimeout(function(){if(UX.codes)UX.codes.open()},300)},['รหัส','รหัสวิชา','หลักสูตร','code','curriculum']),
+    cmd('versions','ฉบับตารางสอน: จัดหลายแบบในแผนเดียวแล้วเปรียบเทียบ',function(){if(UX.ttver){if(UX.cur()==='timetable'&&UX.tt.state.tab==='versions')return;UX.ttver.toggle()}else UX.go('timetable')},['ฉบับ','ฉบับตาราง','เปรียบเทียบตาราง','หลายแบบ','version','versions','compare']),
     cmd('plans','จัดการแผน: เลื่อนขึ้น-ลง เปลี่ยนชื่อ ลบ เลือกเสนอ',function(){UX.go('scenarios')},['plan','plans','แผน','เลื่อนแผน','ลบแผน','ลำดับแผน','scenarios']),
     cmd('compare','เปรียบเทียบทุกแผน',function(){UX.go('compare')},['compare']),
     cmd('recovery','จุดกู้คืน / ประวัติ',function(){UX.clickId(B.recovery)},['history','restore']),
@@ -16306,14 +16546,14 @@ function render(){
   if(S.sel)S.report=C.slotOptions(d,S.sel);
   S.pairs=Object.keys(doubles()).length?pairState(d):null;
   if(S.day>=d.setup.days.length)S.day=0;
-  var sig=JSON.stringify([S.tab,S.tab==='setup'&&UX.ttsetup?UX.ttsetup.sig():0,S.mode,S.view,S.key,S.sel,d.placements,d.setup.teacherBlocks,d.setup.dayRules,d.events.length,db.timetable.periods,d.setup.days,doubles(),S.day,S.rows,listMode()]);
+  var sig=JSON.stringify([S.tab,S.tab==='setup'&&UX.ttsetup?UX.ttsetup.sig():0,S.tab==='versions'&&UX.ttver?UX.ttver.sig():0,S.mode,S.view,S.key,S.sel,d.placements,d.setup.teacherBlocks,d.setup.dayRules,d.events.length,db.timetable.periods,d.setup.days,doubles(),S.day,S.rows,listMode()]);
   if(sig===S.sig)return;S.sig=sig;
   var focusKey=document.activeElement&&h.contains(document.activeElement)?document.activeElement.dataset.k:null;
   h.textContent='';
   /* toolbar */
   var bar=el('div','ux-tt-bar');
   if(S.mode==='legacy'){bar.appendChild(el('span','ux-tt-note','กำลังแสดงหน้าตารางสอนแบบเดิม'));bar.appendChild(btn('ux-btn ux-primary','ใช้ตารางแบบใหม่',function(){setMode('new')}));h.appendChild(bar);return}
-  if(S.tab!=='setup'){                                     /* V24.27: the conditions tab has no class / teacher picker */
+  if(S.tab==='grid'){                                     /* V24.27/28: the conditions and versions tabs have no class / teacher picker */
   var seg=el('div','ux-tt-seg');seg.setAttribute('role','group');seg.setAttribute('aria-label','มุมมอง');
   [['grade','ชั้นเรียน'],['teacher','ครู'],['room','ห้อง'],['all','รวมทั้งโรงเรียน']].forEach(function(v){if(v[0]==='room'&&!entities('room').length)return;
     var b=btn('ux-tt-segb'+(S.view===v[0]?' on':''),v[1],function(){S.view=v[0];S.key='';S.sig='';render();if(v[0]!=='all')remember()});b.setAttribute('aria-pressed',String(S.view===v[0]));b.dataset.k='view-'+v[0];seg.appendChild(b)});
@@ -16330,14 +16570,19 @@ function render(){
     ents.forEach(function(x){var o=el('option',null,x[1]);o.value=x[0];sel.appendChild(o)});sel.value=S.key;sel.onchange=function(){S.key=sel.value;S.sig='';remember();render()};bar.appendChild(sel)}
   }
   var right=el('div','ux-tt-right');
-  if(S.view!=='all'&&S.tab!=='setup'){var lm=listMode(),lt=btn('ux-btn ux-tt-layout',lm?'▦ ดูทั้งสัปดาห์':'☰ ดูทีละวัน',function(){S.layout=lm?'grid':'list';try{localStorage.setItem(LKEY,S.layout)}catch(e){};S.sig='';render()});
+  if(S.view!=='all'&&S.tab==='grid'){var lm=listMode(),lt=btn('ux-btn ux-tt-layout',lm?'▦ ดูทั้งสัปดาห์':'☰ ดูทีละวัน',function(){S.layout=lm?'grid':'list';try{localStorage.setItem(LKEY,S.layout)}catch(e){};S.sig='';render()});
     lt.dataset.k='layout';right.appendChild(lt)}
   if(UX.ttsetup){var sb=btn('ux-btn ux-tt-setupbtn'+(S.tab==='setup'?' on':''),S.tab==='setup'?'▦ กลับไปที่ตาราง':'⚙ เงื่อนไข',function(){S.tab=S.tab==='setup'?'grid':'setup';S.sig='';render();window.scrollTo({top:0})},
       'เงื่อนไขการจัดตาราง: คาบต่อวัน เวลาที่ครูไม่ว่าง กฎวันเรียน นโยบายครู อาคารและการเดิน เผื่อครูสอนแทน ครูยืดหยุ่น');sb.dataset.k='setup';sb.setAttribute('aria-pressed',String(S.tab==='setup'));right.appendChild(sb)}
-  else right.appendChild(btn('ux-btn','ตั้งค่าตาราง',function(){setMode('legacy');setTimeout(function(){var t=document.querySelector('#timetable .tt-head');if(t)t.scrollIntoView({block:'start'})},60)},'ตั้งค่าตาราง: คาบต่อวัน, กฎวันเรียน, เวลาที่ครูไม่ว่าง (อยู่ในมุมมองเดิม)'));
+  /* V24.28: versions open from "⧉ หลายฉบับ · เปรียบเทียบ" in the Generate row (#uxVersions, 65-ttversions.js); here only the way back */
+  if(UX.ttver&&S.tab==='versions'){var vb=btn('ux-btn ux-tt-verbtn on','▦ กลับไปที่ตาราง',function(){S.tab='grid';S.sig='';render();window.scrollTo({top:0})},
+      'กลับไปที่ตารางสอน');vb.dataset.k='versions';vb.setAttribute('aria-pressed','true');right.appendChild(vb)}
+  var vt=$('uxVersions');if(vt){vt.classList.toggle('on',S.tab==='versions');vt.setAttribute('aria-pressed',String(S.tab==='versions'))}
+  if(!UX.ttsetup)right.appendChild(btn('ux-btn','ตั้งค่าตาราง',function(){setMode('legacy');setTimeout(function(){var t=document.querySelector('#timetable .tt-head');if(t)t.scrollIntoView({block:'start'})},60)},'ตั้งค่าตาราง: คาบต่อวัน, กฎวันเรียน, เวลาที่ครูไม่ว่าง (อยู่ในมุมมองเดิม)'));
   right.appendChild(btn('ux-btn','มุมมองเดิม',function(){setMode('legacy')}));
   bar.appendChild(right);h.appendChild(bar);
   /* V24.27: the conditions tab replaces grid + panel */
+  if(S.tab==='versions'&&UX.ttver){h.appendChild(UX.ttver.node());if(focusKey){var fv=h.querySelector('[data-k="'+focusKey+'"]');if(fv)fv.focus()}return}
   if(S.tab==='setup'&&UX.ttsetup){h.appendChild(UX.ttsetup.node());if(focusKey){var ff=h.querySelector('[data-k="'+focusKey+'"]');if(ff)ff.focus()}return}
   /* body: grid + panel */
   var body=el('div','ux-tt-body');
@@ -17472,6 +17717,215 @@ UX.ttsetup={node:node,sig:sig,followUp:followUp,runCoverage:runCoverage,runFlex:
 UX.onInit(function(){if(UX.gen)UX.gen.followUp=followUp});
 })(window.UX);
 
+/* >>> 65-ttversions.js */
+/* 65-ttversions.js — "⧉ ฉบับ" tab of the timetable page (V24.28): several timetables in ONE plan, compared side by side.
+   A version ("ฉบับ") is a copy of the placements, kept in db.timetable.versions[] of the plan:
+     {id, name, createdAt, how: 'saved' | preset id, from: 'scratch' | 'current', sourceKey, placements}
+   - 💾 keep the current timetable as a version
+   - ✦ make a new version in the background (Web Worker, same core as ✦ Generate) with a preset — ตามเงื่อนไขปัจจุบัน /
+     เน้นเดินน้อย / เน้นนโยบายครู / เน้นเผื่อครูสอนแทน — from scratch or by improving the current timetable.
+     The current timetable is NOT touched until "ใช้ฉบับนี้".
+   - every version is measured with the plan's CURRENT lessons and conditions (ASPCore.timetableMetrics), so the numbers
+     compare fairly; the best value of each row is marked
+   - side by side: any two (ตารางปัจจุบัน or a version) for one class / teacher, changed periods highlighted, plus the
+     classes / teachers that differ most
+   - "ใช้ฉบับนี้" puts the version into the timetable (one act() = one Undo); the timetable it replaces is kept as a
+     version first when no version holds it yet, so nothing is lost
+   DOM nodes + textContent only. Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES||!window.ASPCore.timetableMetrics)return;
+var C=window.ASPCore,MAX=12,run=0,worker=null;
+var S={busy:false,preset:'now',from:'scratch',a:'cur',b:'',view:'grade',key:'',cache:{},last:null};
+
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn,title){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;if(title)b.title=title;return b}
+function T(){return db.timetable}
+function list(){var v=T().versions;return Array.isArray(v)?v.filter(function(x){return x&&x.id&&x.placements}):[]}
+function byId(id){return list().find(function(v){return v.id===id})||null}
+function clone(o){return JSON.parse(JSON.stringify(o||{}))}
+function rerender(){if(UX.tt)UX.tt.render()}
+function tname(id){var t=db.teachers.find(function(x){return x.id===id});return t?t.name:id}
+function presetLabel(id){var p=C.VERSION_PRESETS.find(function(x){return x.id===id});return p?p.label:''}
+function stamp(iso){try{var d=new Date(iso);return d.toLocaleDateString('th-TH',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+function input(){return UX.optimize.input()}
+function placementsOf(id){if(id==='cur')return T().placements||{};var v=byId(id);return v?v.placements:{}}
+function nameOf(id){if(id==='cur')return 'ตารางปัจจุบัน';var v=byId(id);return v?v.name:'—'}
+function condSig(){var t=T();return ttSourceKey()+'§'+JSON.stringify([t.days,t.periods,t.teacherBlocks,t.dayRules,t.schedulePolicy,t.mobility,t.substituteCoverage])}
+function lockSig(){var p=T().placements||{},o={};Object.keys(p).sort().forEach(function(k){if(p[k]&&p[k].locked)o[k]=p[k].slot});return JSON.stringify(o)}
+function sig(){return JSON.stringify([list().map(function(v){return [v.id,v.name]}),S.busy,S.preset,S.from,S.a,S.b,S.view,S.key,condSig()])}
+
+/* ---- numbers (cached per version while lessons + conditions stay the same) ---------------------------------------------- */
+function metrics(d,id){
+  var key=condSig()+'|'+id+(id==='cur'?'|'+JSON.stringify(T().placements||{}):'');
+  if(!S.cache[key]){if(Object.keys(S.cache).length>60)S.cache={};S.cache[key]=C.timetableMetrics(d,placementsOf(id))}
+  return S.cache[key]}
+/* rows: [label, value(m), lower is better?, hint] */
+var ROWS=[
+  ['ลงคาบแล้ว',function(m){return m.placed+'/'+m.total},function(m){return -m.placed},'จำนวนรายการที่มีคาบแล้ว'],
+  ['ชนกัน (ชั้น ครู ห้อง ครูไม่ว่าง กฎวันเรียน)',function(m){return m.clashes},function(m){return m.clashes},'ต้องเป็น 0'],
+  ['ครูผิดนโยบายที่ "บังคับ"',function(m){return m.policyHard},function(m){return m.policyHard},'คาบต่อวัน คาบว่าง คาบติดกัน ที่ตั้งเป็นบังคับ'],
+  ['คะแนนนโยบายครู',function(m){return m.policy},function(m){return m.policy},'ยิ่งน้อยยิ่งดี'],
+  ['คะแนนการเดินข้ามอาคาร',function(m){return m.mobility},function(m){return m.mobility},'ยิ่งน้อยยิ่งดี'],
+  ['คาบที่ยังไม่มีครูสำรองในอาคาร',function(m){return m.coverOn?m.uncovered+'/'+m.coverable:'(ปิดอยู่)'},function(m){return m.coverOn?m.uncovered:null},'เปิดได้ที่ ⚙ เงื่อนไข → เผื่อครูสอนแทน'],
+  ['คะแนนรวม',function(m){return m.score},function(m){return m.score},'นโยบาย + การเดิน + เผื่อสอนแทน · ยิ่งน้อยยิ่งดี']];
+
+/* ---- actions ---------------------------------------------------------------------------------------------------------- */
+function newId(){return 'v'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function nextName(base){var n=list().length+1,names=list().map(function(v){return v.name});var s=base+' '+n;while(names.indexOf(s)>-1){n++;s=base+' '+n}return s}
+function matchCurrent(){var d=input(),cur=T().placements||{};return list().find(function(v){return !C.timetableDiff(d,cur,v.placements).length})||null}
+function saveCurrent(){
+  if(!Object.keys(T().placements||{}).length){UX.toast('ตารางปัจจุบันยังไม่มีคาบ');return}
+  var same=matchCurrent();if(same){UX.toast('ตารางปัจจุบันเหมือนกับ "'+same.name+'" อยู่แล้ว');return}
+  if(list().length>=MAX){UX.toast('เก็บได้สูงสุด '+MAX+' ฉบับต่อแผน — ลบฉบับที่ไม่ใช้ก่อน');return}
+  var v={id:newId(),name:nextName('ฉบับ'),createdAt:new Date().toISOString(),how:'saved',from:'current',sourceKey:ttSourceKey(),placements:clone(T().placements)};
+  act(function(){T().versions=list().concat([v])});S.b=S.b||v.id;rerender();UX.toast('เก็บตารางปัจจุบันเป็น "'+v.name+'" แล้ว')}
+function apply(id){
+  var v=byId(id);if(!v)return;var d=input(),keep=null,cur=T().placements||{};
+  if(!C.timetableDiff(d,cur,v.placements).length){UX.toast('ตารางปัจจุบันเหมือนกับ "'+v.name+'" อยู่แล้ว');return}
+  if(Object.keys(cur).length&&!matchCurrent())keep={id:newId(),name:'ตารางก่อนใช้ "'+v.name+'"',createdAt:new Date().toISOString(),how:'saved',from:'current',sourceKey:ttSourceKey(),placements:clone(cur)};
+  var pl=C.versionPlacements(d,v.placements).placements,line='ใช้ฉบับ "'+v.name+'" · '+Object.keys(pl).length+'/'+d.events.length+' รายการ';
+  act(function(){if(keep)T().versions=list().concat([keep]);T().placements=pl;T().signature=ttSourceKey();T().lastResult=line});
+  if(window.ttFlash)try{ttFlash(line,Object.keys(pl).length<d.events.length)}catch(e){}
+  rerender();UX.toast(line+(keep?' · ตารางเดิมเก็บไว้เป็น "'+keep.name+'"':''),'↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)})}
+function remove(id){var v=byId(id);if(!v)return;act(function(){T().versions=list().filter(function(x){return x.id!==id})});
+  if(S.a===id)S.a='cur';if(S.b===id)S.b='';rerender();UX.toast('ลบ "'+v.name+'" แล้ว','↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)})}
+function rename(id,name){name=String(name||'').trim().slice(0,60);var v=byId(id);if(!v||!name||name===v.name)return;
+  act(function(){T().versions=list().map(function(x){return x.id===id?Object.assign({},x,{name:name}):x})});rerender()}
+
+/* ---- make a version in the background --------------------------------------------------------------------------------- */
+function makeWorker(){
+  var src=($('asp-core')||{}).textContent;if(!src||typeof Worker==='undefined'||!(UX.gen&&UX.gen.POST))return null;
+  var body=src+'\n;'+UX.gen.POST.toString()+';self.onmessage=function(e){var d=e.data,now=function(){return performance.now()};try{var r;'+
+    'if(d.from==="current"){var o=ASPCore.optimizeTimetable(d.input,{seed:d.seed,now:now,timeBudgetMs:d.budget,maxSteps:60000});r={placements:o.placements,total:d.input.events.length}}'+
+    'else r=POST(ASPCore,d.input,ASPCore.generateTimetable(d.input,{seed:d.seed,now:now,timeBudgetMs:d.budget}));'+
+    'self.postMessage({type:"done",r:r})}catch(err){self.postMessage({type:"error",message:String(err&&err.message||err)})}};';
+  try{return new Worker(URL.createObjectURL(new Blob([body],{type:'text/javascript'})))}catch(e){return null}}
+function compute(o,done,fail){
+  if(o.from==='current'){var x=C.optimizeTimetable(o.input,{seed:o.seed,now:function(){return performance.now()},timeBudgetMs:3000,maxSteps:20000});return done({placements:x.placements,total:o.input.events.length})}
+  var g=C.generateTimetable(o.input,{seed:o.seed,optimizeSteps:12000,now:function(){return performance.now()},timeBudgetMs:4000});
+  done(UX.gen&&UX.gen.POST?UX.gen.POST(C,o.input,g):g)}
+function generate(){
+  if(S.busy)return;
+  var ready=ttReady();if(ready.errors.length){UX.toast('กรุณาแก้ข้อมูลพื้นฐาน '+ready.errors.length+' รายการก่อนสร้างตาราง');return}
+  if(list().length>=MAX){UX.toast('เก็บได้สูงสุด '+MAX+' ฉบับต่อแผน — ลบฉบับที่ไม่ใช้ก่อน');return}
+  run++;var base=input(),preset=S.preset,from=S.from,startSig=ttSourceKey()+'§'+lockSig()+'§'+condSig();
+  var o={input:C.presetInput(base,preset),seed:1000+run*17+list().length*101,budget:12000,from:from};
+  S.busy=true;rerender();UX.live('กำลังสร้างฉบับใหม่เบื้องหลัง');
+  function stop(){if(worker){worker.terminate();worker=null}}
+  function done(r){stop();S.busy=false;finish(r,preset,from,startSig)}
+  function fail(m){stop();S.busy=false;rerender();UX.toast('สร้างฉบับใหม่ไม่สำเร็จ: '+m)}
+  function inPage(){setTimeout(function(){try{compute(o,done,fail)}catch(e){fail(e.message)}},50)}
+  worker=window.__UX_TV_NO_WORKER?null:makeWorker();S.mode=worker?'worker':'page';
+  if(worker){worker.onmessage=function(e){if(e.data.type==='done')done(e.data.r);else fail(e.data.message)};
+    worker.onerror=function(ev){if(ev&&ev.preventDefault)ev.preventDefault();stop();inPage()};worker.postMessage(o)}
+  else inPage()}
+function finish(r,preset,from,startSig){
+  S.last=r;
+  if(r.error){rerender();UX.toast(r.error);return}
+  if(ttSourceKey()+'§'+lockSig()+'§'+condSig()!==startSig){rerender();UX.toast('รายวิชา เงื่อนไข หรือคาบที่ล็อกถูกแก้ระหว่างสร้าง จึงไม่เก็บผลนี้','✦ สร้างใหม่',generate);return}
+  var v={id:newId(),name:nextName(presetLabel(preset)),createdAt:new Date().toISOString(),how:preset,from:from,sourceKey:ttSourceKey(),placements:r.placements};
+  act(function(){T().versions=list().concat([v])});
+  S.b=v.id;if(S.a===v.id)S.a='cur';rerender();
+  var m=C.timetableMetrics(input(),v.placements);
+  UX.toast('สร้าง "'+v.name+'" แล้ว · ลงได้ '+m.placed+'/'+m.total+' · ตารางปัจจุบันยังไม่เปลี่ยน','ใช้ฉบับนี้',function(){apply(v.id)})}
+
+/* ---- the tab ---------------------------------------------------------------------------------------------------------- */
+function node(){
+  var d=input(),vs=list(),root=el('div','ux-tv');
+  root.appendChild(el('p','ux-ts-lead','จัดตารางได้หลายแบบในแผนเดียว แล้วเทียบกันก่อนเลือกใช้ · ทุกฉบับวัดด้วยรายวิชาและเงื่อนไขปัจจุบัน ตัวเลขจึงเทียบกันได้ตรง ๆ · การสร้างฉบับใหม่ไม่เปลี่ยนตารางปัจจุบันจนกว่าจะกด "ใช้ฉบับนี้"'));
+  /* actions */
+  var acts=el('div','ux-tv-acts');
+  var sv=btn('ux-btn','💾 เก็บตารางปัจจุบันเป็นฉบับ',saveCurrent,'เก็บสำเนาตารางที่จัดไว้ตอนนี้ (ย้อนกลับได้)');sv.dataset.k='tv-save';acts.appendChild(sv);
+  var mk=el('div','ux-tv-make');
+  var ps=el('select');ps.dataset.k='tv-preset';ps.setAttribute('aria-label','แบบที่จะสร้าง');
+  C.VERSION_PRESETS.forEach(function(p){var op=el('option',null,p.label);op.value=p.id;op.title=p.hint;ps.appendChild(op)});ps.value=S.preset;ps.onchange=function(){S.preset=ps.value;rerender()};mk.appendChild(ps);
+  var fs=el('select');fs.dataset.k='tv-from';fs.setAttribute('aria-label','เริ่มจาก');
+  [['scratch','สร้างใหม่ทั้งหมด'],['current','ปรับจากตารางปัจจุบัน (ย้ายน้อย)']].forEach(function(x){var op=el('option',null,x[1]);op.value=x[0];fs.appendChild(op)});fs.value=S.from;fs.onchange=function(){S.from=fs.value};mk.appendChild(fs);
+  var g=btn('ux-btn ux-primary',S.busy?'⏳ กำลังสร้าง…':'✦ สร้างฉบับใหม่',generate,'สร้างเบื้องหลัง ใช้โปรแกรมต่อได้ · ตารางปัจจุบันไม่เปลี่ยน');g.dataset.k='tv-gen';g.disabled=S.busy;g.setAttribute('aria-busy',String(S.busy));mk.appendChild(g);
+  acts.appendChild(mk);root.appendChild(acts);
+  var ph=C.VERSION_PRESETS.find(function(p){return p.id===S.preset});if(ph)root.appendChild(el('p','ux-tt-hint',ph.label+': '+ph.hint+' · ตัวเลขในตารางเทียบยังวัดด้วยเงื่อนไขจริง'));
+  /* comparison */
+  var cols=['cur'].concat(vs.map(function(v){return v.id})),M={};cols.forEach(function(id){M[id]=metrics(d,id)});
+  var curMatch=matchCurrent();
+  var wrap=el('div','ux-tv-wrap'),t=el('table','ux-tv-tbl');t.setAttribute('aria-label','เปรียบเทียบฉบับตารางสอน');
+  var hr=el('tr');hr.appendChild(el('th',null,''));
+  cols.forEach(function(id){var th=el('th','ux-tv-col'+(id==='cur'?' cur':''));th.dataset.v=id;
+    if(id==='cur'){th.appendChild(el('b',null,'ตารางปัจจุบัน'));if(curMatch)th.appendChild(el('small',null,'= '+curMatch.name))}
+    else{var v=byId(id),ni=el('input','ux-tv-name');ni.value=v.name;ni.dataset.k='tv-name-'+id;ni.setAttribute('aria-label','ชื่อฉบับ');ni.maxLength=60;
+      ni.onchange=function(){rename(id,ni.value)};th.appendChild(ni);
+      th.appendChild(el('small',null,(v.how==='saved'?'เก็บจากตาราง':presetLabel(v.how)+(v.from==='current'?' · ปรับจากเดิม':''))+' · '+stamp(v.createdAt)));
+      if(v.sourceKey&&v.sourceKey!==ttSourceKey())th.appendChild(el('small','ux-tv-stale','รายวิชาเปลี่ยนหลังเก็บฉบับนี้'))}
+    hr.appendChild(th)});
+  var thead=el('thead');thead.appendChild(hr);t.appendChild(thead);var tb=el('tbody');
+  ROWS.forEach(function(r,ri){var tr=el('tr'),lab=el('th',null,r[0]);lab.scope='row';lab.title=r[3];tr.appendChild(lab);
+    var ks=cols.map(function(id){return r[2](M[id])}).filter(function(x){return x!=null}),best=ks.length?Math.min.apply(null,ks):null,allSame=ks.every(function(x){return x===best});
+    cols.forEach(function(id){var k=r[2](M[id]),td=el('td',(k!=null&&k===best&&!allSame&&cols.length>1?'best':'')+(ri===1&&M[id].clashes||ri===0&&M[id].missing?' bad':''),String(r[1](M[id])));td.dataset.row=ri;td.dataset.v=id;tr.appendChild(td)});
+    tb.appendChild(tr)});
+  var dr=el('tr'),dl=el('th',null,'ต่างจากตารางปัจจุบัน');dl.scope='row';dr.appendChild(dl);
+  cols.forEach(function(id){dr.appendChild(el('td',null,id==='cur'?'—':C.timetableDiff(d,T().placements||{},byId(id).placements).length+' รายการ'))});tb.appendChild(dr);
+  var ar=el('tr','ux-tv-actrow');ar.appendChild(el('th'));
+  cols.forEach(function(id){var td=el('td');
+    if(id!=='cur'){var u=btn('ux-btn ux-primary','ใช้ฉบับนี้',function(){apply(id)},'ใส่ฉบับนี้เป็นตารางสอน (ย้อนกลับได้)');u.dataset.k='tv-use-'+id;td.appendChild(u);
+      var x=btn('ux-btn ux-tv-del','ลบ',function(){remove(id)},'ลบฉบับนี้ (ย้อนกลับได้)');x.dataset.k='tv-del-'+id;td.appendChild(x)}
+    var cmp=btn('ux-btn ux-tv-pick'+(S.b===id?' on':''),S.b===id?'กำลังเทียบ':'เทียบ',function(){if(id===S.a){S.a=S.b||'cur'}S.b=id;rerender();var s=document.querySelector('.ux-tv-side');if(s)s.scrollIntoView({block:'start',behavior:'smooth'})},'ดูข้างกันกับ "'+nameOf(S.a)+'"');
+    cmp.dataset.k='tv-cmp-'+id;cmp.disabled=id===S.a;td.appendChild(cmp);ar.appendChild(td)});
+  tb.appendChild(ar);t.appendChild(tb);wrap.appendChild(t);root.appendChild(wrap);
+  if(cols.some(function(id){return M[id].missing}))root.appendChild(el('p','ux-tt-hint','ฉบับที่ลงไม่ครบ (ตัวแดง) มักเป็นเพราะนโยบายที่ตั้งเป็น "บังคับ" · ใช้ฉบับนั้นแล้วกด "↻ จัดที่เหลือ" หรือดู "ทำไมลงไม่ได้" ได้ตามปกติ'));
+  if(!vs.length)root.appendChild(el('p','ux-tt-hint','ยังไม่มีฉบับอื่น — กด 💾 เพื่อเก็บตารางนี้ไว้ แล้วกด ✦ สร้างฉบับใหม่ เพื่อลองแบบอื่นมาเทียบ'));
+  if(vs.length)root.appendChild(side(d));
+  return root}
+
+function grades(d){var g={};d.events.forEach(function(e){e.grades.forEach(function(x){g[x]=1})});
+  return Object.keys(g).sort(function(a,b){return a.localeCompare(b,'th',{numeric:true})}).map(function(x){return [x,x]})}
+function teachers(d){var t={};d.events.forEach(function(e){e.teachers.forEach(function(x){t[x]=1})});
+  return db.teachers.filter(function(x){return t[x.id]}).map(function(x){return [x.id,x.name]})}
+function side(d){
+  if(!S.b||(S.b!=='cur'&&!byId(S.b)))S.b=list()[list().length-1].id;
+  if(S.a!=='cur'&&!byId(S.a))S.a='cur';if(S.a===S.b)S.a=S.b==='cur'?list()[0].id:'cur';
+  var box=el('section','ux-tv-side');box.setAttribute('aria-label','เทียบสองฉบับข้างกัน');
+  box.appendChild(el('h3',null,'เทียบข้างกัน'));
+  var bar=el('div','ux-tv-sbar'),opts=[['cur','ตารางปัจจุบัน']].concat(list().map(function(v){return [v.id,v.name]}));
+  function sel(k,val,label,on){var s=el('select');s.dataset.k=k;s.setAttribute('aria-label',label);opts.forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];s.appendChild(op)});s.value=val;s.onchange=function(){on(s.value);rerender()};return s}
+  bar.appendChild(sel('tv-a',S.a,'ฉบับซ้าย',function(v){S.a=v}));bar.appendChild(el('span','ux-tv-vs','เทียบกับ'));bar.appendChild(sel('tv-b',S.b,'ฉบับขวา',function(v){S.b=v}));
+  var seg=el('div','ux-tt-seg');seg.setAttribute('role','group');seg.setAttribute('aria-label','ดูตาม');
+  [['grade','ชั้นเรียน'],['teacher','ครู']].forEach(function(v){var b=btn('ux-tt-segb'+(S.view===v[0]?' on':''),v[1],function(){S.view=v[0];S.key='';rerender()});b.dataset.k='tv-view-'+v[0];b.setAttribute('aria-pressed',String(S.view===v[0]));seg.appendChild(b)});
+  bar.appendChild(seg);
+  var ents=S.view==='grade'?grades(d):teachers(d);if(!ents.some(function(x){return x[0]===S.key}))S.key=ents.length?ents[0][0]:'';
+  var es=el('select');es.dataset.k='tv-ent';es.setAttribute('aria-label',S.view==='grade'?'เลือกชั้น':'เลือกครู');
+  ents.forEach(function(x){var op=el('option',null,x[1]);op.value=x[0];es.appendChild(op)});es.value=S.key;es.onchange=function(){S.key=es.value;rerender()};bar.appendChild(es);
+  box.appendChild(bar);
+  var A=placementsOf(S.a),B=placementsOf(S.b),diff=C.timetableDiff(d,A,B),dset={};diff.forEach(function(id){dset[id]=1});
+  /* who changes most */
+  var cnt={};d.events.forEach(function(e){if(!dset[e.id])return;(S.view==='grade'?e.grades:e.teachers).forEach(function(k){cnt[k]=(cnt[k]||0)+1})});
+  var top=Object.keys(cnt).sort(function(x,y){return cnt[y]-cnt[x]}).slice(0,10);
+  var sm=el('p','ux-tv-sum');sm.appendChild(el('b',null,'ต่างกัน '+diff.length+' รายการ'));
+  if(top.length){sm.appendChild(document.createTextNode(' · มากที่สุด: '));top.forEach(function(k,i){var nm=S.view==='grade'?k:tname(k);
+    var a=btn('ux-tv-chip'+(k===S.key?' on':''),nm+' '+cnt[k],function(){S.key=k;rerender()});a.dataset.k='tv-top-'+i;sm.appendChild(a)})}
+  box.appendChild(sm);
+  var wa=C.entityWeek(d,A,S.view,S.key),wb=C.entityWeek(d,B,S.view,S.key),pair=el('div','ux-tv-pair');
+  pair.appendChild(week(d,nameOf(S.a),wa,wb,'a'));pair.appendChild(week(d,nameOf(S.b),wb,wa,'b'));box.appendChild(pair);
+  box.appendChild(el('p','ux-tt-hint','ช่องสีส้ม = คาบที่ต่างจากอีกฉบับ'));
+  return box}
+function week(d,title,w,other,side){
+  var P=d.setup.periods,cell=el('div','ux-tv-week');cell.appendChild(el('h4',null,title));
+  var t=el('table','ux-tv-grid');t.dataset.side=side;var hr=el('tr');hr.appendChild(el('th',null,''));
+  for(var p=0;p<P;p++)hr.appendChild(el('th',null,String(p+1)));var th=el('thead');th.appendChild(hr);t.appendChild(th);var tb=el('tbody'),changed=0;
+  d.setup.days.forEach(function(dn,di){var tr=el('tr');var dh=el('th',null,dn.slice(0,2));dh.scope='row';dh.title=dn;tr.appendChild(dh);
+    for(var p2=0;p2<P;p2++){var x=w.cells[di][p2],y=other.cells[di][p2],td=el('td',x!==y?'chg':(x?'':'free'),x);if(x!==y){changed++;td.title=x?'':'ว่าง (อีกฉบับมี '+y+')'}tr.appendChild(td)}
+    tb.appendChild(tr)});
+  t.appendChild(tb);t.setAttribute('aria-label',title+' · ต่างกัน '+changed+' ช่อง');cell.appendChild(t);return cell}
+
+function toggle(){var t=UX.tt&&UX.tt.state;if(!t)return;
+  if(UX.cur()!=='timetable'){t.tab='versions';UX.go('timetable')}else t.tab=t.tab==='versions'?'grid':'versions';
+  if(t.mode!=='new'&&UX.tt.setMode)UX.tt.setMode('new');UX.tt.render();window.scrollTo({top:0})}
+function entry(){var a=$('uxTTActions');if(!a||$('uxVersions'))return;
+  var b=btn('ux-btn','⧉ หลายฉบับ · เปรียบเทียบ',toggle,'จัดตารางหลายแบบในแผนเดียว แล้วเปรียบเทียบก่อนเลือกใช้');b.id='uxVersions';b.setAttribute('aria-pressed','false');
+  a.insertBefore(b,$('uxAssist')||$('uxTTInfo')||null)}
+UX.onInit(entry);
+UX.ttver={node:node,toggle:toggle,sig:sig,state:S,save:saveCurrent,generate:generate,apply:apply,remove:remove,rename:rename,list:list,metrics:function(id){return metrics(input(),id)}};
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -17486,7 +17940,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 
 </script><script id="ux-webapp">
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website) */
-(function(){window.__UX_WEBAPP="42ee9b375c34";
+(function(){window.__UX_WEBAPP="0929eb5c6242";
   if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).catch(function(){});   /* same file as the original's */
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 })();
