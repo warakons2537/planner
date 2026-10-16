@@ -1867,6 +1867,8 @@ body.ux-hide-recovery #v185Recovery{display:none!important}
 .ux-menu button:hover,.ux-menu button:focus-visible{background:#eef5f4}
 .ux-menu button.attn{background:var(--ux-warn-bg);color:var(--ux-warn);font-weight:700}
 .ux-menu .ux-mh{font-size:var(--ux-fs-xs);font-weight:700;letter-spacing:.04em;color:#5d7383;padding:8px 12px 2px}
+/* V24.32: version line at the foot of the ⋯ menu */
+.ux-menu .ux-ver{border-top:1px solid var(--ux-line,#e3e9f0);margin-top:6px;padding:8px 12px 4px;font-weight:600;letter-spacing:0;color:var(--ux-ink-soft,#5d7383)}
 
 /* >>> 22-drive.css */
 /* 22-drive.css — Google Drive sync chip + window (V24.20) */
@@ -14229,7 +14231,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.31',inits:[],syncs:[]};
+var UX=window.UX={version:'24.32',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -14379,6 +14381,7 @@ function build(){
     '<button role="menuitem" data-id="'+B.search+'">⌕ ค้นหา (⌘K)</button>'+
     '<button role="menuitem" data-id="'+B.tour+'">ⓘ แนะนำการใช้</button>'+
     '<button role="menuitem" data-id="'+B.help+'">? วิธีใช้</button>'+
+    '<div class="ux-mh ux-ver" id="uxVer" role="presentation">WL Scheduler V'+UX.version+'</div>'+       /* V24.32: which version this device runs */
   '</div>';
   host.insertBefore(bar,hdr?hdr.nextSibling:first);
 
@@ -14882,6 +14885,7 @@ function fill(d){
   var line=el('p','ux-drive-st');line.appendChild(el('b',null,'สถานะ: '+(LABEL[S.status]||'—')+(S.status==='ok'&&s.last?' · ส่ง/รับล่าสุด '+time(s.last):'')+(S.status==='ok'&&s.checked?' · ตรวจล่าสุด '+time(s.checked):'')));
   if(S.note)line.appendChild(el('span',null,' · '+S.note));b.appendChild(line);
   if(s.email)b.appendChild(el('p',null,'บัญชี: '+s.email));
+  b.appendChild(el('p','ux-drive-ver','แอปเวอร์ชัน V'+UX.version));
   var acts=el('div','ux-drive-acts');
   if(!clientId()){
     b.appendChild(el('p',null,'ยังไม่ได้ใส่ Client ID ของ Google (ทำครั้งเดียว ดูขั้นตอนใน WEBAPP.md)'));
@@ -14896,6 +14900,7 @@ function fill(d){
   var info=el('details','ux-drive-info');info.appendChild(el('summary',null,'สำหรับผู้ตั้งค่า (Google Cloud)'));
   info.appendChild(el('p',null,'Authorized JavaScript origin: '+location.origin));info.appendChild(el('p',null,'Authorized redirect URI: '+redirectUri()));
   info.appendChild(el('p',null,'สิทธิ์ที่ขอ: drive.file — แอปเห็นเฉพาะไฟล์ที่แอปสร้างเอง ไม่เห็นไฟล์อื่นใน Drive'));
+  info.appendChild(el('p',null,'เวอร์ชันแอปในเครื่องนี้: V'+UX.version+(window.__UX_WEBAPP?' ('+window.__UX_WEBAPP+')':'')));
   if(clientId()&&!meta.getAttribute('content')){var rm=btn('ux-btn ux-sm','ล้าง Client ID',function(){var x=st();delete x.clientId;delete x.token;store(x);paint('setup');fill(d)});info.appendChild(rm)}
   b.appendChild(info)}
 function open(){var d=dlg('Google Drive — ซิงก์ทุกเครื่อง');fill(d);if(!d.open)d.showModal()}
@@ -18190,9 +18195,31 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 })(window.UX);
 
 </script><script id="ux-webapp">
-/* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website) */
-(function(){window.__UX_WEBAPP="f0a84e4f96dc";
-  if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).catch(function(){});   /* same file as the original's */
+/* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
+   V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
+   30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
+(function(){window.__UX_WEBAPP="e63bbda14f88";window.__UX_WEBAPP_LABEL="24.32";
+  if('serviceWorker' in navigator&&location.protocol!=='file:'){
+    navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
+      function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
+      setTimeout(ask,5000);setInterval(ask,30*60000);
+      document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')ask()});
+      window.__UX_WEBAPP_CHECK=ask;
+    }).catch(function(){});
+    navigator.serviceWorker.addEventListener('message',function(ev){var d=ev.data||{};
+      if(!d.wlVersion||d.wlVersion===window.__UX_WEBAPP||document.getElementById('uxNewVer'))return;
+      var b=document.createElement('div');b.id='uxNewVer';b.className='ux-newver no-print';b.setAttribute('role','status');
+      var t=document.createElement('span');t.textContent='มีเวอร์ชันใหม่'+(d.label?' (V'+d.label+')':'')+' บนเว็บแล้ว';b.appendChild(t);
+      var go=document.createElement('button');go.type='button';go.textContent='ใช้เวอร์ชันใหม่';
+      go.onclick=function(){try{if(typeof persist==='function')persist()}catch(e){}go.disabled=true;go.textContent='กำลังโหลด…';setTimeout(function(){location.reload()},300)};b.appendChild(go);
+      var x=document.createElement('button');x.type='button';x.className='ux-newver-x';x.textContent='ภายหลัง';x.onclick=function(){b.remove()};b.appendChild(x);
+      document.body.appendChild(b)});
+  }
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 })();
-</script></body></html>
+</script>
+<style>.ux-newver{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:2147483000;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#0a3a66;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:15px;max-width:calc(100vw - 24px)}
+.ux-newver button{font:inherit;font-weight:700;border:0;border-radius:9px;padding:6px 12px;background:#fff;color:#0a3a66;cursor:pointer}
+.ux-newver .ux-newver-x{background:transparent;color:#fff;font-weight:400;text-decoration:underline}
+body.ux-bottom .ux-newver{bottom:calc(84px + env(safe-area-inset-bottom))}</style></body></html>
