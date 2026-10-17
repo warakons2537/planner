@@ -2875,6 +2875,75 @@ body.ux-docs-on #documents.active>:not(#uxDocs){display:none!important}
   #v185Ignore::after{content:"ไม่ใช้";font-size:var(--ux-fs-sm)}
 }
 
+/* >>> 67-guide.css */
+/* 67-guide.css — step bar + empty states (V24.33) */
+.ux-guide{background:#fff;border:1px solid var(--ux-line);border-left:4px solid var(--ux-brand);border-radius:14px;padding:10px 14px;margin:0 0 12px;box-shadow:var(--ux-shadow)}
+.ux-guide-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ux-guide-lead{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ux-guide-n{font-size:var(--ux-fs-xs);font-weight:700;color:var(--ux-saffron-strong);letter-spacing:.02em}
+.ux-guide-what{color:var(--ux-ink);font-size:var(--ux-fs-md);line-height:1.45}
+.ux-guide-st{font-size:var(--ux-fs-sm);font-weight:700;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.ux-guide-st.ok{background:#e7f6ec;color:#11602f}
+.ux-guide-st.warn{background:var(--ux-saffron-soft);color:var(--ux-saffron-ink)}
+.ux-guide-st.muted{background:#eef2f6;color:var(--ux-ink-soft)}
+.ux-guide-nav{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.ux-guide-tip.on{background:var(--ux-brand-soft);border-color:var(--ux-brand)}
+.ux-guide-tips{margin:10px 0 2px;padding:10px 14px 10px 34px;background:#f6f9fc;border-radius:10px;color:var(--ux-ink);line-height:1.6}
+.ux-empty{margin-top:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:14px 16px;border:1px dashed var(--ux-brand);border-radius:12px;background:var(--ux-brand-soft)}
+.ux-empty b{font-family:var(--ux-font-head);font-size:var(--ux-fs-lg);color:var(--ux-navy)}
+.ux-empty span{color:var(--ux-ink-soft);flex:1 1 220px}
+@media (max-width:640px){                        /* phone: one slim line — the page itself comes first */
+  .ux-guide{padding:6px 8px;margin-bottom:8px}
+  .ux-guide-what,.ux-guide-tip,.ux-guide-prev,.ux-guide-tips{display:none!important}
+  .ux-guide-lead{flex:0 0 auto}
+  .ux-guide-st{white-space:normal;flex:1 1 140px;font-size:var(--ux-fs-xs)}
+  .ux-guide-nav{margin-left:0}
+  .ux-guide-next{min-height:34px;padding:0 10px}
+  body.ux-page-timetable #uxGuide,body.ux-page-timetable.ux-ttn #timetable.active>#uxGuide{display:none!important}
+}
+@media print{.ux-guide,.ux-empty{display:none!important}}
+
+/* >>> 68-start.css */
+/* 68-start.css — "เริ่มแผนใหม่" window, start card, "+ เพิ่มรายวิชา" window (V24.33) */
+.ux-start{width:min(860px,calc(100vw - 24px))}
+.ux-start-steps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.ux-start-tab{font:inherit;font-weight:700;border:1px solid var(--ux-line);background:#fff;color:var(--ux-ink-soft);border-radius:999px;padding:6px 14px;cursor:pointer}
+.ux-start-tab.on{background:var(--ux-brand);border-color:var(--ux-brand);color:#fff}
+.ux-start-ta{width:100%;box-sizing:border-box;font:inherit;font-size:var(--ux-fs-md);border:1px solid var(--ux-line);border-radius:10px;padding:10px 12px;line-height:1.6}
+.ux-start-box{border:1px solid var(--ux-line);border-radius:12px;padding:10px 12px;margin:8px 0;display:flex;flex-direction:column;gap:8px}
+.ux-start-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.ux-start-row select{font:inherit;min-height:36px;border:1px solid var(--ux-line);border-radius:9px;padding:0 8px}
+.ux-start-cur{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;max-height:46vh;overflow:auto}
+.ux-start-g{display:flex;flex-direction:column;gap:3px}
+.ux-start-g>b{color:var(--ux-navy)}
+.ux-start-it{display:flex;gap:6px;align-items:flex-start;font-size:var(--ux-fs-sm);cursor:pointer}
+.ux-start-it.has{color:var(--ux-ink-soft)}
+.ux-start-bad{margin:0;padding-left:18px;color:var(--ux-bad);font-size:var(--ux-fs-sm)}
+.ux-start-big{font-family:var(--ux-font-head);font-size:var(--ux-fs-xl,22px);color:var(--ux-navy);margin:6px 0}
+.ux-start-card{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 14px;padding:16px 18px;border-radius:14px;background:linear-gradient(90deg,var(--ux-brand-soft),#fff);border:1px solid var(--ux-brand)}
+.ux-start-card b{font-family:var(--ux-font-head);font-size:var(--ux-fs-lg);color:var(--ux-navy)}
+.ux-start-card span{flex:1 1 320px;color:var(--ux-ink)}
+#uxAddCourse{width:min(680px,calc(100vw - 24px))}
+#uxAddCourse .ux-ts-num input,#uxAddCourse .ux-ts-num select{font:inherit;min-height:38px;border:1px solid var(--ux-line);border-radius:9px;padding:0 10px}
+#uxAddCourse .ux-ts-num input[data-k=ac-subject]{min-width:16em}
+#uxAddCourse .ux-ts-num input[type=number]{width:6em}
+
+/* >>> 69-simple.css */
+/* 69-simple.css — "เพิ่มเติม ▾" pop-up, the original's buttons out of the pages, recovery notice on the overview only (V24.33) */
+.ux-more{position:relative;display:inline-block}
+.ux-more-pop{position:absolute;z-index:60;top:calc(100% + 6px);left:0;min-width:240px;background:#fff;border:1px solid var(--ux-line);border-radius:12px;box-shadow:var(--ux-shadow-pop);padding:6px;display:flex;flex-direction:column;gap:4px}
+.ux-more-pop[hidden]{display:none}
+.ux-more-pop .ux-btn{width:100%;justify-content:flex-start;text-align:left;border-color:transparent}
+.ux-more-pop .ux-btn:hover{background:var(--ux-brand-soft)}
+.ux-legacy-btn{display:none!important}
+body.ux-shell:not(.ux-page-overview) #v185Recovery{display:none!important}
+@media (max-width:640px){#uxTTMoreWrap{display:none!important}}
+body.ux-recovery-same #v185Recovery{display:none!important}
+/* the original adds .show only when it found saved work that differs; "ใช้ข้อมูลในไฟล์นี้" removes it — our older rule showed it always */
+#v185Recovery:not(.show){display:none!important}
+body.ux-ttn #timetable.active>#uxGuide,body.ux-stf-on #staff.active>#uxGuide,body.ux-docs-on #documents.active>#uxGuide{display:block!important}
+#uxMenu [hidden]{display:none!important}
+
 /* >>> 70-look.css */
 /* 70-look.css — V24.21 look: the school's colours (logo blue + saffron), embedded Thai type, quieter chrome.
    Loaded last so it settles the look without touching layout rules elsewhere. Colours come from 00-tokens.css. */
@@ -2996,6 +3065,53 @@ html,body{overflow-x:clip}
 .ux-plan-manage:hover{background:var(--ux-brand-soft)}
 .ux-plan-manage:focus-visible{box-shadow:var(--ux-focus)}
 #uxHeadPlan .ux-plan-manage{margin:0 0 0 4px;align-self:center;white-space:nowrap}
+
+/* >>> 70-tabs.css */
+/* 70-tabs.css — iPhone floating tab bar + bottom sheets (V24.34) */
+#uxTabs{display:none}
+/* the step dock gives way — the bar itself stays (it holds the ⋯ menu, which is position:fixed) but takes no room */
+body.ux-tabs-on #uxBar{height:0!important;min-height:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;overflow:visible!important}
+body.ux-tabs-on #uxSteps,body.ux-tabs-on #uxBar::before,body.ux-tabs-on #uxBar::after{display:none!important}
+body.ux-tabs-on{padding-bottom:calc(var(--ux-tabs-h,64px) + 22px + env(safe-area-inset-bottom))!important}
+body.ux-tabs-on #uxTabs:not([hidden]){display:flex;position:fixed;z-index:70;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));
+  align-items:stretch;justify-content:space-around;gap:2px;padding:6px 6px;border-radius:30px;
+  background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);
+  border:1px solid rgba(20,36,58,.08);box-shadow:0 10px 30px rgba(10,30,60,.18),0 1px 0 rgba(255,255,255,.7) inset}
+.ux-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;position:relative;
+  border:0;background:transparent;color:var(--ux-ink-soft);font:inherit;font-size:12px;font-weight:600;border-radius:22px;padding:5px 2px;min-height:52px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+.ux-tab .ux-tab-i{display:flex;align-items:center;justify-content:center;width:44px;height:30px;border-radius:15px;transition:background .15s}
+.ux-tab.on{color:var(--ux-brand)}
+.ux-tab.on .ux-tab-i{background:var(--ux-brand-soft)}
+.ux-tab-l{line-height:1.1;white-space:nowrap}
+.ux-tab:focus-visible{outline:none;box-shadow:var(--ux-focus)}
+.ux-tab-gen .ux-tab-i{width:48px;height:48px;margin-top:-18px;border-radius:50%;background:var(--ux-brand);color:#fff;box-shadow:0 6px 16px rgba(10,90,156,.35);border:3px solid #fff}
+.ux-tab-gen{color:var(--ux-brand)}
+.ux-tab-dot{display:none;position:absolute;top:4px;left:calc(50% + 10px);width:9px;height:9px;border-radius:50%;background:var(--ux-saffron-strong);border:2px solid #fff}
+.ux-tab.dot .ux-tab-dot{display:block}
+@media (max-width:360px){.ux-tab{font-size:11px}.ux-tab .ux-tab-i{width:38px}}
+/* toasts, the "new version" bar and the version-compare bar stay above the tab bar */
+body.ux-tabs-on .ux-toast{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-area-inset-bottom))!important}
+body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-area-inset-bottom))!important}
+/* bottom sheet */
+.ux-sheet{margin:auto 0 0;width:100%;max-width:100%;max-height:82vh;border:0;border-radius:22px 22px 0 0;padding:6px 14px calc(16px + env(safe-area-inset-bottom));
+  background:#fff;color:var(--ux-ink);box-shadow:0 -10px 40px rgba(10,30,60,.25);overflow:auto}
+.ux-sheet::backdrop{background:rgba(10,25,40,.35)}
+.ux-sheet-grip{width:40px;height:5px;border-radius:3px;background:#d5dde6;margin:4px auto 8px}
+.ux-sheet-t{margin:0 4px 6px;font-family:var(--ux-font-head);font-size:20px;color:var(--ux-navy)}
+.ux-sheet-p{margin:0 4px 8px;color:var(--ux-ink-soft);font-size:var(--ux-fs-sm)}
+.ux-sheet-b{display:flex;flex-direction:column;gap:2px}
+.ux-sheet-it{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;font:inherit;color:inherit;padding:10px 8px;border-radius:14px;min-height:54px;cursor:pointer}
+.ux-sheet-it:active,.ux-sheet-it.on{background:var(--ux-brand-soft)}
+.ux-sheet-it.primary .ux-sheet-ic{background:var(--ux-brand);color:#fff}
+.ux-sheet-ic{flex:0 0 38px;height:38px;border-radius:12px;background:#eef3f8;color:var(--ux-navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px}
+.ux-sheet-tx{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+.ux-sheet-tx b{font-size:var(--ux-fs-md)}
+.ux-sheet-tx small{color:var(--ux-ink-soft);font-size:var(--ux-fs-xs);line-height:1.35}
+.ux-sheet-dot{flex:0 0 auto;min-width:22px;padding:0 6px;height:22px;border-radius:11px;background:var(--ux-saffron-soft);color:var(--ux-saffron-ink);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ux-sheet-sep{height:1px;background:var(--ux-line);margin:6px 4px}
+.ux-sheet-ver{margin:8px 4px 0;color:var(--ux-ink-soft);font-size:12px;text-align:center}
+@media print{#uxTabs,.ux-sheet{display:none!important}}
 
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0a5a9c"></head>
 <body class=""><noscript id="ux-noscript"><style>body>*:not(noscript){display:none!important}</style><div style="max-width:560px;margin:40px auto;padding:24px;font:17px/1.6 -apple-system,Sukhumvit Set,Tahoma,sans-serif;color:#152a3c"><h1 style="font-size:22px;margin:0 0 12px">WL Scheduler ต้องเปิดในเบราว์เซอร์</h1><p>ไฟล์นี้เป็นโปรแกรม ตัวดูไฟล์ (แอปไฟล์ของ iPhone/iPad, LINE, Messenger, อีเมล) แสดงได้เพียงภาพนิ่งของหน้าจอ จึงกดใช้งานไม่ได้ และไม่บันทึกอะไร</p><p style="margin:16px 0 6px"><b>วิธีเปิด</b></p><ul style="margin:0;padding-left:22px"><li><b>Mac / คอมพิวเตอร์:</b> ดับเบิลคลิกไฟล์ (Safari หรือ Chrome)</li><li><b>iPad / iPhone:</b> ใช้ WL Scheduler แบบเว็บแอปที่ติดตั้งบนหน้าจอโฮม (ดู WEBAPP.md) แล้วนำเข้าไฟล์สำรอง .json หรือเปิดไฟล์ในแอปที่มีเบราว์เซอร์ในตัว</li></ul></div></noscript><header><div><div class="eyebrow">TEACHING PLANNER V12.4 · DOCUMENT WORKSPACE</div><h1>ระบบวางแผนรายวิชาและอัตรากำลังครู</h1><p>จัดสรรวิชา · จัดการเรียนรวม · ตรวจสอบภาระงาน · เปรียบเทียบแผน</p></div><div class="header-actions"><button class="btn dark" disabled="" id="undoBtn" title="ย้อนกลับการแก้ไขล่าสุด (Ctrl+Z เมื่อไม่ได้พิมพ์ข้อความ)">↶ ย้อนกลับ</button><button class="btn dark" disabled="" id="redoBtn" title="ทำซ้ำการแก้ไขที่ย้อนกลับไป (Ctrl+Y)">↷ ทำซ้ำ</button><button class="btn dark" id="v11HelpQuick" title="เปิดคำแนะนำการใช้งานสำหรับผู้ใช้ใหม่" type="button">? วิธีใช้</button><span class="undo-info" id="undoInfo">ย้อนกลับได้ 100 ขั้นในครั้งที่เปิดใช้งาน</span><button class="btn dark" id="exportHtml" title="บันทึกข้อมูลลงในโปรแกรม HTML เพื่อเปิดต่อได้แม้เปลี่ยนเครื่อง">💾 บันทึกแผนพร้อมโปรแกรม .html</button><button class="btn dark" id="connectFile" title="เลือกไฟล์ JSON ที่ให้โปรแกรมเขียนทุกครั้งเมื่อแก้ไข (รองรับใน Chrome / Edge บางสภาพแวดล้อม)">เชื่อมไฟล์บันทึกอัตโนมัติ</button><button class="btn dark" id="exportJson">สำรองข้อมูล .json</button><button class="btn dark" id="exportCsv">ส่งออก Excel (.csv)</button><button class="btn dark" id="importBtn">นำเข้าข้อมูล</button><input accept=".json,application/json" hidden="" id="importFile" type="file"><details class="v11-save-details no-print" id="v11SaveDetails"><summary>บันทึก / นำเข้า ▾</summary><div class="v11-save-buttons" id="v11SaveButtons"></div></details></div></header>
@@ -10762,6 +10878,7 @@ var ASPCore = (() => {
     compact: () => compact,
     coverConfig: () => coverConfig,
     crc32: () => crc32,
+    curriculumRows: () => curriculumRows,
     decide: () => decide,
     defaultTimes: () => defaultTimes,
     diffProjects: () => diffProjects,
@@ -10800,7 +10917,9 @@ var ASPCore = (() => {
     optimizeTimetable: () => optimizeTimetable,
     para: () => para,
     parseCommands: () => parseCommands,
+    parseCourseLines: () => parseCourseLines,
     parseCurriculum: () => parseCurriculum,
+    parseTeacherLines: () => parseTeacherLines,
     periodIndex: () => periodIndex,
     placeRemaining: () => placeRemaining,
     planCommands: () => planCommands,
@@ -12119,7 +12238,16 @@ var ASPCore = (() => {
   function buildChecklist(f) {
     const items = [];
     const badges = {};
-    if (!f.grades) items.push({ id: "grades", state: "todo", title: "ยังไม่มีชั้นเรียน", detail: "เพิ่มชั้นเรียนและรายวิชาก่อน", action: { label: "ไปที่รายวิชา", go: "courses" } });
+    const noTeachers = f.teachers === 0, noRows = f.grades > 0 && f.rows === 0;
+    if (noTeachers) items.push({ id: "staff", state: "todo", title: "ยังไม่มีรายชื่อครู", detail: "เริ่มจากใส่รายชื่อครูของโรงเรียน (วางทีละหลายคนได้)", action: { label: "เพิ่มครู", go: "staff" } });
+    if (noRows) items.push({
+      id: "grades",
+      state: noTeachers ? "waiting" : "todo",
+      title: "ยังไม่มีรายวิชา",
+      detail: "สร้างจากหลักสูตรของโรงเรียน หรือเพิ่มทีละวิชา",
+      action: { label: "เพิ่มรายวิชา", go: "courses" }
+    });
+    else if (!f.grades) items.push({ id: "grades", state: "todo", title: "ยังไม่มีชั้นเรียน", detail: "เพิ่มชั้นเรียนและรายวิชาก่อน", action: { label: "ไปที่รายวิชา", go: "courses" } });
     else if (f.gradesOff.length) items.push({
       id: "grades",
       state: "todo",
@@ -12129,7 +12257,8 @@ var ASPCore = (() => {
     });
     else items.push({ id: "grades", state: "done", title: "ชั่วโมงเรียนครบทุกชั้น", detail: `${n(f.grades)} ชั้น ตรงเป้าทุกชั้น` });
     const noTeacher = f.unassigned.length, inactiveRows = f.inactive.reduce((s, x) => s + x.rows, 0);
-    if (noTeacher || inactiveRows) {
+    if (noRows) items.push({ id: "teachers", state: "waiting", title: "เลือกครูให้แต่ละวิชา", detail: "ทำหลังจากเพิ่มรายวิชา" });
+    else if (noTeacher || inactiveRows) {
       const parts = [noTeacher ? `ยังไม่มีครู ${n(noTeacher)} วิชา` : "", inactiveRows ? `ครูไม่พร้อมสอน ${f.inactive.map((x) => x.name).join(", ")}` : ""].filter(Boolean);
       items.push({
         id: "teachers",
@@ -12139,7 +12268,8 @@ var ASPCore = (() => {
         action: { label: "เลือกครู", go: "courses" }
       });
     } else items.push({ id: "teachers", state: "done", title: "ทุกวิชามีครูสอน", detail: `${n(f.rows)} รายวิชา` });
-    if (noTeacher + inactiveRows) badges.courses = { text: n(noTeacher + inactiveRows), tone: "warn" };
+    if (noRows) badges.courses = { text: "0", tone: "warn" };
+    else if (noTeacher + inactiveRows) badges.courses = { text: n(noTeacher + inactiveRows), tone: "warn" };
     else if (!f.gradesOff.length && f.grades) badges.courses = { text: "✓", tone: "ok" };
     else if (f.gradesOff.length) badges.courses = { text: n(f.gradesOff.length), tone: "warn" };
     if (f.overLimit.length) {
@@ -12152,6 +12282,9 @@ var ASPCore = (() => {
         action: { label: "แก้ภาระครู", go: "courses" }
       });
       badges.staff = { text: n(f.overLimit.length), tone: "warn" };
+    } else if (noTeachers || noRows) {
+      items.push({ id: "load", state: "waiting", title: "ตรวจภาระสอนของครู", detail: "ทำหลังจากมีครูและรายวิชา" });
+      badges.staff = noTeachers ? { text: "0", tone: "warn" } : { text: "✓", tone: "ok" };
     } else {
       items.push({ id: "load", state: "done", title: "ไม่มีครูสอนเกินเพดาน", detail: "ภาระสอนอยู่ในเกณฑ์ทุกคน" });
       badges.staff = { text: "✓", tone: "ok" };
@@ -12159,7 +12292,7 @@ var ASPCore = (() => {
     if (f.jointIssues) {
       items.push({ id: "joint", state: "todo", title: `กลุ่มเรียนรวมมีเรื่องต้องแก้ ${n(f.jointIssues)} รายการ`, detail: "ชั่วโมงหรือสมาชิกของกลุ่มยังไม่ถูกต้อง", action: { label: "ดูกลุ่มเรียนรวม", go: "joint" } });
       badges.joint = { text: n(f.jointIssues), tone: "warn" };
-    } else badges.joint = { text: "✓", tone: "ok" };
+    } else badges.joint = f.jointGroups === 0 ? { text: "–", tone: "muted" } : { text: "✓", tone: "ok" };
     const ready = items.every((i) => i.state === "done");
     const left = Math.max(0, f.lessons - f.placed);
     if (!f.lessons) items.push({ id: "timetable", state: "waiting", title: "ตารางสอน", detail: "ยังไม่มีคาบให้จัด — เพิ่มรายวิชาก่อน" });
@@ -12186,11 +12319,11 @@ var ASPCore = (() => {
       state: "advice",
       title: `ครูผิดนโยบาย ${n(f.policyViolations)} จุด (ไม่บังคับ)`,
       detail: "เช่น ไม่มีคาบว่างในวันนั้น หรือสอนติดกันเกินกำหนด — ให้โปรแกรมลองปรับให้",
-      action: { label: "ปรับตามนโยบาย", command: "optimize" }
+      action: { label: "ปรับให้ดีขึ้น", command: "optimize" }
     });
     const remaining = items.filter((i) => i.state === "todo").length;
     items.push(remaining ? { id: "documents", state: "waiting", title: "พิมพ์ตารางสอนและเอกสาร", detail: "พิมพ์ได้ตลอด แต่ควรทำข้อด้านบนให้เสร็จก่อน", action: { label: "ดูเอกสาร", go: "documents" } } : { id: "documents", state: "todo", title: "พิมพ์ตารางสอนและเอกสาร", detail: "ข้อมูลพร้อมแล้ว", action: { label: "ไปที่เอกสาร", go: "documents" } });
-    const headline = remaining ? `เหลืออีก ${n(remaining)} เรื่องก่อนพิมพ์เอกสาร` : "แผนนี้พร้อมพิมพ์เอกสารแล้ว";
+    const headline = noTeachers && (noRows || !f.rows) ? "เริ่มแผนใหม่: ใส่รายชื่อครู แล้วเพิ่มรายวิชา" : remaining ? `เหลืออีก ${n(remaining)} เรื่องก่อนพิมพ์เอกสาร` : "แผนนี้พร้อมพิมพ์เอกสารแล้ว";
     return { items, remaining, headline, badges };
   }
 
@@ -14221,8 +14354,61 @@ var ASPCore = (() => {
     return { ...input, setup };
   }
 
+  // core/src/starter.ts
+  function parseTeacherLines(text, existing = []) {
+    const seen = new Set(existing.map((x) => norm2(x))), names = [], skipped = [];
+    for (const raw of String(text ?? "").split(/\r?\n/)) {
+      const name = raw.replace(/^\s*(?:\d+\s*[.)]|[-•*·])\s*/, "").split("	")[0].replace(/\s+/g, " ").trim();
+      if (!name) continue;
+      if (seen.has(norm2(name))) {
+        skipped.push(name);
+        continue;
+      }
+      seen.add(norm2(name));
+      names.push(name);
+    }
+    return { names, skipped };
+  }
+  var norm2 = (s) => String(s).replace(/\s+/g, "").replace(/^ครู/, "").toLowerCase();
+  function parseCourseLines(text, grades) {
+    const rows = [], bad = [];
+    for (const raw of String(text ?? "").split(/\r?\n/)) {
+      const line = raw.replace(/[\t,，;]+/g, " ").replace(/\s+/g, " ").trim();
+      if (!line) continue;
+      const m = line.match(/^((?:ป|ม|อ)\.?\s*\d)(?:\s*[-–]\s*(\d))?\s+(.+?)\s+(\d+(?:\.\d+)?)\s*(?:ชม\.?|ชั่วโมง|คาบ)?(?:\s*\/\s*สัปดาห์)?$/);
+      if (!m) {
+        bad.push({ line: raw.trim(), why: 'อ่านไม่ได้ — ใช้รูปแบบ "ป.1 ภาษาไทย 5"' });
+        continue;
+      }
+      const level = m[1].replace(/\s+/g, "").replace(/^(ป|ม|อ)(\d)$/, "$1.$2"), from = Number(level.slice(-1)), to = m[2] ? Number(m[2]) : from;
+      const prefix = level.slice(0, 2), hours = Number(m[4]), subject = m[3].trim();
+      if (!(hours > 0 && hours <= 40)) {
+        bad.push({ line: raw.trim(), why: "ชั่วโมงต่อสัปดาห์ต้องอยู่ระหว่าง 0.5–40" });
+        continue;
+      }
+      const gs = [];
+      for (let i = Math.min(from, to); i <= Math.max(from, to); i++) if (grades.includes(prefix + i)) gs.push(prefix + i);
+      if (!gs.length) {
+        bad.push({ line: raw.trim(), why: `แผนนี้ไม่มีชั้น ${level}${m[2] ? "–" + m[2] : ""}` });
+        continue;
+      }
+      for (const g of gs) rows.push({ grade: g, subject, hours });
+    }
+    return { rows, bad };
+  }
+  function curriculumRows(entries, semester, grades, existing) {
+    const has = new Set(existing.map((r) => r.grade + "|" + r.subject.replace(/\s+/g, "")));
+    return entries.filter((e) => e.semester === semester && grades.includes(e.grade)).map((e) => ({
+      grade: e.grade,
+      subject: e.name,
+      hours: Math.round(e.hours / 20 * 10) / 10,
+      code: e.code,
+      exists: has.has(e.grade + "|" + e.name.replace(/\s+/g, ""))
+    }));
+  }
+
   // core/src/index.ts
-  var VERSION = "0.18.0";
+  var VERSION = "0.19.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -14231,7 +14417,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.32',inits:[],syncs:[]};
+var UX=window.UX={version:'24.34',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -14243,9 +14429,9 @@ UX.clickText=function(t){
 
 UX.STEPS=[
   {k:'overview',l:'ภาพรวม',i:'⌂'},
-  {k:'courses',n:1,l:'รายวิชา'},
-  {k:'joint',n:2,l:'เรียนรวม'},
-  {k:'staff',n:3,l:'ครู'},
+  {k:'staff',n:1,l:'ครู'},                 /* V24.33: teachers first — courses are matched with them */
+  {k:'courses',n:2,l:'รายวิชา'},
+  {k:'joint',n:3,l:'เรียนรวม'},
   {k:'report',n:4,l:'ตรวจแผน'},
   {k:'timetable',n:5,l:'ตารางสอน'},
   {k:'documents',n:6,l:'เอกสาร'}
@@ -14358,8 +14544,8 @@ function build(){
     '<button type="button" class="ux-ico" id="uxMore" aria-haspopup="menu" aria-expanded="false" aria-controls="uxMenu" aria-label="เมนูเพิ่มเติม" title="เมนูเพิ่มเติม">⋯</button>'+
   '</div>'+
   '<div id="uxTTActions" class="ux-subrow" hidden>'+
-    '<button type="button" class="ux-btn ux-primary" id="uxGen" title="สร้างตารางสอนอัตโนมัติ">✦ Generate ตารางสอน</button>'+
-    '<button type="button" class="ux-btn" id="uxRepair" title="จัดเฉพาะรายการที่เหลือ">↻ จัดที่เหลือ</button>'+
+    '<button type="button" class="ux-btn ux-primary" id="uxGen" title="สร้างตารางสอนอัตโนมัติ">✦ จัดตารางอัตโนมัติ</button>'+
+    '<button type="button" class="ux-btn" id="uxRepair" title="จัดเฉพาะรายการที่เหลือ">↻ ลงคาบที่เหลือ</button>'+
     '<button type="button" class="ux-btn" id="uxAssist" aria-pressed="false" title="แผงตัวช่วยและการตรวจสอบของหน้าเดิม — เงื่อนไขทั้งหมดอยู่ที่ ⚙ เงื่อนไข ในหน้าตาราง">ตัวช่วยแบบเดิม</button>'+
     '<span id="uxTTInfo" class="ux-info"></span>'+
   '</div>'+
@@ -14456,7 +14642,7 @@ function sync(){
   if(!(UX.shell&&UX.shell.on()))document.documentElement.style.setProperty('--ux-bar-h',bar.offsetHeight+'px');
 
   var g=$(B.generate),ug=$('uxGen');
-  if(g&&ug&&!(UX.gen&&UX.gen.state.busy)){ug.disabled=g.disabled;var lbl=g.disabled?'⏳ กำลังสร้าง…':'✦ Generate ตารางสอน';if(ug.textContent!==lbl)ug.textContent=lbl}
+  if(g&&ug&&!(UX.gen&&UX.gen.state.busy)){ug.disabled=g.disabled;var lbl=g.disabled?'⏳ กำลังสร้าง…':'✦ จัดตารางอัตโนมัติ';if(ug.textContent!==lbl)ug.textContent=lbl}
 
   ['Undo','Redo'].forEach(function(n){var o=$(n==='Undo'?B.undo:B.redo),b=$('ux'+n);if(o&&b)b.disabled=o.disabled});
 
@@ -14924,9 +15110,22 @@ UX.onSync(chip);
 (function(UX){'use strict';
 var $=UX.$,E=UX.ORIG.elements,L=UX.ORIG.labels,folded={};
 
+/* V24.33: the original shows the banner whenever the saved copy's TEXT differs from the open plan — which is almost always
+   (key order, a normalised field), so it showed on every page every day. Hide it when every saved copy holds the same
+   work (same plans, teachers, courses, placed lessons per plan); a real difference still shows (on the overview only). */
+function workSig(o){try{return JSON.stringify((o.scenarios||[]).map(function(s){var d=s.data||{};return [s.name,(d.teachers||[]).length,(d.rows||[]).length,
+  Object.keys((d.timetable||{}).placements||{}).length,(d.jointGroups||[]).length]}))}catch(e){return ''}}
+function sameWork(){
+  try{var cur=workSig(JSON.parse(snapshot())),K=typeof KEY!=='undefined'?KEY:'',out=[];if(!cur||!K)return false;
+    for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k!==K&&k.indexOf(K+'__v185__')!==0)continue;
+      var v=JSON.parse(localStorage.getItem(k)||'null');if(v&&v.payload)v=JSON.parse(v.payload);if(v&&v.scenarios)out.push(workSig(v))}
+    return out.length>0&&out.every(function(x){return x===cur})}catch(e){return false}}
+var sameAt=0,same=false;
 /* recovery banner: add a close button, remember for this browser tab */
 function recovery(){
   var r=$(E.recoveryBanner);if(!r)return;
+  if(r.classList.contains('show')&&Date.now()-sameAt>5000){sameAt=Date.now();same=sameWork()}
+  document.body.classList.toggle('ux-recovery-same',same);
   try{if(sessionStorage.getItem('ux_recovery_closed')==='1')document.body.classList.add('ux-hide-recovery')}catch(e){}
   if(!r.querySelector('.ux-x')){
     var x=document.createElement('button');x.type='button';x.className='ux-x';x.setAttribute('aria-label','ปิดแถบนี้');x.textContent='✕';
@@ -15036,7 +15235,7 @@ UX.onSync(function(){stepKeys();names();formNames()});
 })(window.UX);
 
 /* >>> 45-optimize.js */
-/* 45-optimize.js — "⚖ ปรับตามนโยบาย": runs the new core optimizer (ASPCore.optimizeTimetable) on the current
+/* 45-optimize.js — "⚖ ปรับให้ดีขึ้น": runs the new core optimizer (ASPCore.optimizeTimetable) on the current
    timetable WITHOUT freezing the page (Web Worker built from the embedded core; falls back to the page with a
    smaller step budget when workers are unavailable), shows before/after on the app's own scores, and applies the
    result through the original act() so Undo / autosave / re-render behave exactly as for any other edit.
@@ -15163,12 +15362,12 @@ function build(){
   var row=$('uxTTActions');if(!row||$('uxOpt'))return;
   var b=document.createElement('button');b.type='button';b.className='ux-btn';b.id='uxOpt';
   b.title='ย้ายคาบให้ครูมีคาบว่าง ไม่สอนติดกันเกิน และไม่เกินคาบต่อวัน (ทำงานเบื้องหลัง ย้อนกลับได้)';
-  b.textContent='⚖ ปรับตามนโยบาย';b.onclick=start;
+  b.textContent='⚖ ปรับให้ดีขึ้น';b.title='ย้ายคาบให้ตรงเงื่อนไขครู การเดิน และเผื่อครูสอนแทนมากขึ้น — ดูก่อน-หลังแล้วค่อยใช้ (ย้อนกลับได้)';b.onclick=start;
   var rep=$('uxRepair');row.insertBefore(b,rep?rep.nextSibling:null);
   /* after Generate: say how many policy limits are still broken and offer the fix */
   var gen=$('uxGen');
   if(gen)gen.addEventListener('click',function(){if(UX.gen)return;setTimeout(function(){var v=violations();
-    if(v>0)UX.toast('สร้างตารางแล้ว แต่ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับตามนโยบาย',start)},1600)});
+    if(v>0)UX.toast('สร้างตารางแล้ว แต่ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับให้ดีขึ้น',start)},1600)});
 }
 UX.optimize={start:start,input:input,violations:violations};
 UX.onInit(build);
@@ -15473,7 +15672,7 @@ UX.onSync(sync);
 })(window.UX);
 
 /* >>> 47-generate.js */
-/* 47-generate.js — "✦ Generate ตารางสอน" without freezing the page.
+/* 47-generate.js — "✦ จัดตารางอัตโนมัติ" without freezing the page.
    The bar's Generate button runs the new core generator (ASPCore.generateTimetable: build from locked lessons →
    repair → optimize on the app's own policy + building-travel scores) in a Web Worker, so the screen stays usable,
    then applies the result through the original act() (one Undo step, autosave, re-render as usual).
@@ -15517,7 +15716,7 @@ function makeWorker(){
 }
 
 function label(t){var b=$('uxGen');if(b){b.textContent=t}}
-function busy(on){S.busy=on;var b=$('uxGen');if(!b)return;b.disabled=on;b.setAttribute('aria-busy',String(on));if(!on)label('✦ Generate ตารางสอน')}
+function busy(on){S.busy=on;var b=$('uxGen');if(!b)return;b.disabled=on;b.setAttribute('aria-busy',String(on));if(!on)label('✦ จัดตารางอัตโนมัติ')}
 
 function start(){
   if(S.busy)return;
@@ -15558,7 +15757,7 @@ function finish(r,startSig){
   ttFlash(line,!r.ok);
   if(UX.gen.followUp)try{UX.gen.followUp('generate')}catch(e){}            /* V24.27: เผื่อครูสอนแทน / ครูยืดหยุ่น (64-ttsetup.js) */
   if(!r.ok)UX.toast('สร้างตารางแล้ว แต่ลงไม่ได้ '+(r.total-r.placed)+' รายการ'+(rp.held.length?' ('+rp.held.length+' รายการเพราะนโยบายบังคับ)':''),'ทำไมลงไม่ได้',why);
-  else if(v>0)UX.toast('สร้างตารางแล้ว '+r.placed+'/'+r.total+' · ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับตามนโยบายต่อ',UX.optimize.start);
+  else if(v>0)UX.toast('สร้างตารางแล้ว '+r.placed+'/'+r.total+' · ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับให้ดีขึ้น',UX.optimize.start);
   else UX.toast('สร้างตารางแล้ว '+r.placed+'/'+r.total+' ไม่ชนกันและตรงนโยบายครู','↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)});
 }
 
@@ -15573,7 +15772,7 @@ function why(){
     var ul=document.createElement('ul');ul.id='uxWhyList';ul.className='ux-why';d.appendChild(ul);
     var rx=document.createElement('div');rx.id='uxWhyRelax';rx.className='ux-why-relax';d.appendChild(rx);
     var a=document.createElement('div');a.className='ux-opt-actions';
-    var rp=document.createElement('button');rp.type='button';rp.className='ux-btn';rp.id='uxWhyRepair';rp.textContent='↻ จัดที่เหลือ';rp.onclick=function(){d.close();repair()};a.appendChild(rp);
+    var rp=document.createElement('button');rp.type='button';rp.className='ux-btn';rp.id='uxWhyRepair';rp.textContent='↻ ลงคาบที่เหลือ';rp.onclick=function(){d.close();repair()};a.appendChild(rp);
     var c=document.createElement('button');c.type='button';c.className='ux-btn ux-primary';c.textContent='ปิด';c.onclick=function(){d.close()};a.appendChild(c);d.appendChild(a);
     document.body.appendChild(d)}
   var x=explain(),byId={};x.input.events.forEach(function(e){byId[e.id]=e});
@@ -15619,9 +15818,9 @@ function build(){
   var rep=$('uxRepair');if(rep&&!rep.dataset.core){rep.dataset.core='1';rep.onclick=repair;rep.title='ลงเฉพาะรายการที่ยังไม่ได้ลง — คาบที่ลงแล้วไม่ย้าย (ย้อนกลับได้)'}
   var menu=$('uxMenu');
   if(menu&&!menu.querySelector('[data-legacy-repair]')){var lr=document.createElement('button');lr.setAttribute('role','menuitem');lr.dataset.id=UX.ORIG.buttons.repair;lr.dataset.legacyRepair='1';
-    lr.textContent='↻ จัดที่เหลือแบบเดิม (อาจย้ายคาบอื่น)';menu.insertBefore(lr,menu.querySelector('button'))}
+    lr.textContent='↻ ลงคาบที่เหลือแบบเดิม (อาจย้ายคาบอื่น)';menu.insertBefore(lr,menu.querySelector('button'))}
   if(menu&&!menu.querySelector('[data-legacy-gen]')){var b=document.createElement('button');b.setAttribute('role','menuitem');b.dataset.id=UX.ORIG.buttons.generate;b.dataset.legacyGen='1';
-    b.textContent='✦ Generate แบบเดิม (หน้าจอค้างระหว่างสร้าง)';var first=menu.querySelector('button');menu.insertBefore(b,first)}
+    b.textContent='✦ จัดตารางแบบเดิม (หน้าจอค้างระหว่างสร้าง)';var first=menu.querySelector('button');menu.insertBefore(b,first)}
 }
 UX.gen={start:start,state:S,why:why,repair:repair,relax:relax,POST:POST};
 UX.onInit(build);
@@ -15780,7 +15979,7 @@ function fmt(n){return String(Math.round((+n||0)*10)/10)}
 function key(){
   try{return [project.activeScenarioId,ttSourceKey(),JSON.stringify(db.timetable.placements||{}),db.timetable.signature||'',
     JSON.stringify(db.teachers.map(function(t){return [t.limit,t.status]})),JSON.stringify(db.timetable.schedulePolicy||null),
-    JSON.stringify(db.timetable.teacherBlocks||[])].join('§')}catch(e){return ''}}
+    JSON.stringify(db.timetable.teacherBlocks||[]),db.rows.length,db.teachers.length,JSON.stringify(db.jointGroups||[]).length].join('§')}catch(e){return ''}}
 function measure(){
   var m=metrics(),probs=UX.assign&&UX.assign.problems?UX.assign.problems():[],row={},tch={};
   db.rows.forEach(function(r){row[r.id]=r});db.teachers.forEach(function(t){tch[t.id]=t});
@@ -15792,6 +15991,7 @@ function measure(){
     else if(p.kind==='overLimit')f.overLimit.push({name:(tch[p.teacher]||{}).name||p.teacher,load:+(m.teacherLoads.load[p.teacher]||0),limit:+(tch[p.teacher]||{}).limit||0});
     else if(p.kind==='gradeHours')f.gradesOff.push(p.grade+' '+fmt((m.gradeSum||{})[p.grade])+'/'+fmt((db.gradeTargets||{})[p.grade])+' ชม.')});
   try{f.jointIssues=jointAudit().warns.length}catch(e){}
+  f.teachers=db.teachers.filter(function(t){return !t.team&&t.status==='active'}).length;f.jointGroups=(db.jointGroups||[]).length;   /* V24.33 */
   f.loads=db.teachers.filter(function(t){return !t.team&&t.status==='active'}).map(function(t){return {id:t.id,name:t.name,load:+(m.teacherLoads.load[t.id]||0),limit:+t.limit||0}});   /* V24.21 home dashboard */
   try{
     var d=UX.optimize.input(),c=C.checkTimetable(d,{requireComplete:false}),bad={},ev={};
@@ -15943,7 +16143,7 @@ function cmd(id,label,run,kw,hint){return {id:id,label:label,group:'คำสั
 function items(){
   var out=[
     cmd('generate','จัดตารางอัตโนมัติ',function(){UX.runAction({command:'generate'})},['generate','สร้างตาราง']),
-    cmd('optimize','ปรับตามนโยบายครู',function(){UX.runAction({command:'optimize'})},['policy','คาบว่าง']),
+    cmd('optimize','ปรับตารางให้ดีขึ้น (ตามนโยบายครู)',function(){UX.runAction({command:'optimize'})},['policy','คาบว่าง']),
     cmd('repair','จัดเฉพาะคาบที่เหลือ',function(){UX.go('timetable');UX.clickId('uxRepair')},['repair']),
     cmd('say','💬 พิมพ์สั่งงานเป็นประโยค',function(){if(UX.say)UX.say.open()},['พิมพ์','สั่ง','ประโยค','ภาษา','say']),
     cmd('undo','ย้อนกลับ',function(){UX.clickId(B.undo)},['undo'],'⌘Z'),
@@ -15955,6 +16155,8 @@ function items(){
     cmd('docs','พิมพ์ / ส่งออก Word หรือ PDF',function(){UX.go('documents')},['word','pdf','docx','print','พิมพ์','เอกสาร']),
     cmd('codes','รหัสวิชาจากหลักสูตรของโรงเรียน',function(){UX.go('courses');setTimeout(function(){if(UX.codes)UX.codes.open()},300)},['รหัส','รหัสวิชา','หลักสูตร','code','curriculum']),
     cmd('versions','ฉบับตารางสอน: จัดหลายแบบในแผนเดียวแล้วเปรียบเทียบ',function(){if(UX.ttver){if(UX.cur()==='timetable'&&UX.tt.state.tab==='versions')return;UX.ttver.toggle()}else UX.go('timetable')},['ฉบับ','ฉบับตาราง','เปรียบเทียบตาราง','หลายแบบ','version','versions','compare']),
+    cmd('start','เริ่มแผนใหม่: วางรายชื่อครู · สร้างรายวิชาจากหลักสูตร',function(){if(UX.starter)UX.starter.open()},['เริ่ม','ตัวช่วย','วางรายชื่อ','เพิ่มครูหลายคน','สร้างรายวิชา','start','wizard']),
+    cmd('addcourse','เพิ่มรายวิชา (หลายชั้นพร้อมกันได้)',function(){UX.go('courses');setTimeout(function(){if(UX.addCourse)UX.addCourse.open()},300)},['เพิ่มวิชา','รายวิชาใหม่','add course']),
     cmd('plans','จัดการแผน: เลื่อนขึ้น-ลง เปลี่ยนชื่อ ลบ เลือกเสนอ',function(){UX.go('scenarios')},['plan','plans','แผน','เลื่อนแผน','ลบแผน','ลำดับแผน','scenarios']),
     cmd('compare','เปรียบเทียบทุกแผน',function(){UX.go('compare')},['compare']),
     cmd('recovery','จุดกู้คืน / ประวัติ',function(){UX.clickId(B.recovery)},['history','restore']),
@@ -16244,7 +16446,7 @@ function doApply(){
   apply(chosen);
   var tt=chosen.some(function(c){return ['policy','double','block','room','dayRule','hours','heavy'].indexOf(c.kind)>-1});
   $('uxSay').close();S.plan=null;$('uxSayOut').textContent='';$('uxSayText').value='';S.text='';count();
-  UX.toast('ทำแล้ว '+chosen.length+' รายการ'+(tt?' — กด ⚖ ปรับตามนโยบาย เพื่อจัดตารางตามที่เปลี่ยน':''),'↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)});
+  UX.toast('ทำแล้ว '+chosen.length+' รายการ'+(tt?' — กด ⚖ ปรับให้ดีขึ้น เพื่อจัดตารางตามที่เปลี่ยน':''),'↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)});
   UX.live('ทำแล้ว '+chosen.length+' รายการ')}
 function open(text){
   var d=dialog();if(text!=null){$('uxSayText').value=text;S.text=text}
@@ -16655,7 +16857,7 @@ function dkey(e){return e.kind+':'+e.origin}
 function doubles(){var p=db.timetable.schedulePolicy;return (p&&p.doublePeriods)||{}}
 function setDouble(e,on){
   act(function(){var t=db.timetable,p=t.schedulePolicy||(t.schedulePolicy={}),d=Object.assign({},p.doublePeriods||{});if(on)d[dkey(e)]=true;else delete d[dkey(e)];p.doublePeriods=d});
-  UX.toast(on?subj(e)+' เป็นคาบคู่แล้ว — กด ⚖ ปรับตามนโยบาย (หรือ ✦ Generate) เพื่อจัดให้ติดกัน':'ยกเลิกคาบคู่ '+subj(e)+' แล้ว',on&&UX.optimize?'⚖ จัดเลย':null,on&&UX.optimize?function(){UX.optimize.start()}:null);
+  UX.toast(on?subj(e)+' เป็นคาบคู่แล้ว — กด ⚖ ปรับให้ดีขึ้น (หรือ ✦ จัดตารางอัตโนมัติ) เพื่อจัดให้ติดกัน':'ยกเลิกคาบคู่ '+subj(e)+' แล้ว',on&&UX.optimize?'⚖ จัดเลย':null,on&&UX.optimize?function(){UX.optimize.start()}:null);
   S.sig='';render()}
 function pairState(d){var r={};try{C.doubleReport(d.events,d.placements,db.timetable.periods,C.policyConfig(d.setup.schedulePolicy,db.timetable.periods)).forEach(function(x){r[x.key]=x})}catch(err){}return r}
 function select(id){
@@ -16713,7 +16915,7 @@ function render(){
       'กลับไปที่ตารางสอน');vb.dataset.k='versions';vb.setAttribute('aria-pressed','true');right.appendChild(vb)}
   var vt=$('uxVersions');if(vt){vt.classList.toggle('on',S.tab==='versions');vt.setAttribute('aria-pressed',String(S.tab==='versions'))}
   if(!UX.ttsetup)right.appendChild(btn('ux-btn','ตั้งค่าตาราง',function(){setMode('legacy');setTimeout(function(){var t=document.querySelector('#timetable .tt-head');if(t)t.scrollIntoView({block:'start'})},60)},'ตั้งค่าตาราง: คาบต่อวัน, กฎวันเรียน, เวลาที่ครูไม่ว่าง (อยู่ในมุมมองเดิม)'));
-  var lg=btn('ux-btn ux-tt-legacybtn','มุมมองเดิม',function(){setMode('legacy')});right.appendChild(lg);
+  var lg=btn('ux-btn ux-tt-legacybtn ux-legacy-btn','มุมมองเดิม',function(){setMode('legacy')});right.appendChild(lg);
   bar.appendChild(right);h.appendChild(bar);
   /* V24.27: the conditions tab replaces grid + panel */
   if(S.tab==='versions'&&UX.ttver){h.appendChild(UX.ttver.node());if(focusKey){var fv=h.querySelector('[data-k="'+focusKey+'"]');if(fv)fv.focus()}return}
@@ -16883,7 +17085,7 @@ function panel(d){
   if(e.duration===1&&same>=2){var dw=el('label','ux-tt-dblsw');var dc=el('input');dc.type='checkbox';dc.checked=isD;dc.dataset.k='double';
     dc.onchange=function(){setDouble(e,dc.checked)};dw.appendChild(dc);
     var dt=el('span');dt.appendChild(el('b',null,'คาบคู่'));dt.appendChild(document.createTextNode(' — เรียน 2 คาบติดกันในวันเดียว ('+same+' ชม./สัปดาห์ = '+Math.floor(same/2)+' คู่'+(same%2?' + 1 คาบเดี่ยว':'')+')'));dw.appendChild(dt);p.appendChild(dw);
-    if(isD&&S.pairs&&S.pairs[dkey(e)]){var ps=S.pairs[dkey(e)];p.appendChild(el('p','ux-tt-meta '+(ps.pairs>=ps.pairsWanted?'ux-ok':'ux-warn'),ps.pairs>=ps.pairsWanted?'✓ ติดกันครบ '+ps.pairs+' คู่':'ติดกันแล้ว '+ps.pairs+'/'+ps.pairsWanted+' คู่ — กด ⚖ ปรับตามนโยบาย หรือลากให้ติดกัน'))}}
+    if(isD&&S.pairs&&S.pairs[dkey(e)]){var ps=S.pairs[dkey(e)];p.appendChild(el('p','ux-tt-meta '+(ps.pairs>=ps.pairsWanted?'ux-ok':'ux-warn'),ps.pairs>=ps.pairsWanted?'✓ ติดกันครบ '+ps.pairs+' คู่':'ติดกันแล้ว '+ps.pairs+'/'+ps.pairsWanted+' คู่ — กด ⚖ ปรับให้ดีขึ้น หรือลากให้ติดกัน'))}}
   if(r.best!=null){var bo=r.options.filter(function(o){return o.slot===r.best})[0],box=el('div','ux-tt-best');
     box.appendChild(el('b',null,'ช่องที่ดีที่สุด: '+where(r.best)));
     box.appendChild(el('span',null,(bo.delta<0?'คะแนนนโยบาย/การเดินตึกดีขึ้น '+Math.round(-bo.delta):'ครูว่าง ชั้นว่าง ไม่ผิดนโยบาย')));
@@ -17166,7 +17368,7 @@ function render(){
   q.oninput=function(){S.q=q.value;S.sig='';render()};bar.appendChild(q);
   var right=el('div','ux-tt-right');
   var add=btn('ux-btn ux-primary','+ เพิ่มครู',function(){S.adding=true;S.sel=null;S.sig='';render()});add.dataset.k='add';right.appendChild(add);
-  right.appendChild(btn('ux-btn','มุมมองเดิม',function(){setMode('legacy')}));
+  right.appendChild(btn('ux-btn ux-legacy-btn','มุมมองเดิม',function(){setMode('legacy')}));
   bar.appendChild(right);h.appendChild(bar);
 
   var body=el('div','ux-stf-body'),list=el('div','ux-stf-list');list.setAttribute('role','list');
@@ -17510,7 +17712,7 @@ function render(){
   var m;try{m=model()}catch(e){m={sections:[],font:'TH SarabunIT๙',size:16};S.info={n:0,pages:0};if(window.console)console.warn('docs model',e)}
   S.model=m;
   bar.appendChild(el('p','ux-docs-lead','ทุกเอกสารสร้างจากข้อมูลแผนนี้ด้วยตัวสร้างเดียว — หน้าจอ, PDF และ Word ตรงกันเสมอ · คลิกข้อความที่มีกรอบประบนกระดาษเพื่อแก้'));
-  var right=el('div','ux-tt-right');right.appendChild(btn('ux-btn','มุมมองเดิม',function(){setMode('legacy')},'มุมมองเดิม: หน้าเอกสารและการพิมพ์แบบเดิม'));
+  var right=el('div','ux-tt-right');right.appendChild(btn('ux-btn ux-legacy-btn','มุมมองเดิม',function(){setMode('legacy')},'มุมมองเดิม: หน้าเอกสารและการพิมพ์แบบเดิม'));
   bar.appendChild(right);h.appendChild(bar);
 
   var body=el('div','ux-docs-body');
@@ -17731,7 +17933,7 @@ function slotRules(){return Array.isArray(T().slotRules)?T().slotRules:[]}
 function matchCount(r){try{return ttBuild().events.filter(function(e){return C.slotRuleMatches(e,r)}).length}catch(e){return 0}}
 function secRules(b){
   var f=S.form||(S.form=newForm()),refill=function(){b.textContent='';secRules(b)};
-  b.appendChild(el('p','ux-tt-hint','กำหนดว่าวิชาไหนลงได้ "เฉพาะ" หรือ "ห้ามลง" ในวันและคาบที่เลือก · "บังคับ" = ไม่ลงนอกกฎเลย · "พยายาม" = ตัวจัดตารางเลือกให้ก่อน แต่ยอมได้ถ้าจำเป็น · ใช้กับ ✦ Generate ↻ จัดที่เหลือ ⚖ และการลากคาบ (ตัวจัดแบบเดิมใช้ได้เฉพาะกฎวันเรียนแบบเดิม)'));
+  b.appendChild(el('p','ux-tt-hint','กำหนดว่าวิชาไหนลงได้ "เฉพาะ" หรือ "ห้ามลง" ในวันและคาบที่เลือก · "บังคับ" = ไม่ลงนอกกฎเลย · "พยายาม" = ตัวจัดตารางเลือกให้ก่อน แต่ยอมได้ถ้าจำเป็น · ใช้กับ ✦ จัดตารางอัตโนมัติ ↻ ลงคาบที่เหลือ ⚖ และการลากคาบ (ตัวจัดแบบเดิมใช้ได้เฉพาะกฎวันเรียนแบบเดิม)'));
   /* rules */
   var rs=slotRules(),ul=el('ul','ux-ts-rules ux-ts-srules');
   rs.forEach(function(r,i){var li=el('li'+'');li.className=r.off?'off':'';
@@ -17776,9 +17978,9 @@ function secRules(b){
     S.form=newForm();change(function(){db.timetable.slotRules=slotRules().concat([r])});
     var d=UX.optimize.input(),out=d.events.filter(function(e){var p=d.placements[e.id];return p&&C.slotRuleMatches(e,r)&&C.slotRuleBroken(e,p.slot,d.setup.periods,r)}),
       locked=out.filter(function(e){return d.placements[e.id].locked}).map(function(e){return e.id});
-    var msg='เพิ่มกฎคาบเรียนแล้ว · ตรงกับ '+n+' รายการ'+(out.length?' · '+out.length+' รายการลงไว้นอกกฎ'+(r.strength==='hard'?' (ขึ้นเป็นจุดชน)':'')+' — กด ✦ Generate หรือ ⚖ เพื่อจัดใหม่':'');
+    var msg='เพิ่มกฎคาบเรียนแล้ว · ตรงกับ '+n+' รายการ'+(out.length?' · '+out.length+' รายการลงไว้นอกกฎ'+(r.strength==='hard'?' (ขึ้นเป็นจุดชน)':'')+' — กด ✦ จัดตารางอัตโนมัติ หรือ ⚖ เพื่อจัดใหม่':'');
     if(r.strength==='hard'&&locked.length)UX.toast(msg+' · '+locked.length+' รายการถูกล็อกไว้ ตัวจัดตารางย้ายให้ไม่ได้','ปลดล็อก '+locked.length+' รายการ',function(){
-      change(function(){locked.forEach(function(id){var p=db.timetable.placements[id];if(p)db.timetable.placements[id]=Object.assign({},p,{locked:false})})},'ปลดล็อกแล้ว — กด ✦ Generate เพื่อจัดตามกฎ (ย้อนกลับได้)')});
+      change(function(){locked.forEach(function(id){var p=db.timetable.placements[id];if(p)db.timetable.placements[id]=Object.assign({},p,{locked:false})})},'ปลดล็อกแล้ว — กด ✦ จัดตารางอัตโนมัติ เพื่อจัดตามกฎ (ย้อนกลับได้)')});
     else UX.toast(msg)});
   add.dataset.k='ts-sr-add';box.appendChild(add);b.appendChild(box);
   /* the original's day rules (still used by every generator, also the original's own) */
@@ -17868,7 +18070,7 @@ function secCov(b){
     b.appendChild(check('ให้ครูที่สอนวิชาเดียวกันก่อน',c.preferSubjectFit,function(v){setCov({preferSubjectFit:v})},'ts-cov-fit'));
     b.appendChild(check('ครูวิชาอื่นในอาคารเดียวกันก็นับ',c.allowGenericSameBuilding,function(v){setCov({allowGenericSameBuilding:v})},'ts-cov-generic'));
     b.appendChild(pick('ความสำคัญ',c.importance==='high'?'high':'normal',[['normal','ปกติ'],['high','สำคัญมาก']],function(v){setCov({importance:v})},'ts-cov-imp'));
-    b.appendChild(el('p','ux-tt-hint','คิดรวมทุกครั้งที่ ✦ Generate และ ⚖ ปรับตามนโยบาย — ไม่ยอมผิดนโยบายครูแบบ "บังคับ" เพื่อสิ่งนี้'));
+    b.appendChild(el('p','ux-tt-hint','คิดรวมทุกครั้งที่ ✦ จัดตารางอัตโนมัติ และ ⚖ ปรับให้ดีขึ้น — ไม่ยอมผิดนโยบายครูแบบ "บังคับ" เพื่อสิ่งนี้'));
     if(a){var s=el('p','ux-ts-stat');s.appendChild(el('b',null,'ตอนนี้: '+a.covered+'/'+a.total+' คาบมีครูสำรองในอาคาร ('+a.percent+'%)'));
       if(a.none)s.appendChild(el('span',null,' · ยังไม่มีครูสำรอง '+a.none+' คาบ'));b.appendChild(s);
       if(a.risks&&a.risks.length){var ul=el('ul','ux-ts-risks');a.risks.slice(0,8).forEach(function(x){ul.appendChild(el('li',null,'วัน'+x.day+' คาบ '+x.period+' · '+x.grade+' '+x.subject))});
@@ -17924,7 +18126,7 @@ function summary(){
     flex:f.enabled?'เปิด · ช่วยอยู่ '+Object.keys(f.assignments||{}).length+' คาบ':'ปิด'}}
 function node(){
   var w=el('div','ux-ts');w.id='uxTTSetup';var s=summary();
-  w.appendChild(el('p','ux-ts-lead','ทุกเงื่อนไขที่ใช้จัดตารางอยู่ที่นี่ — แก้แล้วมีผลกับ ✦ Generate, ↻ จัดที่เหลือ และ ⚖ ปรับตามนโยบายทันที (ย้อนกลับได้ทุกครั้ง)'));
+  w.appendChild(el('p','ux-ts-lead','ทุกเงื่อนไขที่ใช้จัดตารางอยู่ที่นี่ — แก้แล้วมีผลกับ ✦ จัดตารางอัตโนมัติ, ↻ ลงคาบที่เหลือ และ ⚖ ปรับให้ดีขึ้นทันที (ย้อนกลับได้ทุกครั้ง)'));
   w.appendChild(section('time','วันและคาบ',s.time,secTime));
   w.appendChild(section('blocks','เวลาที่ครูไม่ว่าง',s.blocks,secBlocks));
   w.appendChild(section('rules','กฎวันและคาบเรียน',s.rules,secRules));
@@ -18093,7 +18295,7 @@ function node(){
     var cmp=btn('ux-btn ux-tv-pick'+(S.b===id?' on':''),S.b===id?'กำลังเทียบ':'เทียบ',function(){if(id===S.a){S.a=S.b||'cur'}S.b=id;rerender();var s=document.querySelector('.ux-tv-side');if(s)s.scrollIntoView({block:'start',behavior:'smooth'})},'ดูข้างกันกับ "'+nameOf(S.a)+'"');
     cmp.dataset.k='tv-cmp-'+id;cmp.disabled=id===S.a;td.appendChild(cmp);ar.appendChild(td)});
   tb.appendChild(ar);t.appendChild(tb);wrap.appendChild(t);root.appendChild(wrap);
-  if(cols.some(function(id){return M[id].missing}))root.appendChild(el('p','ux-tt-hint','ฉบับที่ลงไม่ครบ (ตัวแดง) มักเป็นเพราะนโยบายที่ตั้งเป็น "บังคับ" · ใช้ฉบับนั้นแล้วกด "↻ จัดที่เหลือ" หรือดู "ทำไมลงไม่ได้" ได้ตามปกติ'));
+  if(cols.some(function(id){return M[id].missing}))root.appendChild(el('p','ux-tt-hint','ฉบับที่ลงไม่ครบ (ตัวแดง) มักเป็นเพราะนโยบายที่ตั้งเป็น "บังคับ" · ใช้ฉบับนั้นแล้วกด "↻ ลงคาบที่เหลือ" หรือดู "ทำไมลงไม่ได้" ได้ตามปกติ'));
   if(!vs.length)root.appendChild(el('p','ux-tt-hint','ยังไม่มีฉบับอื่น — กด 💾 เพื่อเก็บตารางนี้ไว้ แล้วกด ✦ สร้างฉบับใหม่ เพื่อลองแบบอื่นมาเทียบ'));
   if(vs.length)root.appendChild(side(d));
   return root}
@@ -18151,7 +18353,7 @@ UX.ttver={node:node,toggle:toggle,sig:sig,state:S,save:saveCurrent,generate:gene
 /* >>> 66-phone.js */
 /* 66-phone.js — iPhone: the timetable first (V24.30).
    On a narrow screen (≤ 640 px, same width as the day list) the editing buttons of the timetable page — the Generate row
-   (✦ Generate, ↻ จัดที่เหลือ, ⚖ ปรับตามนโยบาย, ⧉ หลายฉบับ, ตัวช่วยแบบเดิม) and ⚙ เงื่อนไข / มุมมองเดิม / 💬 พิมพ์สั่งงาน —
+   (✦ Generate, ↻ จัดที่เหลือ, ⚖ ปรับให้ดีขึ้น, ⧉ หลายฉบับ, ตัวช่วยแบบเดิม) and ⚙ เงื่อนไข / มุมมองเดิม / 💬 พิมพ์สั่งงาน —
    are hidden by CSS (66-phone.css) and offered in the ⋯ menu instead, under "ตารางสอน". Each menu item presses the same
    (hidden) button, so nothing behaves differently. The "found data in this browser" notice becomes one short line.
    Wide screens: nothing changes (the menu items are hidden there). */
@@ -18160,9 +18362,9 @@ var $=UX.$;
 function press(sel){return function(){var b=typeof sel==='function'?sel():document.querySelector(sel);if(b)b.click();else UX.toast('ใช้คำสั่งนี้ไม่ได้ตอนนี้')}}
 function tab(t){return function(){var s=UX.tt&&UX.tt.state;if(!s)return;if(s.mode!=='new'&&UX.tt.setMode)UX.tt.setMode('new');s.tab=s.tab===t?'grid':t;UX.tt.render();window.scrollTo({top:0})}}
 var ITEMS=[
-  ['gen','✦ Generate ตารางสอน',press('#uxGen')],
-  ['repair','↻ จัดที่เหลือ',press('#uxRepair')],
-  ['opt','⚖ ปรับตามนโยบาย',press('#uxOpt')],
+  ['gen','✦ จัดตารางอัตโนมัติ',press('#uxGen')],
+  ['repair','↻ ลงคาบที่เหลือ',press('#uxRepair')],
+  ['opt','⚖ ปรับให้ดีขึ้น',press('#uxOpt')],
   ['versions','⧉ หลายฉบับ · เปรียบเทียบ',press('#uxVersions')],
   ['setup','⚙ เงื่อนไขการจัดตาราง',tab('setup')],
   ['say','💬 พิมพ์สั่งงาน',press('#uxTT .ux-say-btn')],
@@ -18182,6 +18384,384 @@ UX.onInit(build);UX.onSync(function(){build();sync()});
 UX.phone={items:ITEMS.map(function(x){return x[0]})};
 })(window.UX);
 
+/* >>> 67-guide.js */
+/* 67-guide.js — "ทำต่อได้เองโดยไม่ต้องมีคู่มือ" (V24.33): a step bar at the top of every step page.
+     ขั้นที่ 2 จาก 6 · รายวิชา — what this page is for (one line) · status of this step (from the same facts as the badges)
+     [ⓘ วิธีทำ] (2–3 numbered tips) · [← previous] [ถัดไป: … →] (primary once this step is fine)
+   Also the empty states: a page with nothing in it gets one big button for the next action.
+   Display only — every action goes through the existing buttons / pages. Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var S={sig:'',tips:{}};
+try{S.tips=JSON.parse(localStorage.getItem('ux_guide_tips_v1')||'{}')||{}}catch(e){}
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn,title){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;if(title)b.title=title;return b}
+var n=function(x){return Number(x||0).toLocaleString('th-TH')};
+
+var PAGE={
+  staff:{what:'ใส่รายชื่อครูทุกคน ตั้งเพดานชั่วโมงสอน และเวลาที่ครูไม่ว่าง',
+    tips:['กด "+ เพิ่มครู" — เพิ่มทีละคน หรือวางรายชื่อหลายคนพร้อมกัน (หนึ่งบรรทัดต่อหนึ่งคน)','แตะการ์ดครูเพื่อแก้สถานะ เพดานชั่วโมง วิชาที่สอน และเวลาที่ไม่ว่าง','ครูครบแล้ว กด "ถัดไป: รายวิชา"']},
+  courses:{what:'เพิ่มรายวิชาของแต่ละชั้น แล้วแตะช่องในตารางเพื่อเลือกครูผู้สอน',
+    tips:['ยังไม่มีรายวิชา: กด "สร้างจากหลักสูตร" (ม.1–3) หรือ "+ เพิ่มรายวิชา" — เลือกได้หลายชั้นพร้อมกัน','แตะช่องวิชา → โปรแกรมแนะนำครูที่เหมาะที่สุดพร้อมเหตุผล','ตัวเลขใต้ชื่อชั้นต้องครบตามเป้า (เช่น 30/30 ชม.) ก่อนไปขั้นถัดไป']},
+  joint:{what:'ไม่บังคับ — ใช้เมื่อหลายชั้นเรียนด้วยกันในคาบเดียว เช่น งานอาชีพ ม.1–3 · ถ้าไม่มี กด "ถัดไป" ได้เลย',
+    tips:['เลือกหมวดวิชา แล้วติ๊กวิชาของแต่ละชั้นที่เรียนพร้อมกัน (ชั้นละหนึ่งวิชา)','ใส่ชั่วโมงที่เรียนร่วม เลือกครูหลัก แล้วกด "สร้างกลุ่มเรียนรวม"','กลุ่มที่สร้างแล้วจัดลงตารางเป็นคาบเดียวกันให้เอง']},
+  report:{what:'ตรวจว่าข้อมูลพร้อมก่อนจัดตาราง — ถ้ามีเรื่องต้องแก้ จะมีปุ่มพาไปจุดนั้น',
+    tips:['"รายการที่ต้องแก้ก่อนสร้าง" ต้องเป็น 0','รายงานภาระงานตามเกณฑ์ ก.ค.ศ. ดูได้ด้านล่าง (ไม่บังคับ)']},
+  timetable:{what:'① ตั้งเงื่อนไข (⚙ เงื่อนไข) ② กด ✦ จัดตารางอัตโนมัติ ③ ตรวจ แล้วลากหรือแตะคาบเพื่อแก้เอง',
+    tips:['⚙ เงื่อนไข: คาบต่อวัน เวลาที่ครูไม่ว่าง กฎวันและคาบเรียน นโยบายครู','✦ จัดตารางอัตโนมัติ ทำงานเบื้องหลัง ใช้โปรแกรมต่อได้ และย้อนกลับได้เสมอ (↶)','แตะคาบหนึ่งครั้ง → ช่องที่ย้ายไปได้จะเป็นสีเขียว · ⧉ หลายฉบับ ใช้ลองหลายแบบแล้วเทียบกัน']},
+  documents:{what:'เลือกเอกสารทางซ้าย ตรวจบนกระดาษ แล้วพิมพ์ / PDF / Word',
+    tips:['คลิกข้อความที่มีกรอบบนกระดาษเพื่อแก้','ข้อมูลโรงเรียน ผู้ลงนาม และตราครุฑ ตั้งครั้งเดียวใช้ทุกเอกสาร']}};
+
+function status(k,f,list){
+  var todo=list.items.filter(function(i){return i.state==='todo'&&i.id!=='documents'&&i.id!=='timetable'&&i.id!=='policy'});
+  if(k==='staff'){if(!f.teachers)return ['warn','ยังไม่มีครู'];if(f.overLimit.length)return ['warn','สอนเกินเพดาน '+n(f.overLimit.length)+' คน'];return ['ok','ครู '+n(f.teachers)+' คน · ภาระอยู่ในเกณฑ์']}
+  if(k==='courses'){if(!f.rows)return ['warn','ยังไม่มีรายวิชา'];if(f.unassigned.length)return ['warn','ยังไม่มีครูสอน '+n(f.unassigned.length)+' วิชา'];
+    if(f.gradesOff.length)return ['warn','ชั่วโมงยังไม่ตรงเป้า '+n(f.gradesOff.length)+' ชั้น'];return ['ok',n(f.rows)+' รายวิชา · ครูครบ · ชั่วโมงครบทุกชั้น']}
+  if(k==='joint'){if(f.jointIssues)return ['warn','กลุ่มเรียนรวมมีเรื่องต้องแก้ '+n(f.jointIssues)];if(f.jointGroups)return ['ok','กลุ่มเรียนรวม '+n(f.jointGroups)+' กลุ่ม'];return ['muted','ไม่มีกลุ่มเรียนรวม — ข้ามได้']}
+  if(k==='report'){return todo.length?['warn','ต้องแก้ '+n(todo.length)+' เรื่องก่อนจัดตาราง']:['ok','ข้อมูลพร้อมจัดตาราง']}
+  if(k==='timetable'){if(!f.lessons)return ['warn','ยังไม่มีคาบให้จัด — เพิ่มรายวิชาก่อน'];if(!f.placed)return ['warn','ยังไม่ได้จัดตาราง'];
+    if(f.placed<f.lessons||f.hardProblems)return ['warn','ลงแล้ว '+n(f.placed)+'/'+n(f.lessons)+(f.hardProblems?' · ผิดกฎ '+n(f.hardProblems):'')];
+    return ['ok','ลงครบ '+n(f.placed)+'/'+n(f.lessons)+' คาบ'+(f.policyViolations?' · ผิดนโยบาย '+n(f.policyViolations)+' จุด (ไม่บังคับ)':'')]}
+  if(k==='documents'){return list.remaining?['muted','พิมพ์ได้เลย แต่ภาพรวมยังมี '+n(list.remaining)+' เรื่องที่ควรทำก่อน']:['ok','ข้อมูลพร้อมพิมพ์']}
+  return ['muted','']}
+
+function bar(k){
+  var fl=UX.facts&&UX.facts();if(!fl)return null;
+  var steps=UX.STEPS.filter(function(s){return s.n}),i=steps.findIndex(function(s){return s.k===k});if(i<0)return null;
+  var st=status(k,fl.facts,fl.list),pg=PAGE[k]||{what:'',tips:[]};
+  var w=el('div','ux-guide no-print');w.id='uxGuide';w.dataset.k=k;w.setAttribute('role','region');w.setAttribute('aria-label','ขั้นตอน');
+  var top=el('div','ux-guide-row');
+  var lead=el('div','ux-guide-lead');lead.appendChild(el('span','ux-guide-n','ขั้นที่ '+steps[i].n+' จาก '+steps.length));
+  lead.appendChild(el('span','ux-guide-what',pg.what));top.appendChild(lead);
+  var stt=el('span','ux-guide-st '+st[0],(st[0]==='ok'?'✓ ':st[0]==='warn'?'• ':'')+st[1]);stt.dataset.k='guide-status';top.appendChild(stt);
+  var nav=el('div','ux-guide-nav');
+  if(pg.tips.length){var tb=btn('ux-btn ux-guide-tip'+(S.tips[k]?' on':''),'ⓘ วิธีทำ',function(){S.tips[k]=!S.tips[k];try{localStorage.setItem('ux_guide_tips_v1',JSON.stringify(S.tips))}catch(e){};S.sig='';render()});
+    tb.dataset.k='guide-tips';tb.setAttribute('aria-expanded',String(!!S.tips[k]));nav.appendChild(tb)}
+  if(i>0){var pv=btn('ux-btn ux-guide-prev','← '+steps[i-1].l,function(){UX.go(steps[i-1].k)});pv.dataset.k='guide-prev';nav.appendChild(pv)}
+  var nx=steps[i+1];
+  if(nx){var go=btn('ux-btn ux-guide-next'+(st[0]!=='warn'?' ux-primary':''),'ถัดไป: '+nx.l+' →',function(){UX.go(nx.k)});go.dataset.k='guide-next';nav.appendChild(go)}
+  else{var hm=btn('ux-btn ux-guide-next','⌂ กลับภาพรวม',function(){UX.go('overview')});hm.dataset.k='guide-next';nav.appendChild(hm)}
+  top.appendChild(nav);w.appendChild(top);
+  if(S.tips[k]&&pg.tips.length){var ol=el('ol','ux-guide-tips');pg.tips.forEach(function(t){ol.appendChild(el('li',null,t))});w.appendChild(ol)}
+  return {node:w,sig:JSON.stringify([k,st,S.tips[k]])}}
+
+function render(){
+  var k=UX.cur(),sec=$(k),old=$('uxGuide');
+  if(!sec||!PAGE[k]){if(old)old.remove();S.sig='';return}
+  var b=bar(k);if(!b)return;
+  if(old&&old.parentNode===sec&&b.sig===S.sig)return;
+  S.sig=b.sig;if(old)old.remove();
+  sec.insertBefore(b.node,sec.firstChild);
+  empty(k)}
+
+/* ---- empty states: one obvious next action ----------------------------------------------------------------------------- */
+function empty(k){
+  var f=(UX.facts()||{}).facts||{};
+  var host=$('uxGuide');if(!host)return;
+  var box=null;
+  if(k==='staff'&&!f.teachers){box=el('div','ux-empty');box.appendChild(el('b',null,'ยังไม่มีครูในแผนนี้'));box.appendChild(el('span',null,'เริ่มจากใส่รายชื่อครูทุกคน — วางหลายชื่อพร้อมกันได้'));
+    var a=btn('ux-btn ux-primary','วางรายชื่อครูหลายคน',function(){if(UX.starter)UX.starter.open('teachers')});a.dataset.k='empty-teachers';box.appendChild(a)}
+  if(k==='courses'&&!f.rows){box=el('div','ux-empty');box.appendChild(el('b',null,'ยังไม่มีรายวิชา'));box.appendChild(el('span',null,'สร้างจากหลักสูตรของโรงเรียน หรือเพิ่มทีละวิชา'));
+    var c1=btn('ux-btn ux-primary','สร้างจากหลักสูตร',function(){if(UX.starter)UX.starter.open('courses')});c1.dataset.k='empty-curriculum';box.appendChild(c1);
+    var c2=btn('ux-btn','+ เพิ่มรายวิชา',function(){if(UX.addCourse)UX.addCourse.open()});c2.dataset.k='empty-add-course';box.appendChild(c2)}
+  if(k==='timetable'&&!f.lessons){box=el('div','ux-empty');box.appendChild(el('b',null,'ยังไม่มีคาบให้จัด'));box.appendChild(el('span',null,'ตารางสอนสร้างจากรายวิชาที่มีครูสอนแล้ว'));
+    var t1=btn('ux-btn ux-primary','ไปที่รายวิชา',function(){UX.go('courses')});t1.dataset.k='empty-go-courses';box.appendChild(t1)}
+  else if(k==='timetable'&&f.lessons&&!f.placed){box=el('div','ux-empty');box.appendChild(el('b',null,'พร้อมจัดตาราง '+n(f.lessons)+' คาบ'));box.appendChild(el('span',null,'ตั้งเงื่อนไขก่อนก็ได้ (⚙ เงื่อนไข) หรือให้โปรแกรมจัดเลยแล้วค่อยแก้'));
+    var t2=btn('ux-btn ux-primary','✦ จัดตารางอัตโนมัติ',function(){if(UX.gen)UX.gen.start();else UX.clickId('uxGen')});t2.dataset.k='empty-generate';box.appendChild(t2)}
+  if(box)host.appendChild(box)}
+
+UX.guide={render:function(){S.sig='';render()},status:function(k){var fl=UX.facts();return fl?status(k,fl.facts,fl.list):null}};
+UX.onSync(render);
+})(window.UX);
+
+/* >>> 68-start.js */
+/* 68-start.js — start a plan without a manual (V24.33).
+   · "เริ่มแผนใหม่" window (UX.start.open): ① ครู — paste the school's list of names (one per line) ② รายวิชา — from the
+     school curriculum built into the app (ม.1–3, one semester) and/or pasted lines "ป.1 ภาษาไทย 5" ③ เสร็จ → the courses
+     page to pick a teacher for each course. Each "เพิ่ม" is ONE act() (one Undo). ASPCore.parseTeacherLines /
+     parseCourseLines / curriculumRows do the reading (unit-tested).
+   · The overview of an empty plan shows a start card with this window; the staff / courses pages' empty states open it.
+   · "+ เพิ่มรายวิชา" (the original asks with prompt() twice and types the grade by hand) opens one window instead:
+     grades as buttons (several at once), subject (suggests existing names), hours per week, teacher (optional).
+   DOM nodes + textContent only. Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES||!window.ASPCore.parseCourseLines)return;
+var C=window.ASPCore,S={step:'teachers',tText:'',cText:'',sem:1,useCur:true,picks:{},add:{grades:[],subject:'',hours:1,teacher:''}};
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn,title){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;if(title)b.title=title;return b}
+function people(){return db.teachers.filter(function(t){return !t.team&&t.status==='active'})}
+function dlg(id,title){
+  var d=$(id);if(!d){d=el('dialog','ux-say ux-start no-print');d.id=id;d.setAttribute('aria-labelledby',id+'T');
+    var h=el('div','ux-say-head'),t=el('h2');t.id=id+'T';h.appendChild(t);var x=btn('ux-asg-x','✕',function(){d.close()});x.setAttribute('aria-label','ปิด');h.appendChild(x);d.appendChild(h);
+    var b=el('div','ux-say-body');b.id=id+'B';d.appendChild(b);var f=el('div','ux-say-foot');f.id=id+'F';d.appendChild(f);document.body.appendChild(d)}
+  d.querySelector('h2').textContent=title;return d}
+function newId(p,i){return p+Date.now().toString(36)+(i||0)+Math.random().toString(36).slice(2,5)}
+
+/* ---- the start window -------------------------------------------------------------------------------------------------- */
+var STEPS=[['teachers','① ครู'],['courses','② รายวิชา'],['done','③ เลือกครูให้แต่ละวิชา']];
+function open(step){S.step=step||(!people().length?'teachers':!db.rows.length?'courses':'done');var d=dlg('uxStart','เริ่มแผนใหม่ — ทำตามทีละขั้น');render();if(!d.open)d.showModal()}
+function render(){
+  var b=$('uxStartB'),f=$('uxStartF');if(!b)return;b.textContent='';f.textContent='';
+  var tabs=el('div','ux-start-steps');tabs.setAttribute('role','tablist');
+  STEPS.forEach(function(s){var on=S.step===s[0],t=btn('ux-start-tab'+(on?' on':''),s[1],function(){S.step=s[0];render()});t.setAttribute('role','tab');t.setAttribute('aria-selected',String(on));t.dataset.k='start-tab-'+s[0];tabs.appendChild(t)});
+  b.appendChild(tabs);
+  if(S.step==='teachers')teachers(b,f);else if(S.step==='courses')courses(b,f);else done(b,f)}
+function teachers(b,f){
+  var have=people();
+  b.appendChild(el('p',null,'วางรายชื่อครูทุกคน หนึ่งบรรทัดต่อหนึ่งคน (คัดลอกจาก Excel / Word / LINE ได้) · ตอนนี้มีครูในแผน '+have.length+' คน'));
+  var ta=el('textarea','ux-start-ta');ta.rows=8;ta.value=S.tText;ta.dataset.k='start-teachers';ta.setAttribute('aria-label','รายชื่อครู');
+  ta.placeholder='เช่น\nครูสมชาย ใจดี\nครูสมหญิง รักเรียน\nครูวิชัย มั่นคง';b.appendChild(ta);
+  var info=el('p','ux-tt-hint');b.appendChild(info);
+  var go=btn('ux-btn ux-primary','',add);go.dataset.k='start-add-teachers';
+  function upd(){S.tText=ta.value;var r=C.parseTeacherLines(ta.value,db.teachers.map(function(t){return t.name}));
+    info.textContent=r.names.length?'จะเพิ่ม '+r.names.length+' คน'+(r.skipped.length?' · ข้าม '+r.skipped.length+' ชื่อที่มีอยู่แล้วหรือซ้ำ':'')+' · เพดานเริ่มต้น 24 ชม./สัปดาห์ (แก้ได้ที่หน้าครู)':(r.skipped.length?'ทุกชื่อมีอยู่แล้ว':'');
+    go.textContent=r.names.length?'เพิ่มครู '+r.names.length+' คน':'เพิ่มครู';go.disabled=!r.names.length;return r}
+  function add(){var r=upd();if(!r.names.length)return;
+    act(function(){r.names.forEach(function(nm,i){db.teachers.push({id:newId('T',i),name:nm,status:'active',limit:24,team:false})})});
+    S.tText='';S.step='courses';UX.toast('เพิ่มครู '+r.names.length+' คนแล้ว (ย้อนกลับได้)');render()}
+  ta.oninput=upd;upd();
+  f.appendChild(btn('ux-btn','ข้ามไปรายวิชา →',function(){S.step='courses';render()}));f.appendChild(go)}
+function courses(b,f){
+  var grades=db.grades.slice(),cur=C.curriculumRows(C.WL_CURRICULUM_2567,S.sem,grades,db.rows);
+  b.appendChild(el('p',null,'ชั้นเรียนในแผน: '+grades.join(' ')+' · ตอนนี้มีรายวิชา '+db.rows.length+' รายการ'));
+  var all=[];
+  /* a. curriculum */
+  if(cur.length){
+    var box=el('div','ux-start-box'),hd=el('div','ux-start-row');
+    var cb=el('input');cb.type='checkbox';cb.checked=S.useCur;cb.dataset.k='start-use-cur';cb.id='uxStartUseCur';
+    var lb=el('label',null,'สร้างจาก '+C.WL_CURRICULUM_LABEL+' (ม.1–3)');lb.htmlFor='uxStartUseCur';hd.appendChild(cb);hd.appendChild(lb);
+    var se=el('select');se.dataset.k='start-sem';se.setAttribute('aria-label','ภาคเรียน');[['1','ภาคเรียนที่ 1'],['2','ภาคเรียนที่ 2']].forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];se.appendChild(op)});
+    se.value=String(S.sem);se.onchange=function(){S.sem=+se.value===2?2:1;S.picks={};render()};hd.appendChild(se);box.appendChild(hd);
+    cb.onchange=function(){S.useCur=cb.checked;render()};
+    if(S.useCur){var byG={};cur.forEach(function(r){(byG[r.grade]=byG[r.grade]||[]).push(r)});
+      var wrap=el('div','ux-start-cur');
+      Object.keys(byG).forEach(function(g){var col=el('div','ux-start-g');col.appendChild(el('b',null,g+' · '+byG[g].reduce(function(s,r){return s+r.hours},0)+' ชม./สัปดาห์'));
+        byG[g].forEach(function(r){var k=r.grade+'|'+r.subject,lab=el('label','ux-start-it'+(r.exists?' has':'')),c=el('input');c.type='checkbox';
+          c.checked=r.exists?false:S.picks[k]!==false;c.disabled=r.exists;c.dataset.k='start-cur-'+r.code;c.onchange=function(){S.picks[k]=c.checked;sum()};
+          lab.appendChild(c);lab.appendChild(el('span',null,r.subject+' '+r.hours+' ชม.'+(r.exists?' (มีแล้ว)':'')));col.appendChild(lab);
+          if(!r.exists)all.push({r:r,c:c})});
+        wrap.appendChild(col)});
+      box.appendChild(wrap)}
+    b.appendChild(box)}
+  /* b. pasted lines */
+  var box2=el('div','ux-start-box');box2.appendChild(el('b',null,(cur.length?'และ/หรือ ':'')+'วางรายการรายวิชา (หนึ่งบรรทัดต่อหนึ่งรายการ)'));
+  var ta=el('textarea','ux-start-ta');ta.rows=6;ta.value=S.cText;ta.dataset.k='start-courses';ta.setAttribute('aria-label','รายการรายวิชา');
+  ta.placeholder='ชั้น  ชื่อวิชา  ชั่วโมงต่อสัปดาห์ เช่น\nป.1 ภาษาไทย 5\nป.1-6 คณิตศาสตร์ 5\nป.4-6 ภาษาอังกฤษ 4';box2.appendChild(ta);
+  var bad=el('ul','ux-start-bad');box2.appendChild(bad);b.appendChild(box2);
+  var info=el('p','ux-tt-hint');b.appendChild(info);
+  var go=btn('ux-btn ux-primary','',add);go.dataset.k='start-add-courses';
+  function parsed(){return C.parseCourseLines(ta.value,grades)}
+  function sum(){S.cText=ta.value;var p=parsed(),n=p.rows.length+(S.useCur?all.filter(function(x){return x.c.checked}).length:0);
+    bad.textContent='';p.bad.slice(0,5).forEach(function(x){bad.appendChild(el('li',null,x.line+' — '+x.why))});
+    info.textContent=n?'จะเพิ่ม '+n+' รายวิชา (ยังไม่มีครู — เลือกในขั้นถัดไป)':'';go.textContent=n?'เพิ่ม '+n+' รายวิชา':'เพิ่มรายวิชา';go.disabled=!n;return p}
+  function add(){var p=sum(),rows=[],codes={};
+    if(S.useCur)all.forEach(function(x,i){if(x.c.checked){var id=newId('R',i);rows.push({id:id,grade:x.r.grade,subject:x.r.subject,base:x.r.hours,hours:x.r.hours,teacher:'',group:'',coTeachers:[]});codes[id]=x.r.code}});
+    p.rows.forEach(function(r,i){rows.push({id:newId('P',i),grade:r.grade,subject:r.subject,base:r.hours,hours:r.hours,teacher:'',group:'',coTeachers:[]})});
+    if(!rows.length)return;
+    var label=C.WL_CURRICULUM_LABEL+' · ภาคเรียนที่ '+S.sem;
+    act(function(){rows.forEach(function(r){db.rows.push(r)});
+      if(Object.keys(codes).length){db.docSettings=db.docSettings||{};db.docSettings.codes=db.docSettings.codes||{};db.docSettings.codeOrigins=db.docSettings.codeOrigins||{};
+        Object.keys(codes).forEach(function(id){db.docSettings.codes[id]=codes[id];db.docSettings.codeOrigins[id]=label})}});
+    S.cText='';S.picks={};S.step='done';UX.toast('เพิ่ม '+rows.length+' รายวิชาแล้ว (ย้อนกลับได้)');render()}
+  ta.oninput=sum;sum();
+  f.appendChild(btn('ux-btn','← ครู',function(){S.step='teachers';render()}));f.appendChild(btn('ux-btn','ข้าม →',function(){S.step='done';render()}));f.appendChild(go)}
+function done(b,f){
+  var t=people().length,r=db.rows.length,un=db.rows.filter(function(x){return !x.teacher}).length;
+  b.appendChild(el('p','ux-start-big',t&&r?'มีครู '+t+' คน · รายวิชา '+r+' รายการ':'ยังขาด'+(t?'':' รายชื่อครู')+(r?'':' รายวิชา')));
+  b.appendChild(el('p',null,un?'ขั้นต่อไป: เลือกครูให้ '+un+' วิชาที่ยังไม่มีครู — ในหน้ารายวิชา แตะช่องวิชา แล้วเลือกครูที่โปรแกรมแนะนำ':'ทุกวิชามีครูแล้ว — ต่อไปตรวจแผน แล้วจัดตารางสอน'));
+  var go=btn('ux-btn ux-primary',un?'ไปเลือกครูให้แต่ละวิชา →':'ไปตรวจแผน →',function(){$('uxStart').close();UX.go(un?'courses':'report')});go.dataset.k='start-finish';
+  f.appendChild(btn('ux-btn','← รายวิชา',function(){S.step='courses';render()}));f.appendChild(go)}
+
+/* ---- "+ เพิ่มรายวิชา" in one window ------------------------------------------------------------------------------------ */
+function addOpen(){
+  var gf=$('gradeFilter');S.add={grades:gf&&gf.value&&db.grades.indexOf(gf.value)>-1?[gf.value]:[],subject:'',hours:1,teacher:''};
+  var d=dlg('uxAddCourse','เพิ่มรายวิชา');addRender();if(!d.open)d.showModal();setTimeout(function(){var i=d.querySelector('[data-k=ac-subject]');if(i)i.focus()},50)}
+function addRender(){
+  var b=$('uxAddCourseB'),f=$('uxAddCourseF'),A=S.add;if(!b)return;b.textContent='';f.textContent='';
+  var gl=el('div','ux-start-row');gl.appendChild(el('span','ux-ts-rl','ชั้น'));
+  db.grades.forEach(function(g){var on=A.grades.indexOf(g)>-1,c=btn('ux-ts-tog'+(on?' on':''),g,function(){var i=A.grades.indexOf(g);if(i>-1)A.grades.splice(i,1);else A.grades.push(g);addRender()});
+    c.dataset.k='ac-grade-'+g;c.setAttribute('aria-pressed',String(on));gl.appendChild(c)});
+  var allb=btn('ux-btn ux-sm','ทุกชั้น',function(){A.grades=A.grades.length===db.grades.length?[]:db.grades.slice();addRender()});allb.dataset.k='ac-all';gl.appendChild(allb);b.appendChild(gl);
+  var r2=el('div','ux-ts-row');
+  var sl=el('label','ux-ts-num');sl.appendChild(el('span',null,'ชื่อวิชา'));var si=el('input');si.value=A.subject;si.dataset.k='ac-subject';si.setAttribute('list','uxAcNames');si.placeholder='เช่น ภาษาไทย';
+  si.oninput=function(){A.subject=si.value;check()};sl.appendChild(si);r2.appendChild(sl);
+  var dl=el('datalist');dl.id='uxAcNames';var names={};db.rows.forEach(function(r){names[r.subject]=1});Object.keys(names).sort().forEach(function(nm){var o=el('option');o.value=nm;dl.appendChild(o)});r2.appendChild(dl);
+  var hl=el('label','ux-ts-num');hl.appendChild(el('span',null,'ชั่วโมง/สัปดาห์'));var hi=el('input');hi.type='number';hi.min='0.5';hi.max='40';hi.step='0.5';hi.value=A.hours;hi.dataset.k='ac-hours';
+  hi.oninput=function(){A.hours=+hi.value||0;check()};hl.appendChild(hi);r2.appendChild(hl);
+  var tl=el('label','ux-ts-num');tl.appendChild(el('span',null,'ครูผู้สอน (เลือกทีหลังได้)'));var ts=el('select');ts.dataset.k='ac-teacher';
+  var o0=el('option',null,'— ยังไม่เลือก —');o0.value='';ts.appendChild(o0);people().forEach(function(t){var o=el('option',null,t.name);o.value=t.id;ts.appendChild(o)});ts.value=A.teacher;
+  ts.onchange=function(){A.teacher=ts.value};tl.appendChild(ts);r2.appendChild(tl);b.appendChild(r2);
+  var msg=el('p','ux-tt-hint');b.appendChild(msg);
+  var go=btn('ux-btn ux-primary','เพิ่ม',save);go.dataset.k='ac-save';
+  function check(){var dup=A.grades.filter(function(g){return db.rows.some(function(r){return r.grade===g&&r.subject.trim()===A.subject.trim()})});
+    var ok=A.grades.length&&A.subject.trim()&&A.hours>0&&A.hours<=40;
+    msg.textContent=!A.grades.length?'เลือกชั้นอย่างน้อยหนึ่งชั้น (เลือกหลายชั้น = เพิ่มวิชานี้ให้ทุกชั้นที่เลือก)':!A.subject.trim()?'พิมพ์ชื่อวิชา':
+      'จะเพิ่ม "'+A.subject.trim()+'" '+A.hours+' ชม./สัปดาห์ ให้ '+A.grades.join(' ')+(dup.length?' · ชั้น '+dup.join(' ')+' มีวิชาชื่อนี้อยู่แล้ว':'');
+    go.disabled=!ok;go.textContent=ok?'เพิ่ม '+A.grades.length+' รายการ':'เพิ่ม'}
+  function save(){if(go.disabled)return;var rows=A.grades.map(function(g,i){return {id:newId('R',i),grade:g,subject:A.subject.trim(),base:A.hours,hours:A.hours,teacher:A.teacher,group:'',coTeachers:[]}});
+    act(function(){rows.forEach(function(r){db.rows.push(r)})});$('uxAddCourse').close();
+    UX.toast('เพิ่ม "'+A.subject.trim()+'" ให้ '+rows.length+' ชั้นแล้ว'+(A.teacher?'':' · แตะช่องวิชาเพื่อเลือกครู'),'↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)})}
+  si.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();save()}};
+  check();f.appendChild(btn('ux-btn','ยกเลิก',function(){$('uxAddCourse').close()}));f.appendChild(go)}
+document.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('#addCourse');if(!t)return;
+  e.preventDefault();e.stopImmediatePropagation();addOpen()},true);
+
+/* ---- the overview of an empty plan: a start card ----------------------------------------------------------------------- */
+function card(){
+  var home=$('uxHome');if(!home)return;var c=$('uxStartCard'),need=!people().length||!db.rows.length;
+  if(!need){if(c)c.remove();return}
+  if(c&&c.parentNode===home)return;
+  c=el('div','ux-start-card');c.id='uxStartCard';
+  c.appendChild(el('b',null,'เริ่มแผนใหม่ใน 3 ขั้น'));
+  c.appendChild(el('span',null,'① วางรายชื่อครู ② สร้างรายวิชาจากหลักสูตรหรือวางรายการ ③ เลือกครูให้แต่ละวิชา — แล้วโปรแกรมจัดตารางให้'));
+  var b=btn('ux-btn ux-primary','เริ่มเลย',function(){open()});b.dataset.k='start-open';c.appendChild(b);
+  var top=home.querySelector('.ux-home-top');home.insertBefore(c,top?top.nextSibling:home.firstChild)}
+UX.starter={open:open,state:S};UX.addCourse={open:addOpen,state:S};
+UX.onSync(function(){if(UX.cur()==='overview')card()});
+})(window.UX);
+
+/* >>> 69-simple.js */
+/* 69-simple.js — fewer buttons, the original's tools one menu away (V24.33).
+   · Timetable row: ✦ จัดตารางอัตโนมัติ · ⚖ ปรับให้ดีขึ้น · ⧉ หลายฉบับ · "เพิ่มเติม ▾" (↻ ลงคาบที่เหลือ, ตัวช่วยแบบเดิม) —
+     the buttons are MOVED into the pop-up (same ids and handlers).
+   · "มุมมองเดิม" of the timetable / teachers / documents pages leaves the page (.ux-legacy-btn hidden by CSS) and is in
+     ⋯ → "เครื่องมือแบบเดิม" → "แสดงหน้านี้แบบเดิม".
+   · The "found data in this browser" notice shows on the overview only (body.ux-page-<step>).
+   Display only. Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function more(){
+  var row=$('uxTTActions'),rep=$('uxRepair'),asg=$('uxAssist');if(!row||!rep)return;
+  var w=$('uxTTMoreWrap');
+  if(!w){w=el('div','ux-more');w.id='uxTTMoreWrap';
+    var b=el('button','ux-btn','เพิ่มเติม ▾');b.type='button';b.id='uxTTMore';b.setAttribute('aria-haspopup','true');b.setAttribute('aria-expanded','false');
+    var pop=el('div','ux-more-pop');pop.id='uxTTMorePop';pop.hidden=true;
+    b.onclick=function(e){e.stopPropagation();pop.hidden=!pop.hidden;b.setAttribute('aria-expanded',String(!pop.hidden))};
+    pop.addEventListener('click',function(e){if(e.target.closest('button')){pop.hidden=true;b.setAttribute('aria-expanded','false')}});
+    document.addEventListener('click',function(e){if(!pop.hidden&&!w.contains(e.target)){pop.hidden=true;b.setAttribute('aria-expanded','false')}});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!pop.hidden){pop.hidden=true;b.setAttribute('aria-expanded','false');b.focus()}});
+    w.appendChild(b);w.appendChild(pop)}
+  var info=$('uxTTInfo');if(w.parentNode!==row)row.insertBefore(w,info&&info.parentNode===row?info:null);
+  var pop2=$('uxTTMorePop');
+  if(rep.parentNode!==pop2){rep.title='ลงเฉพาะคาบที่ยังไม่ได้ลง — คาบที่ลงแล้วไม่ย้าย';pop2.appendChild(rep)}
+  if(asg&&asg.parentNode!==pop2){asg.title='แผงตัวช่วยและการตรวจสอบของหน้าตารางแบบเดิม';pop2.appendChild(asg)}}
+function legacyNow(){var c=UX.cur();
+  if(c==='timetable'&&UX.tt)UX.tt.setMode('legacy');else if(c==='staff'&&UX.staff)UX.staff.setMode('legacy');else if(c==='documents'&&UX.docs&&UX.docs.setMode)UX.docs.setMode('legacy')}
+function menu(){
+  var m=$('uxMenu');if(!m||$('uxMenuLegacy'))return;
+  var h=el('div','ux-mh','เครื่องมือแบบเดิม');h.setAttribute('role','presentation');h.id='uxMenuLegacyH';
+  var b=el('button',null,'แสดงหน้านี้แบบเดิม (โปรแกรมเดิม)');b.type='button';b.setAttribute('role','menuitem');b.id='uxMenuLegacy';b.onclick=legacyNow;
+  var ver=$('uxVer');m.insertBefore(h,ver||null);m.insertBefore(b,ver||null)}
+function sync(){
+  var c=UX.cur();menu();more();
+  var on=c==='timetable'||c==='staff'||c==='documents',lb=$('uxMenuLegacy'),lh=$('uxMenuLegacyH');if(lb)lb.hidden=!on;if(lh)lh.hidden=!on;
+  var cls='ux-page-'+c;if(!document.body.classList.contains(cls)){[].slice.call(document.body.classList).forEach(function(x){if(x.indexOf('ux-page-')===0)document.body.classList.remove(x)});document.body.classList.add(cls)}}
+UX.simple={legacy:legacyNow};
+UX.onInit(sync);UX.onSync(sync);
+})(window.UX);
+
+/* >>> 70-tabs.js */
+/* 70-tabs.js — iPhone: a floating 5-button tab bar (V24.34), in place of the sideways-scrolling step dock.
+     ⌂ หน้าแรก · ▦ ตาราง · ✦ จัดตาราง (centre: a sheet of the timetable actions) · 👤 ครู · ☰ อื่นๆ (a sheet of the other
+     steps and tools)
+   On when the menu is at the bottom (50-shell mode 'bottom') AND the screen is narrow (≤ 700 px) — iPad portrait keeps the
+   dock. ⋯ → ตำแหน่งเมนู → "แถบล่าง 5 ปุ่ม (iPhone)" turns it off (this browser only, localStorage ux_tabs_v1=off).
+   Dots on a tab = that step needs work (same facts as the sidebar badges). Every button calls what the pages already do.
+   Display only. Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var KEY='ux_tabs_v1',MAXW=700;
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function off(){try{return localStorage.getItem(KEY)==='off'}catch(e){return false}}
+function on(){return !off()&&document.body.classList.contains('ux-bottom')&&window.innerWidth<=MAXW}
+/* simple line icons (24×24, stroke = currentColor) */
+var ICON={
+  home:'<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h5v-6h3v6h5V10"/>',
+  tt:'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M9 9.5v10M14.5 9.5v10"/>',
+  gen:'<path d="M12 3.5v4M12 16.5v4M3.5 12h4M16.5 12h4M6 6l2.6 2.6M15.4 15.4 18 18M6 18l2.6-2.6M15.4 8.6 18 6"/>',
+  staff:'<circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20c.8-3.8 3.9-6 7.5-6s6.7 2.2 7.5 6"/>',
+  more:'<path d="M4.5 7h15M4.5 12h15M4.5 17h15"/>'};
+function svg(k){return '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICON[k]+'</svg>'}
+var TABS=[['home','หน้าแรก','overview'],['tt','ตาราง','timetable'],['gen','จัดตาราง',null],['staff','ครู','staff'],['more','อื่นๆ',null]];
+var OTHER=['courses','joint','report','documents'];
+
+function build(){
+  if($('uxTabs'))return;
+  var nav=el('nav','ux-tabs no-print');nav.id='uxTabs';nav.setAttribute('aria-label','เมนูหลัก');
+  TABS.forEach(function(t){var b=el('button','ux-tab'+(t[0]==='gen'?' ux-tab-gen':''));b.type='button';b.dataset.tab=t[0];
+    b.innerHTML='<span class="ux-tab-i">'+svg(t[0])+'</span>';b.appendChild(el('span','ux-tab-l',t[1]));b.appendChild(el('span','ux-tab-dot'));
+    b.setAttribute('aria-label',t[1]);
+    b.onclick=function(){if(t[2]){UX.go(t[2]);closeSheet()}else if(t[0]==='gen')sheetGen();else sheetMore()};
+    nav.appendChild(b)});
+  document.body.appendChild(nav)}
+
+/* ---- bottom sheets ------------------------------------------------------------------------------------------------------ */
+function sheet(title){
+  var d=$('uxSheet');
+  if(!d){d=el('dialog','ux-sheet no-print');d.id='uxSheet';d.setAttribute('aria-labelledby','uxSheetT');
+    var grip=el('div','ux-sheet-grip');grip.setAttribute('aria-hidden','true');d.appendChild(grip);
+    var h=el('h2','ux-sheet-t');h.id='uxSheetT';d.appendChild(h);d.appendChild(el('div','ux-sheet-b'));
+    d.addEventListener('click',function(e){if(e.target===d)d.close()});          /* tap outside (the backdrop) closes */
+    document.body.appendChild(d)}
+  d.querySelector('h2').textContent=title;var b=d.querySelector('.ux-sheet-b');b.textContent='';return {d:d,b:b}}
+function closeSheet(){var d=$('uxSheet');if(d&&d.open)d.close()}
+function item(b,icon,label,sub,fn,k,primary,dot){var x=el('button','ux-sheet-it'+(primary?' primary':''));x.type='button';x.dataset.k=k;
+  x.appendChild(el('span','ux-sheet-ic',icon));var t=el('span','ux-sheet-tx');t.appendChild(el('b',null,label));if(sub)t.appendChild(el('small',null,sub));x.appendChild(t);
+  if(dot)x.appendChild(el('span','ux-sheet-dot',dot));
+  x.onclick=function(){closeSheet();setTimeout(fn,30)};b.appendChild(x);return x}
+function onTT(fn){return function(){if(UX.cur()!=='timetable')UX.go('timetable');setTimeout(fn,UX.cur()==='timetable'?0:350)}}
+function sheetGen(){
+  var s=sheet('จัดตาราง'),f=(UX.facts&&UX.facts()||{}).facts||{};
+  s.b.appendChild(el('p','ux-sheet-p',f.lessons?'ลงแล้ว '+f.placed+'/'+f.lessons+' คาบ'+(f.policyViolations?' · ผิดนโยบาย '+f.policyViolations+' จุด (ไม่บังคับ)':''):'ยังไม่มีคาบให้จัด — เพิ่มรายวิชาและเลือกครูก่อน'));
+  item(s.b,'✦','จัดตารางอัตโนมัติ','สร้างทั้งตารางเบื้องหลัง · ย้อนกลับได้',onTT(function(){if(UX.gen)UX.gen.start();else UX.clickId('uxGen')}),'tab-gen-run',true);
+  item(s.b,'⚖','ปรับให้ดีขึ้น','ย้ายคาบให้ตรงเงื่อนไขครูมากขึ้น — ดูก่อน-หลังแล้วค่อยใช้',onTT(function(){if(UX.optimize)UX.optimize.start()}),'tab-gen-opt');
+  item(s.b,'↻','ลงคาบที่เหลือ','ลงเฉพาะคาบที่ยังไม่ได้ลง คาบอื่นไม่ย้าย',onTT(function(){if(UX.gen)UX.gen.repair()}),'tab-gen-repair');
+  item(s.b,'?','ทำไมลงไม่ได้','รายการที่ยังไม่ได้ลง พร้อมเหตุผล',onTT(function(){if(UX.gen)UX.gen.why()}),'tab-gen-why');
+  item(s.b,'⧉','หลายฉบับ · เปรียบเทียบ','ลองหลายแบบแล้วเทียบกันก่อนเลือกใช้',function(){if(UX.ttver){if(UX.cur()==='timetable'&&UX.tt.state.tab==='versions')return;UX.ttver.toggle()}},'tab-gen-versions');
+  item(s.b,'⚙','เงื่อนไขการจัดตาราง','คาบต่อวัน เวลาที่ครูไม่ว่าง กฎวันและคาบเรียน นโยบายครู',onTT(function(){var t=UX.tt&&UX.tt.state;if(!t)return;t.tab='setup';UX.tt.render();window.scrollTo({top:0})}),'tab-gen-setup');
+  if(!s.d.open)s.d.showModal()}
+function sheetMore(){
+  var s=sheet('เมนูอื่นๆ'),fl=UX.facts&&UX.facts(),bd=fl?fl.list.badges:{};
+  UX.STEPS.filter(function(x){return OTHER.indexOf(x.k)>-1}).forEach(function(x){var g=bd[x.k],dot=g&&g.tone==='warn'?g.text:'';
+    var it=item(s.b,String(x.n),x.l,{courses:'รายวิชาของแต่ละชั้น และครูผู้สอน',joint:'หลายชั้นเรียนด้วยกัน (ไม่บังคับ)',report:'ตรวจความพร้อมก่อนจัดตาราง',documents:'คำสั่ง ตารางรายครู/รายชั้น รายงาน · PDF / Word'}[x.k],function(){UX.go(x.k)},'tab-more-'+x.k,false,dot);
+    if(UX.cur()===x.k)it.classList.add('on')});
+  s.b.appendChild(el('div','ux-sheet-sep'));
+  item(s.b,'⌕','ค้นหาหรือสั่งงาน','ครู รายวิชา หน้า คำสั่ง',function(){if(UX.cmd)UX.cmd.open()},'tab-more-cmd');
+  item(s.b,'💾','บันทึก / สำรองไฟล์',(UX.backup?String(UX.backup.status().t||''):''),function(){UX.clickId('uxSave')},'tab-more-save');
+  if(UX.drive)item(s.b,'☁','Google Drive','ซิงก์ทุกเครื่อง',function(){UX.drive.open()},'tab-more-drive');
+  item(s.b,'⋯','เมนูทั้งหมด','แผน นำเข้า/ส่งออก ประวัติ เครื่องมือแบบเดิม',function(){var m=$('uxMore');if(m)m.click()},'tab-more-menu');
+  s.b.appendChild(el('p','ux-sheet-ver','WL Scheduler V'+UX.version));
+  if(!s.d.open)s.d.showModal()}
+
+/* ---- state ------------------------------------------------------------------------------------------------------------- */
+function sync(){
+  build();var yes=on(),b=document.body.classList;b.toggle('ux-tabs-on',yes);
+  var nav=$('uxTabs');if(!nav)return;nav.hidden=!yes;if(!yes){return}
+  var c=UX.cur(),fl=UX.facts&&UX.facts(),bd=fl?fl.list.badges:{};
+  var warn=function(k){var g=bd[k];return !!(g&&g.tone==='warn')};
+  var act={home:c==='overview',tt:c==='timetable',staff:c==='staff',more:OTHER.indexOf(c)>-1,gen:false};
+  var dot={home:false,tt:warn('timetable'),staff:warn('staff'),more:OTHER.some(warn),gen:false};
+  [].forEach.call(nav.querySelectorAll('.ux-tab'),function(t){var k=t.dataset.tab;t.classList.toggle('on',!!act[k]);
+    if(act[k])t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');t.classList.toggle('dot',!!dot[k])});
+  document.documentElement.style.setProperty('--ux-tabs-h',nav.offsetHeight+'px')}
+/* ⋯ → ตำแหน่งเมนู: on / off for this browser */
+function menu(){
+  var m=$('uxMenu'),after=$('uxNavBottom');if(!m||!after||$('uxNavTabs'))return;
+  var b=el('button',null,'');b.id='uxNavTabs';b.setAttribute('role','menuitemcheckbox');
+  b.addEventListener('click',function(e){e.stopPropagation();try{if(off())localStorage.removeItem(KEY);else localStorage.setItem(KEY,'off')}catch(x){}
+    label();sync();m.hidden=true;var mo=$('uxMore');if(mo)mo.setAttribute('aria-expanded','false');UX.toast(off()?'ใช้แถบล่างแบบเดิม (เลื่อนซ้ายขวา)':'ใช้แถบล่าง 5 ปุ่ม')});
+  after.parentNode.insertBefore(b,after.nextSibling);label()}
+function label(){var b=$('uxNavTabs');if(!b)return;var v=!off();b.textContent=(v?'✓ ':'')+'แถบล่าง 5 ปุ่ม (iPhone)';b.setAttribute('aria-checked',String(v))}
+UX.tabs={on:on,sync:sync,openGen:sheetGen,openMore:sheetMore};
+UX.onInit(function(){build();menu();sync()});UX.onSync(function(){menu();sync()});
+var t=0;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(sync,150)});
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -18198,7 +18778,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="e63bbda14f88";window.__UX_WEBAPP_LABEL="24.32";
+(function(){window.__UX_WEBAPP="616853a82033";window.__UX_WEBAPP_LABEL="24.34";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
