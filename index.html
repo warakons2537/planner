@@ -2344,6 +2344,17 @@ img.ux-logo-img{display:block;width:32px;height:32px;border-radius:9px;backgroun
 body.ux-rail img.ux-logo-img{margin:0 auto}
 body.ux-side #uxBar .ux-brand b.ux-brand-name{display:flex;flex-direction:column;align-items:flex-start;gap:1px}
 body.ux-side #uxBar .ux-brand b.ux-brand-name small{font-size:var(--ux-fs-xs);font-weight:500;color:var(--ux-ink-soft)}
+/* V24.35 "ย่อเมนู" button (wide screens, sidebar) */
+.ux-railbtn{display:none}
+:is(body.ux-side,body.ux-rail) .ux-railbtn:not([hidden]){display:flex;align-items:center;justify-content:center;position:absolute;top:16px;right:8px;z-index:62;width:30px;height:30px;border-radius:9px;
+  border:1px solid var(--ux-line);background:#fff;color:var(--ux-ink-soft);font:inherit;font-size:15px;font-weight:700;line-height:1;cursor:pointer;box-shadow:var(--ux-shadow)}
+:is(body.ux-side,body.ux-rail) .ux-railbtn:hover{color:var(--ux-brand);border-color:var(--ux-brand)}
+:is(body.ux-side,body.ux-rail) .ux-railbtn:focus-visible{outline:none;box-shadow:var(--ux-focus)}
+body.ux-side,body.ux-rail{transition:padding-left .18s ease}
+body.ux-side #uxBar,body.ux-rail #uxBar{transition:width .18s ease}
+@media (prefers-reduced-motion:reduce){body.ux-side,body.ux-rail,body.ux-side #uxBar,body.ux-rail #uxBar{transition:none}}
+body.ux-rail .ux-railbtn:not([hidden]){position:static;flex:none;margin:0 auto 4px}
+@media print{.ux-railbtn{display:none!important}body.ux-side,body.ux-rail,body.ux-side #uxBar,body.ux-rail #uxBar{transition:none!important}}
 
 /* >>> 60-order.css */
 /* 60-order.css — ชุดคำสั่งมอบหมายให้ปฏิบัติการสอน (js/60-order.js). The paper itself is styled by ASPCore.PAPER_CSS. */
@@ -14417,7 +14428,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.34',inits:[],syncs:[]};
+var UX=window.UX={version:'24.35',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -16020,7 +16031,16 @@ UX.runAction=function(a){
    pref (this browser): auto | side | bottom.  auto = left sidebar on Mac / iPad landscape (≥ 900 px wide and wider
    than tall, or ≥ 1280 px), bottom dock otherwise (iPad portrait, narrow windows). side below 700 px falls back to
    bottom (no room). Sidebar under 1280 px = icon rail. */
-var PREF='ux_nav_mode_v1',home={},lastMode='';
+var PREF='ux_nav_mode_v1',RAIL='ux_nav_rail_v1',home={},lastMode='';
+/* V24.35: "ย่อเมนู" — the user may fold the sidebar into the icon rail on a wide screen too (this browser only) */
+function railPref(){try{return localStorage.getItem(RAIL)==='1'}catch(e){return false}}
+function setRail(v){try{if(v)localStorage.setItem(RAIL,'1');else localStorage.removeItem(RAIL)}catch(e){}place();sync();UX.live(v?'ย่อเมนูแล้ว':'ขยายเมนูแล้ว')}
+function railBtn(){
+  var bar=$('uxBar');if(!bar)return;var b=$('uxRailBtn');
+  if(!b){b=document.createElement('button');b.type='button';b.id='uxRailBtn';b.className='ux-railbtn';b.onclick=function(){setRail(!railPref())};
+    var brand=bar.querySelector('.ux-brand');bar.insertBefore(b,brand?brand.nextSibling:bar.firstChild)}
+  var can=mode()==='side'&&window.innerWidth>=1280,r=railPref();b.hidden=!can;
+  b.textContent=r?'»':'«';b.setAttribute('aria-label',r?'ขยายเมนู':'ย่อเมนู');b.title=(r?'ขยายเมนู':'ย่อเมนู ให้พื้นที่งานกว้างขึ้น')+' (⌘\\)';b.setAttribute('aria-pressed',String(r))}
 function pref(){try{var v=localStorage.getItem(PREF);return v==='side'||v==='bottom'?v:'auto'}catch(e){return 'auto'}}
 function mode(){
   var p=pref(),w=window.innerWidth,h=window.innerHeight;
@@ -16045,17 +16065,18 @@ function moveBack(id){var n=$(id),h=home[id];if(n&&h&&n.parentNode!==h.parent)h.
 function place(){
   if(!head()||!$('uxTTActions'))return;
   ['uxTTActions','uxPlan','uxPlanManage','uxActions','uxCmdBtn'].forEach(remember);
-  var m=mode(),rail=m==='side'&&window.innerWidth<1280,b=document.body.classList;
+  var m=mode(),rail=m==='side'&&(window.innerWidth<1280||railPref()),b=document.body.classList;
   b.toggle('ux-side',m==='side');b.toggle('ux-rail',rail);b.toggle('ux-bottom',m==='bottom');
   moveTo('uxTTActions','uxHeadSlot');
   if(m==='bottom'||rail){moveTo('uxPlan','uxHeadPlan');moveTo('uxPlanManage','uxHeadPlan')}else{moveBack('uxPlan');moveBack('uxPlanManage')}
   if(m==='bottom'){moveTo('uxCmdBtn','uxHeadAct');moveTo('uxActions','uxHeadAct')}else{moveBack('uxCmdBtn');moveBack('uxActions')}
   if(m!==lastMode){lastMode=m;centerActive(true);setTimeout(sync,0)}
-  menuChecks();
+  menuChecks();railBtn();
 }
 function setPref(v){try{if(v==='auto')localStorage.removeItem(PREF);else localStorage.setItem(PREF,v)}catch(e){}
   place();UX.live(v==='side'?'เมนูอยู่ด้านซ้าย':v==='bottom'?'เมนูอยู่ด้านล่าง':'ตำแหน่งเมนูอัตโนมัติ')}
-UX.shell={mode:mode,pref:pref,setPref:setPref,on:function(){return !!document.body.classList.contains('ux-shell')}};
+document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&!e.altKey&&!e.shiftKey&&e.key==='\\'&&mode()==='side'&&window.innerWidth>=1280){e.preventDefault();setRail(!railPref())}});
+UX.shell={mode:mode,pref:pref,setPref:setPref,rail:railPref,setRail:setRail,on:function(){return !!document.body.classList.contains('ux-shell')}};
 
 /* bottom dock: keep the open step in view; mark steps with ⚠ that are scrolled out of sight */
 function centerActive(now){
@@ -16157,6 +16178,7 @@ function items(){
     cmd('versions','ฉบับตารางสอน: จัดหลายแบบในแผนเดียวแล้วเปรียบเทียบ',function(){if(UX.ttver){if(UX.cur()==='timetable'&&UX.tt.state.tab==='versions')return;UX.ttver.toggle()}else UX.go('timetable')},['ฉบับ','ฉบับตาราง','เปรียบเทียบตาราง','หลายแบบ','version','versions','compare']),
     cmd('start','เริ่มแผนใหม่: วางรายชื่อครู · สร้างรายวิชาจากหลักสูตร',function(){if(UX.starter)UX.starter.open()},['เริ่ม','ตัวช่วย','วางรายชื่อ','เพิ่มครูหลายคน','สร้างรายวิชา','start','wizard']),
     cmd('addcourse','เพิ่มรายวิชา (หลายชั้นพร้อมกันได้)',function(){UX.go('courses');setTimeout(function(){if(UX.addCourse)UX.addCourse.open()},300)},['เพิ่มวิชา','รายวิชาใหม่','add course']),
+    cmd('rail','ย่อ / ขยายเมนูด้านซ้าย (⌘\\)',function(){if(UX.shell&&UX.shell.setRail)UX.shell.setRail(!UX.shell.rail())},['ย่อเมนู','ขยายเมนู','ซ่อนเมนู','sidebar','rail','collapse']),
     cmd('plans','จัดการแผน: เลื่อนขึ้น-ลง เปลี่ยนชื่อ ลบ เลือกเสนอ',function(){UX.go('scenarios')},['plan','plans','แผน','เลื่อนแผน','ลบแผน','ลำดับแผน','scenarios']),
     cmd('compare','เปรียบเทียบทุกแผน',function(){UX.go('compare')},['compare']),
     cmd('recovery','จุดกู้คืน / ประวัติ',function(){UX.clickId(B.recovery)},['history','restore']),
@@ -18778,7 +18800,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="616853a82033";window.__UX_WEBAPP_LABEL="24.34";
+(function(){window.__UX_WEBAPP="a5523fb8c4f2";window.__UX_WEBAPP_LABEL="24.35";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
