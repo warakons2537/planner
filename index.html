@@ -2913,6 +2913,21 @@ body.ux-docs-on #documents.active>:not(#uxDocs){display:none!important}
 .ux-ts-cell.part{background:var(--ux-saffron-soft);color:var(--ux-saffron-ink)}
 .ux-ts-report{border-left:4px solid var(--ux-saffron);background:var(--ux-saffron-soft);padding:8px 12px;border-radius:8px}
 .ux-ts-report ul{margin:4px 0;padding-left:20px}
+/* V24.39 เลือกวิชาจากรายการ (กฎคาบเรียน) · ครูประจำชั้นพบนักเรียนคาบแรก */
+.ux-ts-subj{display:grid;gap:8px;margin:6px 0 10px}
+.ux-ts-subjh{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ux-ts-subjh input{flex:1 1 180px;min-width:0;max-width:280px;font:inherit;padding:8px 10px;min-height:40px;border:1px solid #c9d4df;border-radius:10px}
+.ux-ts-subjsel,.ux-ts-subjlist{display:flex;flex-wrap:wrap;gap:6px}
+.ux-ts-subjlist{max-height:188px;overflow:auto;padding:8px;border:1px solid var(--ux-line);border-radius:10px;background:var(--ux-page)}
+.ux-ts-subjlist .ux-ts-tog small{opacity:.6;font-size:11px}
+.ux-ts-hr{border-collapse:collapse;width:100%;max-width:720px}
+.ux-ts-hr th,.ux-ts-hr td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--ux-line);font-size:var(--ux-fs-md);vertical-align:middle}
+.ux-ts-hr tr:first-child th{font-size:var(--ux-fs-sm);color:var(--ux-ink-soft)}
+.ux-ts-hr select{font:inherit;min-height:38px;max-width:220px}
+.ux-ts-hrst.ok{color:var(--ux-ok);font-weight:700}
+.ux-ts-hrst.warn{color:var(--ux-warn);font-weight:700}
+.ux-ts-hrst.bad{color:var(--ux-bad)}
+.ux-ts-hrwarn{margin:8px 0;padding:8px 10px;border-radius:10px;background:var(--ux-warn-bg);color:var(--ux-warn);font-size:var(--ux-fs-md)}
 
 /* >>> 65-ttversions.css */
 /* 65-ttversions.css — "⧉ ฉบับ" tab of the timetable page (V24.28) */
@@ -3226,6 +3241,23 @@ body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-a
 .ux-se-sum.warn{color:var(--ux-saffron-ink)}
 .ux-se-tbl{font-size:var(--ux-fs-sm)}
 .ux-se-tbl th{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+
+/* >>> 72-homeroom.css */
+/* 72-homeroom.css — ครูประจำชั้น window (V24.40) */
+.ux-hr{width:min(760px,calc(100vw - 24px))}
+.ux-hr-lead{margin:0 0 12px;color:var(--ux-ink-soft);font-size:var(--ux-fs-md);line-height:1.55}
+.ux-hr-tbl{border-collapse:collapse;width:100%}
+.ux-hr-tbl th,.ux-hr-tbl td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--ux-line);vertical-align:middle;font-size:var(--ux-fs-md)}
+.ux-hr-tbl thead th{font-size:var(--ux-fs-sm);color:var(--ux-ink-soft)}
+.ux-hr-tbl tbody th{width:56px}
+.ux-hr-tbl select{font:inherit;min-height:40px;width:100%;max-width:240px}
+.ux-hr-note{font-size:var(--ux-fs-sm);color:var(--ux-ink-soft)}
+.ux-hr-note.warn{color:var(--ux-warn)}
+.ux-hr-sum{margin:10px 0 0;font-weight:700}
+.ux-say-foot .ux-hr-sp{flex:1}
+.ux-hr-tag{display:block;font-size:var(--ux-fs-xs);font-weight:700;color:var(--ux-brand);margin-top:2px}
+@media (max-width:600px){.ux-hr-tbl thead{display:none}.ux-hr-tbl tr{display:grid;grid-template-columns:56px 1fr;gap:4px 8px;padding:6px 0;border-bottom:1px solid var(--ux-line)}
+  .ux-hr-tbl th,.ux-hr-tbl td{border:0;padding:2px 0}.ux-hr-tbl tbody th{grid-row:span 3}.ux-hr-tbl select{max-width:none}}
 
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0a5a9c"></head>
 <body class=""><noscript id="ux-noscript"><style>body>*:not(noscript){display:none!important}</style><div style="max-width:560px;margin:40px auto;padding:24px;font:17px/1.6 -apple-system,Sukhumvit Set,Tahoma,sans-serif;color:#152a3c"><h1 style="font-size:22px;margin:0 0 12px">WL Scheduler ต้องเปิดในเบราว์เซอร์</h1><p>ไฟล์นี้เป็นโปรแกรม ตัวดูไฟล์ (แอปไฟล์ของ iPhone/iPad, LINE, Messenger, อีเมล) แสดงได้เพียงภาพนิ่งของหน้าจอ จึงกดใช้งานไม่ได้ และไม่บันทึกอะไร</p><p style="margin:16px 0 6px"><b>วิธีเปิด</b></p><ul style="margin:0;padding-left:22px"><li><b>Mac / คอมพิวเตอร์:</b> ดับเบิลคลิกไฟล์ (Safari หรือ Chrome)</li><li><b>iPad / iPhone:</b> ใช้ WL Scheduler แบบเว็บแอปที่ติดตั้งบนหน้าจอโฮม (ดู WEBAPP.md) แล้วนำเข้าไฟล์สำรอง .json หรือเปิดไฟล์ในแอปที่มีเบราว์เซอร์ในตัว</li></ul></div></noscript><header><div><div class="eyebrow">TEACHING PLANNER V12.4 · DOCUMENT WORKSPACE</div><h1>ระบบวางแผนรายวิชาและอัตรากำลังครู</h1><p>จัดสรรวิชา · จัดการเรียนรวม · ตรวจสอบภาระงาน · เปรียบเทียบแผน</p></div><div class="header-actions"><button class="btn dark" disabled="" id="undoBtn" title="ย้อนกลับการแก้ไขล่าสุด (Ctrl+Z เมื่อไม่ได้พิมพ์ข้อความ)">↶ ย้อนกลับ</button><button class="btn dark" disabled="" id="redoBtn" title="ทำซ้ำการแก้ไขที่ย้อนกลับไป (Ctrl+Y)">↷ ทำซ้ำ</button><button class="btn dark" id="v11HelpQuick" title="เปิดคำแนะนำการใช้งานสำหรับผู้ใช้ใหม่" type="button">? วิธีใช้</button><span class="undo-info" id="undoInfo">ย้อนกลับได้ 100 ขั้นในครั้งที่เปิดใช้งาน</span><button class="btn dark" id="exportHtml" title="บันทึกข้อมูลลงในโปรแกรม HTML เพื่อเปิดต่อได้แม้เปลี่ยนเครื่อง">💾 บันทึกแผนพร้อมโปรแกรม .html</button><button class="btn dark" id="connectFile" title="เลือกไฟล์ JSON ที่ให้โปรแกรมเขียนทุกครั้งเมื่อแก้ไข (รองรับใน Chrome / Edge บางสภาพแวดล้อม)">เชื่อมไฟล์บันทึกอัตโนมัติ</button><button class="btn dark" id="exportJson">สำรองข้อมูล .json</button><button class="btn dark" id="exportCsv">ส่งออก Excel (.csv)</button><button class="btn dark" id="importBtn">นำเข้าข้อมูล</button><input accept=".json,application/json" hidden="" id="importFile" type="file"><details class="v11-save-details no-print" id="v11SaveDetails"><summary>บันทึก / นำเข้า ▾</summary><div class="v11-save-buttons" id="v11SaveButtons"></div></details></div></header>
@@ -10952,6 +10984,8 @@ var ASPCore = (() => {
     DOUBLE_UNPAIRED: () => DOUBLE_UNPAIRED,
     FREE_SPLIT: () => FREE_SPLIT,
     HARD_RULES: () => HARD_RULES,
+    HOMEROOM_HARD: () => HOMEROOM_HARD,
+    HOMEROOM_SHORT: () => HOMEROOM_SHORT,
     MIN_DAILY_SHORT: () => MIN_DAILY_SHORT,
     MOBILITY_WEIGHTS: () => MOBILITY_WEIGHTS,
     NL_EXAMPLES: () => NL_EXAMPLES,
@@ -11028,6 +11062,11 @@ var ASPCore = (() => {
     hardSlotOk: () => hardSlotOk,
     heavyLate: () => heavyLate,
     heavyRun: () => heavyRun,
+    homeroomConfig: () => homeroomConfig,
+    homeroomCost: () => homeroomCost,
+    homeroomDays: () => homeroomDays,
+    homeroomMeets: () => homeroomMeets,
+    homeroomReport: () => homeroomReport,
     hoursText: () => hoursText,
     isDouble: () => isDouble,
     isExtra: () => isExtra,
@@ -11082,7 +11121,9 @@ var ASPCore = (() => {
     slotProblem: () => slotProblem,
     slotRuleBroken: () => slotRuleBroken,
     slotRuleKeywords: () => slotRuleKeywords,
+    slotRuleLabel: () => slotRuleLabel,
     slotRuleMatches: () => slotRuleMatches,
+    slotRuleSubjects: () => slotRuleSubjects,
     slotRulesFor: () => slotRulesFor,
     softSlotBreaks: () => softSlotBreaks,
     staffFlags: () => staffFlags,
@@ -11149,14 +11190,32 @@ var ASPCore = (() => {
   function slotRuleKeywords(rule) {
     return String(rule.keyword ?? "").split(/[,，;]/).map((x) => x.trim().toLowerCase()).filter(Boolean);
   }
+  var plainSubject = (s) => String(s ?? "").replace(/^(?:ป|ม|อ)\.\d+(?:\s*[-–]\s*(?:ป|ม|อ)?\.?\d+)?\s*/, "").trim().toLowerCase();
   function slotRuleMatches(e, rule) {
     if (!rule || rule.off) return false;
     const keys = slotRuleKeywords(rule), grades = (rule.grades ?? []).filter(Boolean);
     if (!keys.length && !grades.length) return false;
     const names = [e.origin, ...e.subjects].map((x) => String(x).toLowerCase());
-    if (keys.length && !keys.some((k) => names.some((n2) => n2.includes(k)))) return false;
+    const exact = [e.origin, ...e.subjects].map(plainSubject);
+    if (keys.length && !keys.some((k) => k.startsWith("=") ? exact.includes(k.slice(1).trim()) : names.some((n2) => n2.includes(k)))) return false;
     if (grades.length && !e.grades.some((g) => grades.includes(g))) return false;
     return true;
+  }
+  function slotRuleSubjects(events) {
+    const by = /* @__PURE__ */ new Map();
+    for (const e of events) {
+      const raw = String(e.subjects[0] ?? e.origin ?? "").replace(/^(?:ป|ม|อ)\.\d+(?:\s*[-–]\s*(?:ป|ม|อ)?\.?\d+)?\s*/, "").trim();
+      const key2 = raw.toLowerCase();
+      if (!key2) continue;
+      const x = by.get(key2) ?? by.set(key2, { name: raw, lessons: 0, grades: /* @__PURE__ */ new Set() }).get(key2);
+      x.lessons += e.duration === 1 ? 1 : 0.5;
+      for (const g of e.grades) x.grades.add(g);
+    }
+    return [...by.values()].map((x) => ({ name: x.name, lessons: x.lessons, grades: [...x.grades] })).sort((a, b) => a.name.localeCompare(b.name, "th"));
+  }
+  function slotRuleLabel(rule) {
+    const k = String(rule.keyword ?? "").split(/[,，;]/).map((x) => x.trim().replace(/^=\s*/, "")).filter(Boolean).join(", ");
+    return k || (rule.grades ?? []).join(", ");
   }
   function slotRuleBroken(e, slot, periods, rule) {
     const days = rule.days ?? [], per = rule.periods ?? [];
@@ -11262,7 +11321,7 @@ var ASPCore = (() => {
         add({ rule: "dayRule", message: `${e.subjects.join(" / ")} ลงวัน${dayName2(day)} ซึ่งกฎวันเรียนไม่อนุญาต`, taskIds: [id], day, slot });
       }
       for (const r of slotRulesFor(e, setup.slotRules, "hard")) if (slotRuleBroken(e, slot, periods, r)) {
-        add({ rule: "slotRule", message: `${e.subjects.join(" / ")} ลง${where(slot)} ซึ่งกฎคาบเรียน “${r.keyword || (r.grades ?? []).join(", ")}” ${r.mode === "avoid" ? "ห้ามลง" : "ไม่อนุญาต"}`, taskIds: [id], day, slot });
+        add({ rule: "slotRule", message: `${e.subjects.join(" / ")} ลง${where(slot)} ซึ่งกฎคาบเรียน “${slotRuleLabel(r)}” ${r.mode === "avoid" ? "ห้ามลง" : "ไม่อนุญาต"}`, taskIds: [id], day, slot });
         break;
       }
       for (const cell4 of cellsOf(e.duration, slot)) {
@@ -11642,6 +11701,48 @@ var ASPCore = (() => {
     });
   }
 
+  // core/src/homeroom.ts
+  var HOMEROOM_SHORT = 250;
+  var HOMEROOM_HARD = 3;
+  function homeroomConfig(policy, homeroom, days) {
+    const p = policy ?? {}, min = Math.max(0, Math.min(days, Math.round(Number(p.homeroomFirstMin) || 0)));
+    if (!min) return null;
+    const teachers = /* @__PURE__ */ new Map();
+    for (const [g, ids] of Object.entries(homeroom ?? {})) {
+      const s = new Set((Array.isArray(ids) ? ids : []).map(String).filter(Boolean));
+      if (g && s.size) teachers.set(g, s);
+    }
+    if (!teachers.size) return null;
+    return { min, hard: !!p.enforceHomeroomFirst, teachers };
+  }
+  function homeroomMeets(e, slot, grade, periods, ids) {
+    if (!e.grades.includes(grade) || !e.teachers.some((t) => ids.has(t))) return false;
+    return cellsOf(e.duration, slot).some((c) => slotPosition(c, periods).period === 0);
+  }
+  function homeroomDays(list2, grade, periods, ids) {
+    const out = /* @__PURE__ */ new Set();
+    for (const p of list2) if (homeroomMeets(p.e, p.slot, grade, periods, ids)) out.add(slotPosition(p.slot, periods).day);
+    return out;
+  }
+  function homeroomCost(met, cfg) {
+    return Math.max(0, cfg.min - met) * HOMEROOM_SHORT * (cfg.hard ? HOMEROOM_HARD : 1);
+  }
+  function homeroomReport(events, placements, periods, cfg) {
+    if (!cfg) return [];
+    const rows = [];
+    for (const [grade, ids] of cfg.teachers) {
+      const mine = events.filter((e) => e.grades.includes(grade) && e.teachers.some((t) => ids.has(t)));
+      const placed = mine.flatMap((e) => {
+        const p = placements[e.id];
+        return p && Number.isInteger(p.slot) ? [{ e, slot: p.slot }] : [];
+      });
+      const days = [...homeroomDays(placed, grade, periods, ids)].sort((a, b) => a - b);
+      const possible = mine.reduce((n2, e) => n2 + (e.duration === 1 ? 1 : 0.5), 0);
+      rows.push({ grade, teachers: [...ids], days, met: days.length, min: cfg.min, ok: days.length >= cfg.min, possible });
+    }
+    return rows;
+  }
+
   // core/src/optimize.ts
   var COVER_WEIGHT = 30;
   function coverConfig(raw) {
@@ -11664,6 +11765,7 @@ var ASPCore = (() => {
     const pol = policyConfig(setup.schedulePolicy, periods);
     const mob = mobilityConfig(setup.mobility);
     const cov = coverConfig(setup.substituteCoverage);
+    const hr = homeroomConfig(setup.schedulePolicy, setup.homeroom, days);
     const random = rng(options.seed ?? 1);
     const maxSteps = options.maxSteps ?? 4e4, patience = options.patience ?? 15e3;
     const events = new Map(input.events.map((e) => [e.id, e]));
@@ -11764,8 +11866,22 @@ var ASPCore = (() => {
           const id = key2.slice(2), f = info.get(id);
           return softSlotBreaks(events.get(id), slot.get(id), periods, f.soft) * SLOT_RULE_SOFT;
         }
+        case "HR":
+          return hr ? homeroomCost(hrMet(a), hr) : 0;
       }
       return 0;
+    }
+    function hrMet(g) {
+      const ids = hr?.teachers.get(g);
+      if (!ids) return 0;
+      let n2 = 0;
+      for (let d = 0; d < days; d++) {
+        for (const id of index.get(`G|${g}|${d}`) ?? []) if (homeroomMeets(events.get(id), slot.get(id), g, periods, ids)) {
+          n2++;
+          break;
+        }
+      }
+      return n2;
     }
     function coverAt(c, shortIds) {
       let cost = 0;
@@ -11798,6 +11914,9 @@ var ASPCore = (() => {
       }
       out.add(`L|${id}`);
       if (f.soft.length) out.add(`R|${id}`);
+      if (hr) {
+        for (const g of e.grades) if (hr.teachers.has(g)) out.add(`HR|${g}`);
+      }
       if (cov.enabled) for (const c of cellsOf(e.duration, s)) out.add(`CV|${c}`);
     }
     const sum = (keys) => {
@@ -11806,7 +11925,7 @@ var ASPCore = (() => {
       return c;
     };
     function summary() {
-      let policy = 0, mobility = 0, violations = 0, cover = 0, coverable = 0, prefer = 0, preferMissed = 0;
+      let policy = 0, mobility = 0, violations = 0, cover = 0, coverable = 0, prefer = 0, preferMissed = 0, homeroom = 0, homeroomShort = 0;
       const short = /* @__PURE__ */ new Set();
       if (cov.enabled) for (const id of slot.keys()) {
         const b = info.get(id).building;
@@ -11832,11 +11951,30 @@ var ASPCore = (() => {
           if (c2 > 0) preferMissed++;
           continue;
         }
+        if (k.startsWith("HR|")) {
+          const c2 = unitCost(k);
+          homeroom += c2;
+          if (c2 > 0) homeroomShort++;
+          continue;
+        }
         const c = unitCost(k);
         if (k[0] === "M" || k[0] === "L") mobility += c;
         else policy += c;
       }
-      return { violations, policy, mobility, cover, uncovered: short.size, coverable, uncoveredIds: [...short], prefer, preferMissed, total: policy + mobility + cover + prefer };
+      return {
+        violations,
+        policy,
+        mobility,
+        cover,
+        uncovered: short.size,
+        coverable,
+        uncoveredIds: [...short],
+        prefer,
+        preferMissed,
+        homeroom,
+        homeroomShort,
+        total: policy + mobility + cover + prefer + homeroom
+      };
     }
     const movable = [...slot.keys()].filter((id) => !original[id]?.locked);
     const start = summary();
@@ -11862,7 +12000,7 @@ var ASPCore = (() => {
       }
       return null;
     }
-    function attempt(ids, targets, temperature) {
+    function attempt(ids, targets, temperature, dry = false) {
       const from = ids.map((id) => slot.get(id));
       const keys = /* @__PURE__ */ new Set();
       ids.forEach((id, n2) => {
@@ -11872,7 +12010,7 @@ var ASPCore = (() => {
       const before = sum(keys);
       ids.forEach((id, n2) => touch(id, from[n2], -1));
       const placed = [];
-      let ok = true;
+      let ok = true, delta = NaN;
       for (let n2 = 0; n2 < ids.length && ok; n2++) {
         if (legal(events.get(ids[n2]), targets[n2])) {
           slot.set(ids[n2], targets[n2]);
@@ -11881,8 +12019,8 @@ var ASPCore = (() => {
         } else ok = false;
       }
       if (ok) {
-        const delta = sum(keys) - before;
-        if (delta <= 0 || temperature > 0 && random() < Math.exp(-delta / temperature)) {
+        delta = sum(keys) - before;
+        if (!dry && (delta <= 0 || temperature > 0 && random() < Math.exp(-delta / temperature))) {
           current += delta;
           return true;
         }
@@ -11892,7 +12030,36 @@ var ASPCore = (() => {
         slot.set(id, from[n2]);
         touch(id, from[n2], 1);
       });
-      return false;
+      return dry ? delta : false;
+    }
+    function homeroomMove(temperature) {
+      const short = [...hr.teachers.keys()].filter((g2) => hrMet(g2) < hr.min);
+      if (!short.length) return false;
+      const g = pick(short), ids = hr.teachers.get(g);
+      const mine = movable.filter((x2) => {
+        const o = events.get(x2);
+        return o.grades.includes(g) && o.teachers.some((t) => ids.has(t)) && slotPosition(slot.get(x2), periods).period !== 0;
+      });
+      const free = Array.from({ length: days }, (_, d2) => d2).filter((d2) => ![...index.get(`G|${g}|${d2}`) ?? []].some((x2) => homeroomMeets(events.get(x2), slot.get(x2), g, periods, ids)));
+      if (!mine.length || !free.length) return false;
+      const x = pick(mine), ex = events.get(x), from = slot.get(x);
+      const target = slotOf(pick(free), 0, 0, periods), cells = new Set(cellsOf(ex.duration, target)), d = slotPosition(target, periods).day;
+      const out = /* @__PURE__ */ new Set();
+      for (const k of [...ex.grades.map((gg) => `G|${gg}|${d}`), ...ex.teachers.map((t) => `T|${t}|${d}`)])
+        for (const y of index.get(k) ?? []) if (y !== x && cellsOf(events.get(y).duration, slot.get(y)).some((c) => cells.has(c))) out.add(y);
+      const moving = [...out];
+      if (moving.length > 2 || moving.some((y) => original[y]?.locked)) return true;
+      let bestT = null, bestD = Infinity;
+      for (let k = 0; k < 8; k++) {
+        const targets = moving.map((y, n2) => k === 0 && n2 === 0 && events.get(y).duration === ex.duration ? from : pick(candidates(events.get(y))));
+        const dl = attempt([x, ...moving], [target, ...targets], 0, true);
+        if (Number.isFinite(dl) && dl < bestD) {
+          bestD = dl;
+          bestT = targets;
+        }
+      }
+      if (bestT) attempt([x, ...moving], [target, ...bestT], temperature);
+      return true;
     }
     if (movable.length) {
       const byGrade = /* @__PURE__ */ new Map();
@@ -11909,6 +12076,16 @@ var ASPCore = (() => {
             const mine = [...index.get(`T|${t}|${d}`) ?? []].filter((x) => !original[x]?.locked);
             if (mine.length) id = pick(mine);
           }
+        }
+        if (!id && hr && random() < 0.2 && homeroomMove(temperature)) {
+          if (current < best.total - 1e-9) {
+            best = summary();
+            current = best.total;
+            bestSlots = new Map(slot);
+            sinceBest = 0;
+            options.onProgress?.({ step, best, start });
+          }
+          continue;
         }
         id ?? (id = pick(movable));
         const e = events.get(id);
@@ -12198,6 +12375,7 @@ var ASPCore = (() => {
     const outOfTime = () => !!(options.timeBudgetMs && now && now() - t0 > options.timeBudgetMs);
     const events = new Map(input.events.map((e) => [e.id, e]));
     const pol = policyConfig(setup.schedulePolicy, periods);
+    const hr = homeroomConfig(setup.schedulePolicy, setup.homeroom, days);
     const teacherInfo = new Map(input.teachers.map((t) => [t.id, t]));
     const active = (t) => {
       const i = teacherInfo.get(t);
@@ -12271,6 +12449,15 @@ var ASPCore = (() => {
       put(id, p.slot);
       locked[id] = { ...p };
     }
+    function hrMetOn(g, ids, d) {
+      for (const t of ids) for (const x of byDay.get(`T|${t}|${d}`) ?? []) if (homeroomMeets(events.get(x), slot.get(x), g, periods, ids)) return true;
+      return false;
+    }
+    function hrMet(g, ids) {
+      let n2 = 0;
+      for (let d = 0; d < days; d++) if (hrMetOn(g, ids, d)) n2++;
+      return n2;
+    }
     function slotCost(e, s) {
       const d = slotPosition(s, periods).day;
       let c = 0;
@@ -12285,6 +12472,11 @@ var ASPCore = (() => {
           c += subjectDayCost([...list2, { e, slot: s }], periods, pol) - subjectDayCost(list2, periods, pol);
         }
       } else for (const g of e.grades) c += 40 * (byDay.get(`S|${g}|${subj.get(e.id)}|${d}`)?.size ?? 0);
+      if (hr && slotPosition(s, periods).period === 0) for (const g of e.grades) {
+        const ids = hr.teachers.get(g);
+        if (!ids || hrMet(g, ids) >= hr.min) continue;
+        c += homeroomMeets(e, s, g, periods, ids) ? hrMetOn(g, ids, d) ? 0 : -600 : 150;
+      }
       return c + random() * 3;
     }
     const queue = input.events.filter((e) => !locked[e.id] && own.get(e.id).length).map((e) => e.id);
@@ -14735,7 +14927,7 @@ var ASPCore = (() => {
   }
 
   // core/src/index.ts
-  var VERSION = "0.21.0";
+  var VERSION = "0.22.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -14744,7 +14936,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.38',inits:[],syncs:[]};
+var UX=window.UX={version:'24.40',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -15821,8 +16013,10 @@ function input(){
     placements:JSON.parse(JSON.stringify(t.placements||{})),
     teachers:db.teachers.map(function(x){return {id:x.id,name:x.name,team:!!x.team,status:x.status}}),
     setup:{days:t.days.slice(),periods:t.periods,teacherBlocks:t.teacherBlocks.slice(),dayRules:JSON.parse(JSON.stringify(t.dayRules||[])),
-      taskRooms:Object.assign({},t.taskRooms||{}),schedulePolicy:policy(t),mobility:t.mobility||null,substituteCoverage:t.substituteCoverage||null,slotRules:JSON.parse(JSON.stringify(t.slotRules||[]))}};
+      taskRooms:Object.assign({},t.taskRooms||{}),schedulePolicy:policy(t),mobility:t.mobility||null,substituteCoverage:t.substituteCoverage||null,slotRules:JSON.parse(JSON.stringify(t.slotRules||[])),homeroom:homerooms()}};
 }
+/* V24.39 ครูประจำชั้น (teacher details: profile.homeroom) → { grade: [teacher ids] } for the homeroom-first-period rule */
+function homerooms(){var o={};db.teachers.forEach(function(x){if(x.team||x.status!=='active')return;((x.profile||{}).homeroom||[]).forEach(function(g){if(g)(o[g]=o[g]||[]).push(x.id)})});return o}
 /* คาบคู่ (V24.15): a pair may not span the lunch break — the break is a document setting, so pass it along (only when
    double periods are in use: everything else sees the original policy object unchanged) */
 function policy(t){
@@ -15937,7 +16131,7 @@ function build(){
   if(gen)gen.addEventListener('click',function(){if(UX.gen)return;setTimeout(function(){var v=violations();
     if(v>0)UX.toast('สร้างตารางแล้ว แต่ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับให้ดีขึ้น',start)},1600)});
 }
-UX.optimize={start:start,input:input,violations:violations};
+UX.optimize={homerooms:homerooms,start:start,input:input,violations:violations};
 UX.onInit(build);
 })(window.UX);
 
@@ -16258,7 +16452,7 @@ if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
 var C=window.ASPCore,run=0,worker=null,S={busy:false,last:null,mode:''};
 
 function lockSig(){var p=db.timetable.placements||{},o={};Object.keys(p).sort().forEach(function(k){if(p[k]&&p[k].locked)o[k]=p[k].slot});return JSON.stringify(o)}
-function sig(){return ttSourceKey()+'§'+lockSig()+'§'+JSON.stringify([db.timetable.days,db.timetable.periods,db.timetable.teacherBlocks,db.timetable.taskRooms,db.timetable.schedulePolicy,db.timetable.mobility,db.timetable.slotRules])}
+function sig(){return ttSourceKey()+'§'+lockSig()+'§'+JSON.stringify([db.timetable.days,db.timetable.periods,db.timetable.teacherBlocks,db.timetable.taskRooms,db.timetable.schedulePolicy,db.timetable.mobility,db.timetable.slotRules,UX.optimize&&UX.optimize.homerooms?UX.optimize.homerooms():null])}
 
 /* after generating (in the Worker, or in the page without one) — self-contained, it is sent to the Worker as text:
    1. enforced policy is a limit: leave out the fewest lessons that would break it, then put back any that now fit
@@ -16736,6 +16930,7 @@ function items(){
     cmd('start','เริ่มแผนใหม่: วางรายชื่อครู · สร้างรายวิชาจากหลักสูตร',function(){if(UX.starter)UX.starter.open()},['เริ่ม','ตัวช่วย','วางรายชื่อ','เพิ่มครูหลายคน','สร้างรายวิชา','start','wizard']),
     cmd('addcourse','เพิ่มรายวิชา (หลายชั้นพร้อมกันได้)',function(){UX.go('courses');setTimeout(function(){if(UX.addCourse)UX.addCourse.open()},300)},['เพิ่มวิชา','รายวิชาใหม่','add course']),
     cmd('rail','ย่อ / ขยายเมนูด้านซ้าย (⌘\\)',function(){if(UX.shell&&UX.shell.setRail)UX.shell.setRail(!UX.shell.rail())},['ย่อเมนู','ขยายเมนู','ซ่อนเมนู','sidebar','rail','collapse']),
+    cmd('homeroom','ครูประจำชั้น: ครูท่านไหนประจำชั้นอะไร',function(){if(UX.homeroom)UX.homeroom.open()},['ประจำชั้น','ครูประจำชั้น','ที่ปรึกษา','homeroom']),
     cmd('subexport','ส่งออกสำหรับระบบสอนแทน (CSV)',function(){if(UX.subExport)UX.subExport.open()},['สอนแทน','csv','ส่งออก','ระบบสอนแทน','substitute','export']),
     cmd('plans','จัดการแผน: เลื่อนขึ้น-ลง เปลี่ยนชื่อ ลบ เลือกเสนอ',function(){UX.go('scenarios')},['plan','plans','แผน','เลื่อนแผน','ลบแผน','ลำดับแผน','scenarios']),
     cmd('compare','เปรียบเทียบทุกแผน',function(){UX.go('compare')},['compare']),
@@ -18505,7 +18700,12 @@ function templates(){var n=P(),l=lunchAt(),last=days().length-1;return [
   {k:'core',label:'วิชาหลักเรียนช่วงเช้า',r:{keyword:'ภาษาไทย, คณิตศาสตร์, วิทยาศาสตร์, ภาษาอังกฤษ',mode:'only',days:[],periods:range(0,l),strength:'soft'}},
   {k:'pe',label:'พลศึกษา ไม่เรียนคาบแรกหลังพักเที่ยง',r:{keyword:'พลศึกษา, พละ',mode:'avoid',days:[],periods:[l],strength:'soft'}},
   {k:'more',label:'ลดเวลาเรียน เพิ่มเวลารู้: ช่วงบ่าย',r:{keyword:'ลดเวลาเรียน, เพิ่มเวลารู้',mode:'only',days:[],periods:range(l,n),strength:'soft'}}]}
-function newForm(){return {keyword:'',grades:[],mode:'only',days:[],periods:[],strength:'hard'}}
+function newForm(){return {keyword:'',picked:[],grades:[],mode:'only',days:[],periods:[],strength:'hard'}}
+/* V24.39: subjects picked from the list are stored as "=ชื่อวิชา" (exactly that subject); typed text still matches any name containing it */
+function splitKw(k){var out={picked:[],typed:[]};String(k||'').split(/[,，;]/).forEach(function(x){x=x.trim();if(!x)return;if(x.charAt(0)==='=')out.picked.push(x.slice(1).trim());else out.typed.push(x)});return out}
+function formKeyword(f){return (f.picked||[]).map(function(n){return '='+n}).concat(splitKw(f.keyword).typed).join(', ')}
+function formRule(f){return Object.assign({},f,{keyword:formKeyword(f)})}
+function subjectList(){try{return C.slotRuleSubjects(ttBuild().events)}catch(e){return []}}
 function ruleText(r){var d=(r.days||[]).length?'วัน'+r.days.map(function(x){return days()[x]||'?'}).join(' '):'ทุกวัน',
   p=(r.periods||[]).length?'คาบ '+r.periods.map(function(x){return x+1}).join(','):'ทุกคาบ';
   return (r.mode==='avoid'?'ห้ามลง ':'ลงได้เฉพาะ ')+d+' · '+p+((r.grades||[]).length?' · ชั้น '+r.grades.join(' '):'')}
@@ -18519,7 +18719,7 @@ function secRules(b){
   rs.forEach(function(r,i){var li=el('li'+'');li.className=r.off?'off':'';
     var on=el('input');on.type='checkbox';on.checked=!r.off;on.dataset.k='ts-sr-on-'+i;on.setAttribute('aria-label','ใช้กฎ '+r.keyword);
     on.onchange=function(){change(function(){db.timetable.slotRules[i]=Object.assign({},db.timetable.slotRules[i],{off:!on.checked})})};li.appendChild(on);
-    li.appendChild(el('b',null,r.keyword||('ชั้น '+(r.grades||[]).join(' '))));li.appendChild(el('span',null,' '+ruleText(r)+' · ตรงกับ '+matchCount(r)+' รายการ '));
+    li.appendChild(el('b',null,C.slotRuleLabel?C.slotRuleLabel(r):(r.keyword||('ชั้น '+(r.grades||[]).join(' ')))));li.appendChild(el('span',null,' '+ruleText(r)+' · ตรงกับ '+matchCount(r)+' รายการ '));
     li.appendChild(pick('',r.strength==='soft'?'soft':'hard',MODE,function(v){change(function(){db.timetable.slotRules[i]=Object.assign({},db.timetable.slotRules[i],{strength:v})})},'ts-sr-str-'+i));
     var x=btn('ux-asg-x','✕',function(){change(function(){db.timetable.slotRules.splice(i,1)},'ลบกฎคาบเรียนแล้ว (ย้อนกลับได้)')},'ลบกฎ '+r.keyword);x.dataset.k='ts-sr-del-'+i;li.appendChild(x);ul.appendChild(li)});
   if(!rs.length)ul.appendChild(el('li','ux-tt-hint','ยังไม่มีกฎคาบเรียน — เลือกแม่แบบด้านล่าง หรือกำหนดเอง'));
@@ -18534,15 +18734,31 @@ function secRules(b){
       if(ms.length&&ms.length===d.events.filter(function(e){return C.slotRuleMatches(e,r)}).length){var dd={},pp={};
         ms.forEach(function(e){var c=pl[e.id].slot,pos=Math.floor(c/2);dd[Math.floor(pos/P())]=1;pp[pos%P()]=1});
         if(Object.keys(dd).length===1){r.days=Object.keys(dd).map(Number);r.periods=Object.keys(pp).map(Number).sort(function(a,b){return a-b});S.tplNote='ใช้วันและคาบที่ล็อกไว้ในตารางตอนนี้'}}else S.tplNote=''}catch(e){S.tplNote=''}
-    S.form=Object.assign(newForm(),r);refill()};
+    var sp=splitKw(r.keyword);S.form=Object.assign(newForm(),r,{keyword:sp.typed.join(', '),picked:sp.picked});refill()};
   box.appendChild(tp);if(S.tplNote){box.appendChild(el('small','ux-tt-hint',S.tplNote));S.tplNote=''}
-  var row=el('div','ux-ts-row'),kw=el('input');kw.value=f.keyword;kw.placeholder='ชื่อวิชาหรือบางส่วน คั่นด้วย , เช่น ลูกเสือ, เนตรนารี';kw.dataset.k='ts-sr-kw';kw.setAttribute('aria-label','ชื่อวิชา');
-  kw.oninput=function(){f.keyword=kw.value;var c=row.querySelector('.ux-ts-count');if(c)c.textContent='ตรงกับ '+matchCount(f)+' รายการ'};row.appendChild(kw);
+  /* V24.39 เลือกวิชาจากรายการ (แตะเพื่อเลือก/เลิกเลือก) แทนการพิมพ์ชื่อเต็ม */
+  f.picked=f.picked||[];
+  var subs=subjectList(),pk=el('div','ux-ts-subj');pk.dataset.k='ts-sr-subjects';
+  var ph=el('div','ux-ts-subjh');ph.appendChild(el('span','ux-ts-rl','วิชา'));
+  var find=el('input');find.type='search';find.placeholder='ค้นหาวิชา…';find.value=S.subjFind||'';find.dataset.k='ts-sr-find';find.setAttribute('aria-label','ค้นหาวิชาในรายการ');ph.appendChild(find);
+  ph.appendChild(el('small','ux-tt-hint',f.picked.length?'เลือกแล้ว '+f.picked.length+' วิชา':'แตะชื่อวิชาเพื่อเลือก (เลือกได้หลายวิชา)'));pk.appendChild(ph);
+  var sel=el('div','ux-ts-subjsel');f.picked.forEach(function(n){var c=btn('ux-ts-tog on',n+' ✕',function(){f.picked.splice(f.picked.indexOf(n),1);refill()},'เลิกเลือก '+n);c.dataset.k='ts-sr-picked-'+n;sel.appendChild(c)});
+  if(f.picked.length)pk.appendChild(sel);
+  var lst=el('div','ux-ts-subjlist');lst.setAttribute('role','group');lst.setAttribute('aria-label','รายวิชาในแผน');
+  function fillList(){lst.textContent='';var q=String(S.subjFind||'').trim().toLowerCase(),shown=0;
+    subs.forEach(function(s){if(f.picked.indexOf(s.name)>-1)return;if(q&&s.name.toLowerCase().indexOf(q)<0)return;shown++;
+      var c=btn('ux-ts-tog',s.name,function(){f.picked.push(s.name);refill()},'เลือก '+s.name);c.dataset.k='ts-sr-subj-'+s.name;
+      c.title=C.gradeRange?C.gradeRange(s.grades,db.grades)+' · '+s.lessons+' คาบ/สัปดาห์':s.lessons+' คาบ/สัปดาห์';
+      c.appendChild(el('small',null,' '+s.lessons));lst.appendChild(c)});
+    if(!shown)lst.appendChild(el('small','ux-tt-hint',subs.length?'ไม่พบวิชาที่ค้นหา':'ยังไม่มีรายวิชาในแผน'))}
+  fillList();find.oninput=function(){S.subjFind=find.value;fillList()};pk.appendChild(lst);box.appendChild(pk);
+  var row=el('div','ux-ts-row'),kw=el('input');kw.value=splitKw(f.keyword).typed.join(', ');kw.placeholder='หรือพิมพ์บางส่วนของชื่อ (ไม่บังคับ) เช่น ลูกเสือ, เนตรนารี';kw.dataset.k='ts-sr-kw';kw.setAttribute('aria-label','พิมพ์บางส่วนของชื่อวิชา');
+  kw.oninput=function(){f.keyword=kw.value;var c=row.querySelector('.ux-ts-count');if(c)c.textContent='ตรงกับ '+matchCount(formRule(f))+' รายการ'};row.appendChild(kw);
   var md=el('select');md.dataset.k='ts-sr-mode';md.setAttribute('aria-label','ชนิดกฎ');[['only','ลงได้เฉพาะ'],['avoid','ห้ามลง']].forEach(function(x){var o=el('option',null,x[1]);o.value=x[0];md.appendChild(o)});
   md.value=f.mode;md.onchange=function(){f.mode=md.value};row.appendChild(md);
   var st=el('select');st.dataset.k='ts-sr-strength';st.setAttribute('aria-label','บังคับหรือพยายาม');MODE.forEach(function(x){var o=el('option',null,x[1]);o.value=x[0];st.appendChild(o)});
   st.value=f.strength;st.onchange=function(){f.strength=st.value};row.appendChild(st);
-  row.appendChild(el('small','ux-ts-count','ตรงกับ '+matchCount(f)+' รายการ'));box.appendChild(row);
+  row.appendChild(el('small','ux-ts-count','ตรงกับ '+matchCount(formRule(f))+' รายการ'));box.appendChild(row);
   function chips(label,items,arr,k){var w=el('div','ux-ts-chips');w.appendChild(el('span','ux-ts-rl',label));
     items.forEach(function(it){var on=arr.indexOf(it[0])>-1,c=btn('ux-ts-tog'+(on?' on':''),it[1],function(){var i=arr.indexOf(it[0]);if(i>-1)arr.splice(i,1);else arr.push(it[0]);arr.sort(function(a,b){return a<b?-1:a>b?1:0});refill()});
       c.dataset.k=k+'-'+it[0];c.setAttribute('aria-pressed',String(on));w.appendChild(c)});
@@ -18551,10 +18767,10 @@ function secRules(b){
   var tm=times();box.appendChild(chips('คาบ',range(0,P()).map(function(i){return [i,String(i+1)+(tm[i]?' ('+String(tm[i]).split(/[-–]/)[0].trim()+')':'')]}),f.periods,'ts-sr-per'));
   box.appendChild(chips('เฉพาะชั้น',(db.grades||[]).map(function(g){return [g,g]}),f.grades,'ts-sr-grade'));
   var add=btn('ux-btn ux-primary','เพิ่มกฎคาบเรียน',function(){
-    var r={id:'sr'+Date.now().toString(36),keyword:String(f.keyword||'').trim(),grades:f.grades.slice(),mode:f.mode,days:f.days.slice(),periods:f.periods.slice(),strength:f.strength};
-    if(!r.keyword&&!r.grades.length){UX.toast('ใส่ชื่อวิชา หรือเลือกชั้นก่อน');return}
+    var r={id:'sr'+Date.now().toString(36),keyword:formKeyword(f),grades:f.grades.slice(),mode:f.mode,days:f.days.slice(),periods:f.periods.slice(),strength:f.strength};
+    if(!r.keyword&&!r.grades.length){UX.toast('เลือกวิชา หรือเลือกชั้นก่อน');return}
     if(!r.days.length&&!r.periods.length){UX.toast('เลือกวันหรือคาบอย่างน้อยหนึ่งอย่าง');return}
-    var n=matchCount(r);if(!n){UX.toast('ไม่พบรายวิชาที่ตรงกับ "'+r.keyword+'" — ลองพิมพ์ชื่อให้ตรงกับในรายวิชา');return}
+    var n=matchCount(r);if(!n){UX.toast('ไม่พบรายวิชาที่ตรงกับ "'+C.slotRuleLabel(r)+'" — เลือกจากรายการวิชาแทนการพิมพ์');return}
     S.form=newForm();change(function(){db.timetable.slotRules=slotRules().concat([r])});
     var d=UX.optimize.input(),out=d.events.filter(function(e){var p=d.placements[e.id];return p&&C.slotRuleMatches(e,r)&&C.slotRuleBroken(e,p.slot,d.setup.periods,r)}),
       locked=out.filter(function(e){return d.placements[e.id].locked}).map(function(e){return e.id});
@@ -18574,6 +18790,48 @@ function secRules(b){
   var add2=btn('ux-btn','เพิ่มกฎ',function(){if(typeof ttSetDayRule!=='function')return;var ok=ttSetDayRule(kw2.value,dy.value);
     if(ok){rerender();UX.toast('กำหนด "'+kw2.value.trim()+'" เฉพาะวัน'+days()[+dy.value]+' แล้ว')}else UX.toast('ไม่พบวิชาที่ตรงกับ "'+kw2.value.trim()+'" — ลองพิมพ์ชื่อให้ตรงกับในรายวิชา')});add2.dataset.k='ts-rule-add';
   row2.appendChild(kw2);row2.appendChild(dy);row2.appendChild(add2);old.appendChild(row2);b.appendChild(old)}
+
+/* ---- 2b. V24.39 ครูประจำชั้นพบนักเรียนคาบแรก ------------------------------------------------------------------------------ */
+/* the rule: schedulePolicy.homeroomFirstMin (days/week, 0 = off) + enforceHomeroomFirst · who: teacher.profile.homeroom
+   (the same field as the teacher page "ครูประจำชั้น"). Counted by the core optimizer (homeroom.ts) in ✦ / ↻ / ⚖. */
+function hrMin(){return Math.max(0,Math.round(+((T().schedulePolicy||{}).homeroomFirstMin)||0))}
+function hrOf(g){var t=db.teachers.find(function(x){return !x.team&&x.status==='active'&&((x.profile||{}).homeroom||[]).indexOf(g)>-1});return t?t.id:''}
+function hrRows(){try{var d=UX.optimize.input(),n=d.setup.days.length,pp=Object.assign({},d.setup.schedulePolicy||{},{homeroomFirstMin:hrMin()||n});
+  return C.homeroomReport(d.events,d.placements,d.setup.periods,C.homeroomConfig(pp,d.setup.homeroom,n))}catch(e){return []}}
+function setHomeroom(g,tid){change(function(){db.teachers.forEach(function(t){var pf=t.profile||{},h=(pf.homeroom||[]).slice(),i=h.indexOf(g);
+    if(t.id===tid){if(i<0){h.push(g);t.profile=Object.assign({},pf,{homeroom:h})}}else if(i>-1){h.splice(i,1);t.profile=Object.assign({},pf,{homeroom:h})}})},
+  tid?'ครูประจำชั้น '+g+': '+tname(tid)+' (ย้อนกลับได้)':'ไม่มีครูประจำชั้น '+g)}
+function secHomeroom(b){
+  var min=hrMin(),p=T().schedulePolicy||{},rows=hrRows(),by={};rows.forEach(function(r){by[r.grade]=r});
+  b.appendChild(el('p','ux-tt-hint','ให้ครูประจำชั้นได้สอนชั้นของตัวเองในคาบแรก (คาบ 1) อย่างน้อยกี่วันต่อสัปดาห์ — ได้เช็กชื่อ อบรม ดูแลนักเรียนตอนเช้า · ใช้กับ ✦ จัดตารางอัตโนมัติ ↻ ลงคาบที่เหลือ และ ⚖ ปรับให้ดีขึ้น'));
+  var r=el('div','ux-ts-rule');r.appendChild(el('span','ux-ts-rl','อย่างน้อย (วัน/สัปดาห์) · 0 = ไม่ใช้'));
+  r.appendChild(num('',min,0,days().length,function(v){setPol({homeroomFirstMin:v})},'ts-hr-min'));
+  r.appendChild(pick('',p.enforceHomeroomFirst?'hard':'soft',MODE,function(v){setPol({enforceHomeroomFirst:v==='hard'})},'ts-hr-str'));
+  r.appendChild(el('small','ux-tt-hint','นับทั้งสัปดาห์ จึงไม่ทำให้คาบถูกเว้น: "บังคับ" = เน้นมาก และนับเป็นชั้นที่ยังไม่ครบถ้าทำไม่ได้'));b.appendChild(r);
+  /* V24.40: who is homeroom of which class is set in one window (UX.homeroom) — the table shows it */
+  var eb=btn('ux-btn','🏫 ตั้งครูประจำชั้น…',function(){if(UX.homeroom)UX.homeroom.open()});eb.dataset.k='ts-hr-edit';b.appendChild(eb);
+  var t=el('table','ux-ts-hr');t.dataset.k='ts-hr-table';var hd=el('tr');['ชั้น','ครูประจำชั้น','คาบแรกกับครูประจำชั้น'].forEach(function(x){hd.appendChild(el('th',null,x))});t.appendChild(hd);
+  var ok=0,set=0;
+  (db.grades||[]).forEach(function(g){var tr=el('tr'),ids=UX.homeroom?UX.homeroom.of(g):(hrOf(g)?[hrOf(g)]:[]),tid=ids[0]||'',row=by[g];tr.appendChild(el('th',null,g));
+    var td=el('td',null,ids.length?ids.map(tname).join(' + '):'— ยังไม่ระบุ —');td.dataset.k='ts-hr-'+g;if(!ids.length)td.className='ux-tt-hint';tr.appendChild(td);
+    var st=el('td','ux-ts-hrst');
+    if(tid&&row){set++;var dn=row.days.map(function(d){return days()[d]||'?'}).join(' ');
+      if(!row.possible){st.className+=' bad';st.textContent='ครูคนนี้ไม่ได้สอน '+g+' — ทำตามกฎไม่ได้'}
+      else if(min){var good=row.met>=min;if(good)ok++;st.className+=good?' ok':' warn';
+        st.textContent=(good?'✓ ':'⚠ ')+row.met+'/'+min+' วัน'+(dn?' ('+dn+')':'')+(row.possible<min?' · สอนชั้นนี้แค่ '+row.possible+' คาบ/สัปดาห์':'')}
+      else st.textContent='ตอนนี้ '+row.met+' วัน'+(dn?' ('+dn+')':'')}
+    else st.textContent=tid?'':'—';
+    tr.appendChild(st);t.appendChild(tr)});
+  var wrap=el('div','ux-codes-wrap');wrap.appendChild(t);b.appendChild(wrap);
+  b.appendChild(el('small','ux-tt-hint','ครูประจำชั้นเป็นข้อมูลเดียวกับ "รายละเอียดครู" ในหน้าครู — แก้ที่ใดก็ได้'));
+  /* one teacher, several classes: period 1 happens once a day */
+  if(min){var cnt={};(db.grades||[]).forEach(function(g){var t=hrOf(g);if(t)cnt[t]=(cnt[t]||0)+1});
+    Object.keys(cnt).forEach(function(t){if(cnt[t]*min>days().length){var w=el('p','ux-ts-hrwarn');w.dataset.k='ts-hr-many';
+      w.textContent='⚠ '+tname(t)+' เป็นครูประจำชั้น '+cnt[t]+' ชั้น แต่คาบแรกมีวันละครั้ง ('+days().length+' วัน) — ทำครบ '+min+' วันทุกชั้นไม่ได้';b.appendChild(w)}})}
+  if(min&&set){var row2=el('div','ux-ts-row');
+    var g1=btn('ux-btn ux-primary','✦ จัดตารางใหม่ตามกฎนี้',function(){if(UX.gen)UX.gen.start()});g1.dataset.k='ts-hr-gen';row2.appendChild(g1);
+    var g2=btn('ux-btn','⚖ ปรับจากตารางเดิม',function(){UX.optimize.start()});g2.dataset.k='ts-hr-run';row2.appendChild(g2);b.appendChild(row2);
+    b.appendChild(el('small','ux-tt-hint','ตารางที่จัดเต็มแล้วมักขยับให้ครบได้ยาก — "จัดตารางใหม่" ทำได้ดีกว่า (คาบที่ล็อกไว้ไม่ย้าย)'))}}
 
 /* ---- 3. teacher policy -------------------------------------------------------------------------------------------------- */
 function setPol(patch){change(function(){var p=db.timetable.schedulePolicy=Object.assign({},pol(),db.timetable.schedulePolicy||{});Object.assign(p,patch)})}
@@ -18699,23 +18957,27 @@ function summary(){
   var hardN=['enforceMinTeacherFree','enforceMaxTeacherConsecutive','enforceMaxTeacherPeriodsPerDay','enforceMinTeacherPeriodsPerDay'].filter(function(k){return p[k]}).length,sr=slotRules().filter(function(r){return !r.off});
   return {time:days().length+' วัน · วันละ '+P()+' คาบ'+(lunch()?' · พักหลังคาบ '+lunch():''),
     blocks:tb.size?tb.size+' คน · '+bl.length+' คาบ':'ทุกคนว่างทุกคาบ',
-    rules:(sr.length||(T().dayRules||[]).length)?[sr.length?'กฎคาบ '+sr.length+' ข้อ ('+sr.map(function(r){return (r.keyword||'').split(',')[0].trim()||(r.grades||[]).join(' ')}).join(', ')+')':'',(T().dayRules||[]).length?'กฎวันแบบเดิม '+(T().dayRules||[]).length+' ข้อ':''].filter(Boolean).join(' · '):'ไม่มี',
+    rules:(sr.length||(T().dayRules||[]).length)?[sr.length?'กฎคาบ '+sr.length+' ข้อ ('+sr.map(function(r){return C.slotRuleLabel(r).split(',')[0].trim()}).join(', ')+')':'',(T().dayRules||[]).length?'กฎวันแบบเดิม '+(T().dayRules||[]).length+' ข้อ':''].filter(Boolean).join(' · '):'ไม่มี',
     policy:'ว่าง ≥'+p.minTeacherFreePeriods+' · ติดกัน ≤'+p.maxTeacherConsecutivePeriods+' · วันละ ≤'+p.maxTeacherPeriodsPerDay+(p.minTeacherPeriodsPerDay?' · วันละ ≥'+p.minTeacherPeriodsPerDay:'')+((T().schedulePolicy||{}).minTeacherPeriodsPerWeek?' · สัปดาห์ละ ≥'+T().schedulePolicy.minTeacherPeriodsPerWeek:'')+' · บังคับ '+hardN+' ข้อ',
     mob:Object.keys(m.gradeBuildings||{}).length?(m.buildingOrder||[]).length+' อาคาร · นักเรียน: '+LEVEL[+level(m.weights,'studentMove')][1]+' · ครู: '+LEVEL[+level(m.weights,'teacherMove')][1]:'ยังไม่กำหนด',
     cov:c.enabled?'เปิด · ต้องมีครูว่าง '+(c.targetBackups||1)+' คน · ความสำคัญ'+(c.importance==='high'?'มาก':'ปกติ'):'ปิด',
-    flex:f.enabled?'เปิด · ช่วยอยู่ '+Object.keys(f.assignments||{}).length+' คาบ':'ปิด'}}
+    flex:f.enabled?'เปิด · ช่วยอยู่ '+Object.keys(f.assignments||{}).length+' คาบ':'ปิด',
+    hr:(function(){var m=hrMin(),n=(db.grades||[]).filter(hrOf).length;if(!m)return n?'ปิด · มีครูประจำชั้น '+n+' ชั้น':'ปิด';
+      var rows=hrRows().filter(function(r){return r.possible>0}),ok=rows.filter(function(r){return r.met>=m}).length;
+      return 'อย่างน้อย '+m+' วัน/สัปดาห์ · '+((T().schedulePolicy||{}).enforceHomeroomFirst?'บังคับ':'พยายาม')+' · ครบ '+ok+'/'+n+' ชั้น'})()}}
 function node(){
   var w=el('div','ux-ts');w.id='uxTTSetup';var s=summary();
   w.appendChild(el('p','ux-ts-lead','ทุกเงื่อนไขที่ใช้จัดตารางอยู่ที่นี่ — แก้แล้วมีผลกับ ✦ จัดตารางอัตโนมัติ, ↻ ลงคาบที่เหลือ และ ⚖ ปรับให้ดีขึ้นทันที (ย้อนกลับได้ทุกครั้ง)'));
   w.appendChild(section('time','วันและคาบ',s.time,secTime));
   w.appendChild(section('blocks','เวลาที่ครูไม่ว่าง',s.blocks,secBlocks));
   w.appendChild(section('rules','กฎวันและคาบเรียน',s.rules,secRules));
+  w.appendChild(section('homeroom','ครูประจำชั้นพบนักเรียนคาบแรก',s.hr,secHomeroom));
   w.appendChild(section('policy','นโยบายครู',s.policy,secPolicy));
   w.appendChild(section('mob','อาคารและการเดิน',s.mob,secMob));
   w.appendChild(section('cov','เผื่อครูสอนแทนในอาคาร',s.cov,secCov));
   w.appendChild(section('flex','ครูยืดหยุ่น (ให้ครูคนอื่นช่วยคาบที่ลงไม่ได้)',s.flex,secFlex));
   return w}
-function sig(){var t=T();return JSON.stringify([t.periods,t.days,t.teacherBlocks,t.dayRules,t.slotRules,t.schedulePolicy,t.mobility,t.substituteCoverage,t.flexTeacherSolver&&{a:t.flexTeacherSolver.assignments,e:t.flexTeacherSolver.enabled},order().lunchAfter,order().periodTimes,Object.keys(t.placements||{}).length,S.teacher])}
+function sig(){var t=T();return JSON.stringify([t.periods,t.days,t.teacherBlocks,t.dayRules,t.slotRules,t.schedulePolicy,t.mobility,t.substituteCoverage,t.flexTeacherSolver&&{a:t.flexTeacherSolver.assignments,e:t.flexTeacherSolver.enabled},order().lunchAfter,order().periodTimes,Object.keys(t.placements||{}).length,S.teacher,UX.optimize.homerooms(),JSON.stringify(t.placements||{}).length])}
 UX.ttsetup={node:node,sig:sig,followUp:followUp,runCoverage:runCoverage,runFlex:runFlex,summary:summary,state:S};
 UX.onInit(function(){if(UX.gen)UX.gen.followUp=followUp});
 })(window.UX);
@@ -18754,7 +19016,7 @@ function stamp(iso){try{var d=new Date(iso);return d.toLocaleDateString('th-TH',
 function input(){return UX.optimize.input()}
 function placementsOf(id){if(id==='cur')return T().placements||{};var v=byId(id);return v?v.placements:{}}
 function nameOf(id){if(id==='cur')return 'ตารางปัจจุบัน';var v=byId(id);return v?v.name:'—'}
-function condSig(){var t=T();return ttSourceKey()+'§'+JSON.stringify([t.days,t.periods,t.teacherBlocks,t.dayRules,t.slotRules,t.schedulePolicy,t.mobility,t.substituteCoverage])}
+function condSig(){var t=T();return ttSourceKey()+'§'+JSON.stringify([t.days,t.periods,t.teacherBlocks,t.dayRules,t.slotRules,t.schedulePolicy,t.mobility,t.substituteCoverage,UX.optimize.homerooms()])}
 function lockSig(){var p=T().placements||{},o={};Object.keys(p).sort().forEach(function(k){if(p[k]&&p[k].locked)o[k]=p[k].slot});return JSON.stringify(o)}
 function sig(){return JSON.stringify([list().map(function(v){return [v.id,v.name]}),S.busy,S.preset,S.from,S.a,S.b,S.view,S.key,condSig()])}
 
@@ -19312,6 +19574,7 @@ function sheetMore(){
     if(UX.cur()===x.k)it.classList.add('on')});
   s.b.appendChild(el('div','ux-sheet-sep'));
   if(UX.subExport)item(s.b,'⬇','ส่งออกสำหรับระบบสอนแทน','ไฟล์ CSV ครู–ชั้น–คาบ',function(){UX.subExport.open()},'tab-more-subexp');
+  if(UX.homeroom)item(s.b,'🏫','ครูประจำชั้น','ครูท่านไหนประจำชั้นอะไร',function(){UX.homeroom.open()},'tab-more-homeroom');
   item(s.b,'⌕','ค้นหาหรือสั่งงาน','ครู รายวิชา หน้า คำสั่ง',function(){if(UX.cmd)UX.cmd.open()},'tab-more-cmd');
   item(s.b,'💾','บันทึก / สำรองไฟล์',(UX.backup?String(UX.backup.status().t||''):''),function(){UX.clickId('uxSave')},'tab-more-save');
   if(UX.drive)item(s.b,'☁','Google Drive','ซิงก์ทุกเครื่อง',function(){UX.drive.open()},'tab-more-drive');
@@ -19409,6 +19672,84 @@ UX.subExport={open:open,state:S,rows:build,csv:function(){return C.substitutionC
 UX.onSync(entries);
 })(window.UX);
 
+/* >>> 72-homeroom.js */
+/* 72-homeroom.js — "ครูประจำชั้น" (V24.40): one window to say which teacher looks after which class.
+   Data = teacher.profile.homeroom (array of grades) — the same field as "รายละเอียดครู → ครูประจำชั้น" on the teacher page,
+   read by the rule "ครูประจำชั้นพบนักเรียนคาบแรก" (UX.optimize.input().setup.homeroom), the course assistant and typed
+   commands. Each class: ครูประจำชั้น + ครูประจำชั้นร่วม (optional — many small schools have two). Changes are kept in the
+   window until "บันทึก" = one Undo step. "แนะนำจากภาระสอน" fills empty classes with the teacher who teaches that class most
+   (one class per teacher). Entries: teacher page "🏫 ครูประจำชั้น", ⚙ เงื่อนไข (timetable), ⌘K "ประจำชั้น", ⋯ menu.
+   Off with --legacy / __UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var S={draft:null};
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;return b}
+function people(){return db.teachers.filter(function(t){return !t.team&&t.status==='active'})}
+function short(n){return String(n||'').replace(/^ครู\s*/,'')}
+function grades(){return (db.grades||[]).slice()}
+/* grade → [teacher ids] from the teacher details (active, not คณะครู) */
+function current(){var o={};grades().forEach(function(g){o[g]=[]});
+  db.teachers.forEach(function(t){if(t.team||t.status!=='active')return;((t.profile||{}).homeroom||[]).forEach(function(g){if(o[g]&&o[g].indexOf(t.id)<0)o[g].push(t.id)})});return o}
+function of(g){return current()[g]||[]}
+function gradesOf(tid){var t=db.teachers.find(function(x){return x.id===tid});return t?((t.profile||{}).homeroom||[]).filter(function(g){return grades().indexOf(g)>-1}):[]}
+/* periods a week each teacher teaches each class (classes taught alone, so a joint class does not count for every grade) */
+function loads(){var o={};try{ttBuild().events.forEach(function(e){e.grades.forEach(function(g){e.teachers.forEach(function(t){var k=g+'|'+t;o[k]=(o[k]||0)+(e.duration===1?1:0.5)})})})}catch(e){}return o}
+function suggest(d){var L=loads(),used={};Object.keys(d).forEach(function(g){d[g].forEach(function(t){used[t]=1})});var n=0;
+  grades().forEach(function(g){if(d[g][0])return;var best=null,bv=0;people().forEach(function(t){var v=L[g+'|'+t.id]||0;if(!used[t.id]&&v>bv){bv=v;best=t.id}});
+    if(best){d[g]=[best];used[best]=1;n++}});return n}
+function save(d){
+  act(function(){var gs=grades();db.teachers.forEach(function(t){var pf=t.profile||{},old=(pf.homeroom||[]).slice(),keep=old.filter(function(g){return gs.indexOf(g)<0}),mine=gs.filter(function(g){return (d[g]||[]).indexOf(t.id)>-1});
+    var next=keep.concat(mine);if(JSON.stringify(next)!==JSON.stringify(old))t.profile=Object.assign({},pf,{homeroom:next})})});
+  if(UX.tt)try{UX.tt.render()}catch(e){}if(UX.staff&&UX.staff.render)try{UX.staff.render()}catch(e){}
+  var n=grades().filter(function(g){return (d[g]||[]).length}).length;UX.toast('บันทึกครูประจำชั้นแล้ว · '+n+'/'+grades().length+' ชั้น (ย้อนกลับได้)')}
+
+function render(){
+  var b=$('uxHRB'),f=$('uxHRF'),d=S.draft,L=loads(),ps=people();b.textContent='';f.textContent='';
+  b.appendChild(el('p','ux-hr-lead','เลือกครูประจำชั้นของแต่ละชั้น (ครูประจำชั้นร่วมไม่บังคับ) — ใช้กับกฎ "ครูประจำชั้นพบนักเรียนคาบแรก" ในเงื่อนไขการจัดตาราง และเป็นข้อมูลเดียวกับรายละเอียดครูในหน้าครู'));
+  var cnt={};grades().forEach(function(g){(d[g]||[]).forEach(function(t){cnt[t]=(cnt[t]||0)+1})});
+  var t=el('table','ux-hr-tbl');var hd=el('tr');['ชั้น','ครูประจำชั้น','ครูประจำชั้นร่วม',''].forEach(function(x){hd.appendChild(el('th',null,x))});var th=el('thead');th.appendChild(hd);t.appendChild(th);
+  var tb=el('tbody');
+  grades().forEach(function(g){var tr=el('tr');tr.appendChild(el('th',null,g));var cur=d[g]||[];
+    [0,1].forEach(function(i){var td=el('td'),s=el('select');s.dataset.k='hr-'+g+'-'+i;s.setAttribute('aria-label',(i?'ครูประจำชั้นร่วม ':'ครูประจำชั้น ')+g);
+      [['',i?'—':'— ยังไม่ระบุ —']].concat(ps.map(function(x){var v=L[g+'|'+x.id];return [x.id,short(x.name)+(v?' · สอน '+v+' คาบ':'')]})).forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];s.appendChild(op)});
+      s.value=cur[i]||'';if(i&&!cur[0])s.disabled=true;
+      s.onchange=function(){var a=(d[g]||[]).slice();if(s.value){a[i]=s.value}else a.splice(i,1);a=a.filter(function(x,j){return x&&a.indexOf(x)===j});d[g]=a;render()};td.appendChild(s);tr.appendChild(td)});
+    var note=el('td','ux-hr-note'),w=[];
+    cur.forEach(function(id){if(!L[g+'|'+id])w.push(short((db.teachers.find(function(x){return x.id===id})||{}).name)+' ไม่ได้สอน '+g);if(cnt[id]>1)w.push(short((db.teachers.find(function(x){return x.id===id})||{}).name)+' ประจำ '+cnt[id]+' ชั้น')});
+    note.textContent=w.join(' · ');if(w.length)note.className+=' warn';tr.appendChild(note);tb.appendChild(tr)});
+  t.appendChild(tb);var wrap=el('div','ux-codes-wrap');wrap.appendChild(t);b.appendChild(wrap);
+  var empty=grades().filter(function(g){return !(d[g]||[]).length}).length;
+  b.appendChild(el('p','ux-hr-sum',(grades().length-empty)+'/'+grades().length+' ชั้นมีครูประจำชั้น'+(empty?' · ยังไม่ระบุ '+empty+' ชั้น':' ✓')));
+  var sg=btn('ux-btn','✨ แนะนำจากภาระสอน (เติมเฉพาะชั้นที่ยังว่าง)',function(){var n=suggest(d);render();UX.toast(n?'แนะนำให้ '+n+' ชั้น — ตรวจแล้วกดบันทึก':'ไม่มีชั้นว่างที่แนะนำได้')});sg.dataset.k='hr-suggest';sg.disabled=!empty;
+  f.appendChild(sg);f.appendChild(el('span','ux-hr-sp'));
+  f.appendChild(btn('ux-btn','ยกเลิก',function(){$('uxHR').close()}));
+  var ok=btn('ux-btn ux-primary','บันทึก',function(){save(d);$('uxHR').close()});ok.dataset.k='hr-save';f.appendChild(ok)}
+function open(){
+  S.draft=current();
+  var d=$('uxHR');
+  if(!d){d=el('dialog','ux-say ux-hr no-print');d.id='uxHR';d.setAttribute('aria-labelledby','uxHRT');
+    var h=el('div','ux-say-head'),t=el('h2',null,'🏫 ครูประจำชั้น');t.id='uxHRT';h.appendChild(t);
+    var x=btn('ux-asg-x','✕',function(){d.close()});x.setAttribute('aria-label','ปิด');h.appendChild(x);d.appendChild(h);
+    var bb=el('div','ux-say-body');bb.id='uxHRB';d.appendChild(bb);var ff=el('div','ux-say-foot');ff.id='uxHRF';d.appendChild(ff);document.body.appendChild(d)}
+  render();if(!d.open)d.showModal()}
+
+/* ---- entries -------------------------------------------------------------------------------------------------------------- */
+function entries(){
+  var bar=document.querySelector('#uxStaff .ux-tt-right');
+  if(bar&&!bar.querySelector('.ux-hr-open')){var b=btn('ux-btn ux-hr-open','🏫 ครูประจำชั้น',open);b.dataset.k='hr-open-staff';bar.insertBefore(b,bar.firstChild)}
+  var m=$('uxMenu'),bk=$('uxMenuPlans');
+  if(m&&bk&&!$('uxMenuHR')){var mi=btn(null,'🏫 ครูประจำชั้น',function(){open()});mi.id='uxMenuHR';mi.setAttribute('role','menuitem');
+    var hd=[].slice.call(m.querySelectorAll('.ux-mh')).find(function(x){return x.textContent==='บันทึก / สำรอง'});m.insertBefore(mi,hd||bk.nextSibling)}
+  /* teacher cards: "ประจำชั้น ป.1" */
+  [].forEach.call(document.querySelectorAll('#uxStaff .ux-stf-card'),function(c){var gs=gradesOf(c.dataset.id),tag=c.querySelector('.ux-hr-tag'),txt=gs.length?'🏫 ประจำชั้น '+gs.join(', '):'';
+    if(!txt){if(tag)tag.remove();return}if(!tag){tag=el('span','ux-hr-tag');var top=c.querySelector('.ux-stf-top');if(top)top.insertAdjacentElement('afterend',tag);else c.appendChild(tag)}
+    if(tag.textContent!==txt)tag.textContent=txt})}
+UX.homeroom={open:open,of:of,current:current,gradesOf:gradesOf,suggest:suggest,state:S};
+UX.onSync(entries);
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -19425,7 +19766,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="0a3913594879";window.__UX_WEBAPP_LABEL="24.38";
+(function(){window.__UX_WEBAPP="71b3bab1daeb";window.__UX_WEBAPP_LABEL="24.40";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
