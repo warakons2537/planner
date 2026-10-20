@@ -10983,6 +10983,7 @@ var ASPCore = (() => {
     DEFAULT_HEAVY_SUBJECTS: () => DEFAULT_HEAVY_SUBJECTS,
     DOUBLE_UNPAIRED: () => DOUBLE_UNPAIRED,
     FREE_SPLIT: () => FREE_SPLIT,
+    HALF_DAY_MISS: () => HALF_DAY_MISS,
     HARD_RULES: () => HARD_RULES,
     HOMEROOM_HARD: () => HOMEROOM_HARD,
     HOMEROOM_SHORT: () => HOMEROOM_SHORT,
@@ -11009,6 +11010,7 @@ var ASPCore = (() => {
     WORK_CATS: () => WORK_CATS,
     WORK_PRESETS: () => WORK_PRESETS,
     activeScenario: () => activeScenario,
+    afternoonFrom: () => afternoonFrom,
     allowedDays: () => allowedDays,
     assignmentProblems: () => assignmentProblems,
     authDisplayName: () => authDisplayName,
@@ -11058,6 +11060,8 @@ var ASPCore = (() => {
     generateTimetable: () => generateTimetable,
     gradeOfCode: () => gradeOfCode,
     gradeRange: () => gradeRange,
+    halfDayReport: () => halfDayReport,
+    halfOffSet: () => halfOffSet,
     halfSlotCount: () => halfSlotCount,
     hardSlotOk: () => hardSlotOk,
     heavyLate: () => heavyLate,
@@ -11449,15 +11453,31 @@ var ASPCore = (() => {
   var MOBILITY_WEIGHTS = { studentMove: 13, teacherMove: 9, longJump: 16, zigzag: 12, sameBuildingBonus: 4, heavyLate: 15, repeatDay: 5, startFromHome: 2 };
   var DEFAULT_BUILDINGS = ["ตึกมัธยม", "ตึกอนุบาล", "ตึกประถม", "ตึกยุวนาฏ"];
   var DEFAULT_HEAVY_SUBJECTS = ["ภาษาไทย", "คณิตศาสตร์", "วิทยาศาสตร์", "ภาษาอังกฤษพื้นฐาน"];
+  var HALF_DAY_MISS = 120;
+  var afternoonFrom = (pol, periods) => pol.breakAfter > 0 && pol.breakAfter < periods ? pol.breakAfter : Math.ceil(periods / 2);
   var MIN_DAILY_SHORT = 40;
   var FREE_SPLIT = 10;
   var DOUBLE_UNPAIRED = 80;
   var num = (v, fallback) => Number.isFinite(Number(v)) && v !== null && v !== "" ? Number(v) : fallback;
   var clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-  function policyConfig(raw, periods) {
+  function halfOffSet(blocks, periods, split) {
+    const per = /* @__PURE__ */ new Map(), out = /* @__PURE__ */ new Set();
+    for (const k of blocks ?? []) {
+      const i = k.lastIndexOf("|"), t = k.slice(0, i), c = +k.slice(i + 1);
+      if (!t || !Number.isInteger(c)) continue;
+      const key2 = `${t}|${Math.floor(c / periods)}`;
+      (per.get(key2) ?? per.set(key2, /* @__PURE__ */ new Set()).get(key2)).add(c % periods);
+    }
+    for (const [key2, set] of per) {
+      if (split > 0 && Array.from({ length: split }, (_, p) => p).every((p) => set.has(p))) out.add(`${key2}|am`);
+      if (split < periods && Array.from({ length: periods - split }, (_, p) => p + split).every((p) => set.has(p))) out.add(`${key2}|pm`);
+    }
+    return out;
+  }
+  function policyConfig(raw, periods, blocks) {
     const p = raw ?? {};
     const pick = (k, d) => p[k] === void 0 ? d : p[k];
-    return {
+    const cfg = {
       minTeacherFreePeriods: clamp(num(pick("minTeacherFreePeriods", 1), 0) || 0, 0, periods - 1),
       maxTeacherConsecutivePeriods: clamp(num(pick("maxTeacherConsecutivePeriods", 3), 0) || periods, 1, periods),
       maxTeacherPeriodsPerDay: clamp(num(pick("maxTeacherPeriodsPerDay", Math.max(1, periods - 1)), 0) || periods, 1, periods),
@@ -11473,8 +11493,13 @@ var ASPCore = (() => {
       minTeacherPeriodsPerDay: clamp(Math.round(num(p.minTeacherPeriodsPerDay, 0)), 0, periods),
       groupTeacherFree: !!p.groupTeacherFree,
       enforceMinTeacherPeriodsPerDay: !!p.enforceMinTeacherPeriodsPerDay,
-      minTeacherPeriodsEveryDay: !!p.minTeacherPeriodsEveryDay
+      minTeacherPeriodsEveryDay: !!p.minTeacherPeriodsEveryDay,
+      teacherBothHalves: !!p.teacherBothHalves,
+      enforceTeacherBothHalves: !!p.enforceTeacherBothHalves,
+      halfOff: /* @__PURE__ */ new Set()
     };
+    if (cfg.teacherBothHalves && blocks?.length) cfg.halfOff = halfOffSet(blocks, periods, afternoonFrom(cfg, periods));
+    return cfg;
   }
   function mobilityConfig(raw) {
     const m = raw ?? {};
@@ -11520,7 +11545,7 @@ var ASPCore = (() => {
     for (const { e, slot } of list2) for (const c of cellsOf(e.duration, slot)) set.add(slotPosition(c, periods).period);
     return [...set].sort((a, b) => a - b);
   }
-  function teacherDayPolicy(list2, periods, pol) {
+  function teacherDayPolicy(list2, periods, pol, who) {
     const used = periodsOf(list2, periods), minF = pol.enforceMinTeacherPeriodsPerDay ? 5 : 1;
     if (!used.length) {
       if (pol.minTeacherPeriodsPerDay > 0 && pol.minTeacherPeriodsEveryDay)
@@ -11549,6 +11574,14 @@ var ASPCore = (() => {
       if (pol.enforceMinTeacherPeriodsPerDay) violations++;
     }
     if (pol.groupTeacherFree && free > 1) cost += freeBlocks(used, periods, pol.breakAfter) * FREE_SPLIT;
+    if (pol.teacherBothHalves && used.length >= 2) {
+      const split = afternoonFrom(pol, periods);
+      const am = used[0] < split, pm = used[used.length - 1] >= split;
+      if (!(am && pm) && !(who && pol.halfOff.has(`${who}|${am ? "pm" : "am"}`))) {
+        cost += HALF_DAY_MISS * (pol.enforceTeacherBothHalves ? 5 : 1);
+        if (pol.enforceTeacherBothHalves) violations++;
+      }
+    }
     return { cost, violations, used: used.length };
   }
   function freeBlocks(used, periods, breakAfter) {
@@ -11676,7 +11709,7 @@ var ASPCore = (() => {
       if (t.team || t.status !== "active") continue;
       const loads = [];
       for (let d = 0; d < days; d++) {
-        const r = teacherDayPolicy(byTeacherDay.get(`${t.id}|${d}`) ?? [], periods, pol);
+        const r = teacherDayPolicy(byTeacherDay.get(`${t.id}|${d}`) ?? [], periods, pol, `${t.id}|${d}`);
         loads.push(r.used);
         policy += r.cost;
       }
@@ -11691,6 +11724,32 @@ var ASPCore = (() => {
     for (const [k, list2] of group((p) => p.e.grades.map((g) => `${g}|${dayOf(p)}`))) mobility += movementCost(list2, "student", mob.gradeBuildings[k.slice(0, k.lastIndexOf("|"))] || "", mob, building);
     for (const [k, list2] of byTeacherDay) mobility += movementCost(list2, "teacher", mob.teacherBuildings[k.slice(0, k.lastIndexOf("|"))] || "", mob, building);
     return { policy, mobility, total: policy + mobility };
+  }
+  function halfDayReport(events, placements, teachers, periods, days, pol) {
+    const split = afternoonFrom(pol, periods), act = new Set(teachers.filter((t) => !t.team && (t.status ?? "active") === "active").map((t) => t.id));
+    const by = /* @__PURE__ */ new Map();
+    for (const e of events) {
+      const p = placements[e.id];
+      if (!p || !Number.isInteger(p.slot)) continue;
+      for (const c of cellsOf(e.duration, p.slot)) {
+        const q = slotPosition(c, periods);
+        for (const t of e.teachers) if (act.has(t)) {
+          const k = `${t}|${q.day}`;
+          (by.get(k) ?? by.set(k, /* @__PURE__ */ new Set()).get(k)).add(q.period);
+        }
+      }
+    }
+    const out = [];
+    for (const [k, set] of by) {
+      if (set.size < 2) continue;
+      const ps = [...set], am = ps.some((x) => x < split), pm = ps.some((x) => x >= split);
+      if (am && pm) continue;
+      if (pol.halfOff.has(`${k}|${am ? "pm" : "am"}`)) continue;
+      const i = k.lastIndexOf("|");
+      out.push({ teacher: k.slice(0, i), day: +k.slice(i + 1), half: am ? "เช้า" : "บ่าย", periods: set.size });
+    }
+    void days;
+    return out.sort((a, b) => a.day - b.day || a.teacher.localeCompare(b.teacher));
   }
   function teacherWeekLoads(events, teachers, min) {
     const load = /* @__PURE__ */ new Map();
@@ -11762,7 +11821,7 @@ var ASPCore = (() => {
   function optimizeTimetable(input, options = {}) {
     const { setup } = input;
     const periods = setup.periods, days = setup.days.length;
-    const pol = policyConfig(setup.schedulePolicy, periods);
+    const pol = policyConfig(setup.schedulePolicy, periods, setup.teacherBlocks);
     const mob = mobilityConfig(setup.mobility);
     const cov = coverConfig(setup.substituteCoverage);
     const hr = homeroomConfig(setup.schedulePolicy, setup.homeroom, days);
@@ -11840,7 +11899,7 @@ var ASPCore = (() => {
       return true;
     }
     const placedIn = (k) => [...index.get(k) ?? []].map((id) => ({ e: events.get(id), slot: slot.get(id) }));
-    const tdPolicy = (t, d) => teacherDayPolicy(placedIn(`T|${t}|${d}`), periods, pol);
+    const tdPolicy = (t, d) => teacherDayPolicy(placedIn(`T|${t}|${d}`), periods, pol, `${t}|${d}`);
     function unitCost(key2) {
       const [kind, a, b, c] = key2.split("|");
       switch (kind) {
@@ -12374,7 +12433,7 @@ var ASPCore = (() => {
     const random = rng(options.seed ?? 1), now = options.now, t0 = now?.() ?? 0;
     const outOfTime = () => !!(options.timeBudgetMs && now && now() - t0 > options.timeBudgetMs);
     const events = new Map(input.events.map((e) => [e.id, e]));
-    const pol = policyConfig(setup.schedulePolicy, periods);
+    const pol = policyConfig(setup.schedulePolicy, periods, setup.teacherBlocks);
     const hr = homeroomConfig(setup.schedulePolicy, setup.homeroom, days);
     const teacherInfo = new Map(input.teachers.map((t) => [t.id, t]));
     const active = (t) => {
@@ -12464,7 +12523,7 @@ var ASPCore = (() => {
       for (const t of e.teachers) {
         if (!active(t)) continue;
         const list2 = [...byDay.get(`T|${t}|${d}`) ?? []].map((id) => ({ e: events.get(id), slot: slot.get(id) }));
-        c += teacherDayPolicy([...list2, { e, slot: s }], periods, pol).cost - teacherDayPolicy(list2, periods, pol).cost;
+        c += teacherDayPolicy([...list2, { e, slot: s }], periods, pol, `${t}|${d}`).cost - teacherDayPolicy(list2, periods, pol, `${t}|${d}`).cost;
       }
       if (pol.doubles.size && isDouble(e, pol)) {
         for (const g of e.grades) {
@@ -13130,7 +13189,7 @@ var ASPCore = (() => {
     const name = new Map(input.teachers.map((t) => [t.id, t.name]));
     const active = new Set(input.teachers.filter((t) => !t.team && t.status === "active").map((t) => t.id));
     const blocks = new Set(setup.teacherBlocks), okDays = allowedDays(e, days, setup.dayRules), hardRules = slotRulesFor(e, setup.slotRules, "hard");
-    const pol = policyConfig(setup.schedulePolicy, periods), mob = mobilityConfig(setup.mobility);
+    const pol = policyConfig(setup.schedulePolicy, periods, setup.teacherBlocks), mob = mobilityConfig(setup.mobility);
     const current = input.placements[id];
     const others = {};
     for (const [k, p] of Object.entries(input.placements)) if (k !== id && events.has(k) && p && Number.isInteger(p.slot)) others[k] = p;
@@ -13243,7 +13302,7 @@ var ASPCore = (() => {
       }
       o.score = scoreWith(s);
       o.delta = o.score - base;
-      if (e.teachers.some((t) => active.has(t) && teacherDayPolicy(dayList(t, d, s), periods, pol).violations > teacherDayPolicy(dayList(t, d, null), periods, pol).violations)) {
+      if (e.teachers.some((t) => active.has(t) && teacherDayPolicy(dayList(t, d, s), periods, pol, `${t}|${d}`).violations > teacherDayPolicy(dayList(t, d, null), periods, pol, `${t}|${d}`).violations)) {
         o.state = "policy";
         o.who = "ครูผิดนโยบายวันนั้น" + (strict ? " (โรงเรียนตั้งให้ห้ามวาง)" : "");
       }
@@ -13942,6 +14001,12 @@ var ASPCore = (() => {
     const fail = (problem) => ({ text: raw, intents: [], understood: "", problem });
     const type = TYPES.find(([re]) => re.test(t))?.[1];
     const extras = mentionsExtra(t);
+    if (/ทั้ง(?:ช่วง)?เช้า(?:และ|กับ)?(?:ช่วง)?บ่าย/.test(t) && /สอน|ครู/.test(t) && !/ไม่ว่าง/.test(t)) {
+      return R(
+        [{ kind: "policy", set: { teacherBothHalves: true, enforceTeacherBothHalves: /ต้อง|บังคับ/.test(t) } }],
+        "กฎการจัดตารางของครูทุกคน: วันที่มีสอน ต้องมีทั้งช่วงเช้าและช่วงบ่าย" + (/ต้อง|บังคับ/.test(t) ? " (บังคับ)" : " (พยายาม)")
+      );
+    }
     if (/ต่อวัน|วันละ|ว่าง(?:แบบ)?ติดกัน|ว่างต่อเนื่อง|ว่างติด(?:พัก)?กลางวัน|ติดพักกลางวัน|ติดกลางวัน|สอนติดกันไม่เกิน|ว่างอย่างน้อย/.test(t) && !/ไม่ว่าง/.test(t)) {
       const set = {}, said = [];
       const daily = /ต่อวัน|วันละ/.test(t);
@@ -14424,7 +14489,9 @@ var ASPCore = (() => {
     minTeacherPeriodsPerDay: "สอนอย่างน้อยต่อวัน (วันที่มีสอน)",
     maxTeacherConsecutivePeriods: "สอนติดกันไม่เกิน",
     minTeacherFreePeriods: "ว่างอย่างน้อยต่อวัน",
-    groupTeacherFree: "คาบว่างติดกัน/ติดพักกลางวัน"
+    groupTeacherFree: "คาบว่างติดกัน/ติดพักกลางวัน",
+    teacherBothHalves: "สอนทั้งเช้าและบ่าย",
+    enforceTeacherBothHalves: "สอนทั้งเช้าและบ่าย (บังคับ)"
   };
 
   // core/src/sync.ts
@@ -14927,7 +14994,7 @@ var ASPCore = (() => {
   }
 
   // core/src/index.ts
-  var VERSION = "0.22.0";
+  var VERSION = "0.23.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -14936,7 +15003,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.40',inits:[],syncs:[]};
+var UX=window.UX={version:'24.41',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -16020,7 +16087,7 @@ function homerooms(){var o={};db.teachers.forEach(function(x){if(x.team||x.statu
 /* คาบคู่ (V24.15): a pair may not span the lunch break — the break is a document setting, so pass it along (only when
    double periods are in use: everything else sees the original policy object unchanged) */
 function policy(t){
-  var p=t.schedulePolicy||null,d=p&&p.doublePeriods;if(!(p&&p.groupTeacherFree)&&(!d||!Object.keys(d).some(function(k){return d[k]})))return p;
+  var p=t.schedulePolicy||null,d=p&&p.doublePeriods;if(!(p&&(p.groupTeacherFree||p.teacherBothHalves))&&(!d||!Object.keys(d).some(function(k){return d[k]})))return p;
   var o=(db.docSettings&&db.docSettings.uxOrder)||{},P=t.periods,l=o.lunchAfter==null?Math.min(3,P-1):+o.lunchAfter;
   return Object.assign({},p,{breakAfter:l>0&&l<P?l:0})}
 function violations(){try{var d=input();return C.checkTimetable(d,{requireComplete:false}).policyCount}catch(e){return 0}}
@@ -18857,12 +18924,27 @@ function secPolicy(b){
     b.appendChild(rep)}
   b.appendChild(check('ภาระแต่ละวันของครูใกล้เคียงกัน',p.balanceTeacherDailyLoad,function(v){setPol({balanceTeacherDailyLoad:v})},'ts-balance','ต่างกันไม่เกิน '+p.maxTeacherDailyLoadSpread+' คาบ (พยายาม)'));
   b.appendChild(check('วิชาเดียวกันไม่เรียนซ้ำวันเดียวกัน',p.spreadSameSubjectAcrossWeek,function(v){setPol({spreadSameSubjectAcrossWeek:v})},'ts-spread','วันละไม่เกิน '+p.maxSameSubjectBlocksPerDay+' ครั้ง (พยายาม)'));
+  /* V24.41 ครูมีสอนทั้งเช้าและบ่าย */
+  var hh=el('div','ux-ts-rule');hh.appendChild(check('ครูมีสอนทั้งช่วงเช้าและช่วงบ่าย',p.teacherBothHalves,function(v){setPol({teacherBothHalves:v})},'ts-halves',
+    'วันที่ครูสอน 2 คาบขึ้นไป ต้องมีทั้งก่อนและหลังพักกลางวัน · ไม่นับวันที่ตั้งครูไม่ว่างไว้ทั้งช่วง'+(lunch()?' (เช้า = คาบ 1–'+lunch()+' · บ่าย = คาบ '+(lunch()+1)+'–'+P()+')':' (ยังไม่ได้ตั้งพักกลางวัน: แบ่งครึ่งวัน)')));
+  if(p.teacherBothHalves)hh.appendChild(pick('',p.enforceTeacherBothHalves?'hard':'soft',MODE,function(v){setPol({enforceTeacherBothHalves:v==='hard'})},'ts-halves-str'));
+  b.appendChild(hh);
+  if(p.teacherBothHalves){var hr=halfReport(),rep=el('div','ux-ts-report');rep.dataset.k='ts-halves-report';
+    rep.appendChild(el('b',null,hr.length?'ตอนนี้มีสอนช่วงเดียว '+hr.length+' วัน-ครู':'ตอนนี้ครูทุกคนมีสอนทั้งเช้าและบ่ายทุกวันที่สอน ✓'));
+    if(hr.length){var ul=el('ul');hr.slice(0,10).forEach(function(x){ul.appendChild(el('li',null,tname(x.teacher)+' — วัน'+(days()[x.day]||'?')+' สอนเฉพาะช่วง'+x.half+' '+x.periods+' คาบ'))});
+      if(hr.length>10)ul.appendChild(el('li','ux-tt-hint','และอีก '+(hr.length-10)+' วัน-ครู'));rep.appendChild(ul);
+      var row=el('div','ux-ts-row'),g1=btn('ux-btn ux-primary','✦ จัดตารางใหม่ตามกฎนี้',function(){if(UX.gen)UX.gen.start()});g1.dataset.k='ts-halves-gen';row.appendChild(g1);
+      var g2=btn('ux-btn','⚖ ปรับจากตารางเดิม',function(){UX.optimize.start()});g2.dataset.k='ts-halves-run';row.appendChild(g2);rep.appendChild(row)}
+    b.appendChild(rep)}
   b.appendChild(check('คาบว่างของครูอยู่ติดกัน หรือติดพักกลางวัน',p.groupTeacherFree,function(v){setPol({groupTeacherFree:v})},'ts-groupfree','ใช้ตอนเผื่อเวลาประชุม / งานอื่น (พยายาม)'));
   b.appendChild(check('ตรวจคาบที่ลากเองให้ตรงนโยบาย "บังคับ"',p.strictManualPlacement,function(v){setPol({strictManualPlacement:v})},'ts-strict'));
   var dp=Object.keys(p.doublePeriods||{}).filter(function(k){return p.doublePeriods[k]});
   var dl=el('div','ux-ts-doubles');dl.appendChild(el('b',null,'คาบคู่ (เรียน 2 คาบติดกัน) '+dp.length+' วิชา'));
   dp.forEach(function(k){var x=btn('ux-ts-chip',k.replace(/^[A-Z]:/,'')+' ✕',function(){setPol({doublePeriods:Object.assign({},pol().doublePeriods,(function(){var o={};o[k]=false;return o})())})},'เลิกคาบคู่ '+k);x.dataset.k='ts-dbl-'+k;dl.appendChild(x)});
   dl.appendChild(el('small','ux-tt-hint',' ตั้งเพิ่มที่การ์ดคาบในตาราง (แตะคาบ → ติ๊ก "คาบคู่")'));b.appendChild(dl)}
+
+function halfReport(){try{var d=UX.optimize.input(),pc=C.policyConfig(d.setup.schedulePolicy,d.setup.periods,d.setup.teacherBlocks);
+  return C.halfDayReport(d.events,d.placements,d.teachers,d.setup.periods,d.setup.days.length,pc)}catch(e){return []}}
 
 /* ---- 4. buildings and walking --------------------------------------------------------------------------------------------- */
 var MOVE=[['students_to_teacher','นักเรียนมาหาครู (ครูอยู่ห้องตัวเอง)'],['teacher_to_class','ครูเดินไปห้องเรียน'],['escort','ครูพานักเรียนเดิน']];
@@ -18954,11 +19036,11 @@ function followUp(kind){
 /* ---- the tab ------------------------------------------------------------------------------------------------------------- */
 function summary(){
   var p=pol(),c=cov(),f=flex(),m=mob(),bl=(T().teacherBlocks||[]),tb=new Set(bl.map(function(x){return x.split('|')[0]}));
-  var hardN=['enforceMinTeacherFree','enforceMaxTeacherConsecutive','enforceMaxTeacherPeriodsPerDay','enforceMinTeacherPeriodsPerDay'].filter(function(k){return p[k]}).length,sr=slotRules().filter(function(r){return !r.off});
+  var hardN=['enforceMinTeacherFree','enforceMaxTeacherConsecutive','enforceMaxTeacherPeriodsPerDay','enforceMinTeacherPeriodsPerDay'].filter(function(k){return p[k]}).length+((T().schedulePolicy||{}).teacherBothHalves&&(T().schedulePolicy||{}).enforceTeacherBothHalves?1:0),sr=slotRules().filter(function(r){return !r.off});
   return {time:days().length+' วัน · วันละ '+P()+' คาบ'+(lunch()?' · พักหลังคาบ '+lunch():''),
     blocks:tb.size?tb.size+' คน · '+bl.length+' คาบ':'ทุกคนว่างทุกคาบ',
     rules:(sr.length||(T().dayRules||[]).length)?[sr.length?'กฎคาบ '+sr.length+' ข้อ ('+sr.map(function(r){return C.slotRuleLabel(r).split(',')[0].trim()}).join(', ')+')':'',(T().dayRules||[]).length?'กฎวันแบบเดิม '+(T().dayRules||[]).length+' ข้อ':''].filter(Boolean).join(' · '):'ไม่มี',
-    policy:'ว่าง ≥'+p.minTeacherFreePeriods+' · ติดกัน ≤'+p.maxTeacherConsecutivePeriods+' · วันละ ≤'+p.maxTeacherPeriodsPerDay+(p.minTeacherPeriodsPerDay?' · วันละ ≥'+p.minTeacherPeriodsPerDay:'')+((T().schedulePolicy||{}).minTeacherPeriodsPerWeek?' · สัปดาห์ละ ≥'+T().schedulePolicy.minTeacherPeriodsPerWeek:'')+' · บังคับ '+hardN+' ข้อ',
+    policy:'ว่าง ≥'+p.minTeacherFreePeriods+' · ติดกัน ≤'+p.maxTeacherConsecutivePeriods+' · วันละ ≤'+p.maxTeacherPeriodsPerDay+(p.minTeacherPeriodsPerDay?' · วันละ ≥'+p.minTeacherPeriodsPerDay:'')+((T().schedulePolicy||{}).minTeacherPeriodsPerWeek?' · สัปดาห์ละ ≥'+T().schedulePolicy.minTeacherPeriodsPerWeek:'')+((T().schedulePolicy||{}).teacherBothHalves?' · ทั้งเช้าและบ่าย':'')+' · บังคับ '+hardN+' ข้อ',
     mob:Object.keys(m.gradeBuildings||{}).length?(m.buildingOrder||[]).length+' อาคาร · นักเรียน: '+LEVEL[+level(m.weights,'studentMove')][1]+' · ครู: '+LEVEL[+level(m.weights,'teacherMove')][1]:'ยังไม่กำหนด',
     cov:c.enabled?'เปิด · ต้องมีครูว่าง '+(c.targetBackups||1)+' คน · ความสำคัญ'+(c.importance==='high'?'มาก':'ปกติ'):'ปิด',
     flex:f.enabled?'เปิด · ช่วยอยู่ '+Object.keys(f.assignments||{}).length+' คาบ':'ปิด',
@@ -19766,7 +19848,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="71b3bab1daeb";window.__UX_WEBAPP_LABEL="24.40";
+(function(){window.__UX_WEBAPP="5d196944a2ce";window.__UX_WEBAPP_LABEL="24.41";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
