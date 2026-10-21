@@ -3,7 +3,7 @@
    and falls back to the saved copy when offline or after 4 s), so a new version shows on the next opening, not the one after.
    Icons / manifest stay cache first. "wl-version?" from the page → reads version.json (never cached) and answers, so the
    page can say "มีเวอร์ชันใหม่" without the page itself being allowed to connect anywhere (its CSP stays as it is). */
-const CACHE='school-planner-5d196944a2ce',FILES=["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png"],PAGE=['./','index.html'];
+const CACHE='school-planner-5d2d51f0f345',FILES=["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png"],PAGE=['./','index.html'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
