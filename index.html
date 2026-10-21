@@ -2928,6 +2928,24 @@ body.ux-docs-on #documents.active>:not(#uxDocs){display:none!important}
 .ux-ts-hrst.warn{color:var(--ux-warn);font-weight:700}
 .ux-ts-hrst.bad{color:var(--ux-bad)}
 .ux-ts-hrwarn{margin:8px 0;padding:8px 10px;border-radius:10px;background:var(--ux-warn-bg);color:var(--ux-warn);font-size:var(--ux-fs-md)}
+/* V24.44 เส้นทางเดิน · ระยะ · สถานที่เฉพาะ · เส้นทางรายชั้น */
+.ux-ts-route,.ux-ts-places{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--ux-line);padding-top:10px;margin-top:6px}
+.ux-ts-route h4,.ux-ts-places h4,.ux-ts-splaces h4{margin:0;font-size:var(--ux-fs-md)}
+.ux-ts-subopts{display:flex;flex-direction:column;gap:8px;padding-left:30px}
+.ux-ts-locs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.ux-ts-loc{display:flex;gap:6px;align-items:center}
+.ux-ts-loc input{font:inherit;font-size:var(--ux-fs-md);min-height:36px;padding:0 10px;border:1px solid var(--ux-line);border-radius:9px;flex:1 1 auto;min-width:0}
+.ux-ts-pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 12px}
+.ux-ts-pair{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:var(--ux-fs-sm);padding:4px 8px;border:1px solid var(--ux-line);border-radius:9px;background:#fff}
+.ux-ts-pair select{font:inherit;font-size:var(--ux-fs-sm);min-height:32px;border:1px solid var(--ux-line);border-radius:8px;padding:0 6px}
+.ux-ts-splaces{display:flex;flex-direction:column;gap:6px}
+.ux-ts-routes{margin-top:8px}.ux-ts-routes summary{cursor:pointer;font-weight:600;font-size:var(--ux-fs-sm);color:var(--ux-brand)}
+.ux-ts-rtbl{border-collapse:collapse;font-size:var(--ux-fs-xs);margin-top:6px}
+.ux-ts-rtbl th,.ux-ts-rtbl td{border:1px solid var(--ux-line);padding:4px 6px;text-align:left;vertical-align:top;white-space:nowrap}
+.ux-ts-rtbl td.bad{background:var(--ux-bad-bg);color:var(--ux-bad)}
+@media (max-width:640px){.ux-ts-subopts{padding-left:0}}
+.ux-ts-loc small{white-space:nowrap;flex:none}
+.ux-ts-splaces>.ux-btn{align-self:flex-start}
 
 /* >>> 65-ttversions.css */
 /* 65-ttversions.css — "⧉ ฉบับ" tab of the timetable page (V24.28) */
@@ -11041,6 +11059,9 @@ var ASPCore = (() => {
     POLICY_FLAG: () => POLICY_FLAG,
     POLICY_RULES: () => POLICY_RULES,
     POLICY_WEIGHTS: () => POLICY_WEIGHTS,
+    ROUTE_BACK: () => ROUTE_BACK,
+    ROUTE_BREAK: () => ROUTE_BREAK,
+    ROUTE_OVER: () => ROUTE_OVER,
     RULE_LABELS: () => RULE_LABELS,
     SCHEMA_VERSION: () => SCHEMA_VERSION,
     SHEET_TITLE: () => SHEET_TITLE,
@@ -11139,6 +11160,7 @@ var ASPCore = (() => {
     movementCost: () => movementCost,
     newerSide: () => newerSide,
     optimizeTimetable: () => optimizeTimetable,
+    pairKey: () => pairKey,
     para: () => para,
     parseCommands: () => parseCommands,
     parseCourseLines: () => parseCourseLines,
@@ -11167,6 +11189,8 @@ var ASPCore = (() => {
     renderHtml: () => renderHtml,
     respectPolicy: () => respectPolicy,
     rng: () => rng,
+    routeCost: () => routeCost,
+    routeReport: () => routeReport,
     sameJson: () => sameJson,
     scoreItem: () => scoreItem,
     scoreTimetable: () => scoreTimetable,
@@ -11515,6 +11539,10 @@ var ASPCore = (() => {
   var MIN_DAILY_SHORT = 40;
   var FREE_SPLIT = 10;
   var DOUBLE_UNPAIRED = 80;
+  var ROUTE_BACK = 30;
+  var ROUTE_OVER = 40;
+  var ROUTE_BREAK = 0.2;
+  var pairKey = (a, b) => a < b ? `${a}|${b}` : `${b}|${a}`;
   var num = (v, fallback) => Number.isFinite(Number(v)) && v !== null && v !== "" ? Number(v) : fallback;
   var clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   function halfOffSet(blocks, periods, split) {
@@ -11570,7 +11598,25 @@ var ASPCore = (() => {
       eventBuildings: m.eventBuildings ?? {},
       heavySubjects: Array.isArray(m.heavySubjects) && m.heavySubjects.length ? m.heavySubjects : DEFAULT_HEAVY_SUBJECTS,
       morningPeriods: clamp(Number.isFinite(+m.morningPeriods) && +m.morningPeriods >= 1 ? +m.morningPeriods : 3, 1, 12),
-      weights: { ...MOBILITY_WEIGHTS, ...m.weights ?? {} }
+      weights: { ...MOBILITY_WEIGHTS, ...m.weights ?? {} },
+      distances: new Map(Object.entries(m.distances && typeof m.distances === "object" ? m.distances : {}).filter(([k, v]) => k.includes("|") && Number.isFinite(+v)).map(([k, v]) => {
+        const [a, b] = k.split("|");
+        return [pairKey(a, b), clamp(Math.round(+v), 0, 9)];
+      })),
+      places: Array.isArray(m.places) ? m.places.map(String).filter(Boolean) : [],
+      subjectPlaces: (Array.isArray(m.subjectPlaces) ? m.subjectPlaces : []).map((x) => ({
+        keys: String(x?.keyword ?? "").split(/[,，;]/).map((k) => k.trim()).filter(Boolean),
+        place: String(x?.place ?? "").trim()
+      })).filter((x) => x.keys.length && x.place),
+      route: m.route && typeof m.route === "object" && m.route.enabled !== false ? {
+        stepwise: m.route.stepwise !== false,
+        noBackForth: m.route.noBackForth !== false,
+        maxMoves: clamp(Math.round(num(m.route.maxMoves, 3)), 0, 12),
+        breakFree: m.route.breakFree !== false,
+        young: new Set(Array.isArray(m.route.youngGrades) ? m.route.youngGrades.map(String) : []),
+        youngFactor: clamp(num(m.route.youngFactor, 2), 1, 5)
+      } : null,
+      breakAfter: clamp(Math.round(num(m.breakAfter, 0)), 0, 12)
     };
   }
   var cleanSubject = (s) => String(s ?? "").replace(/^(?:ป|ม)\.\d+\s*/, "").trim();
@@ -11587,12 +11633,18 @@ var ASPCore = (() => {
   }
   function buildingDistance(cfg, a, b) {
     if (!a || !b || a === b) return a && b ? 0 : 1;
+    const set = cfg.distances?.get(pairKey(a, b));
+    if (set !== void 0) return set;
     const x = cfg.buildingOrder.indexOf(a), y = cfg.buildingOrder.indexOf(b);
     return x < 0 || y < 0 ? 1 : Math.abs(x - y);
   }
   function eventBuilding(cfg, e) {
     const override = cfg.eventBuildings[`${e.kind}:${e.origin}`];
     if (override) return override;
+    if (cfg.subjectPlaces?.length) {
+      const names = e.subjects.map(cleanSubject);
+      for (const sp of cfg.subjectPlaces) if (sp.keys.some((k) => names.some((n2) => n2.includes(k)))) return sp.place;
+    }
     const lead = e.teachers[0] ?? "", mode = cfg.teacherMoveMode[lead] || "teacher_to_class";
     const tb = cfg.teacherBuildings[lead] || "", gb = e.grades.map((g) => cfg.gradeBuildings[g] || "").find(Boolean) || "";
     if (mode === "students_to_teacher" && tb) return tb;
@@ -11731,8 +11783,9 @@ var ASPCore = (() => {
     if (d >= 2 && gap <= 1) cost += w.longJump * (d - 1);
     return cost;
   }
-  function movementCost(list2, kind, home, cfg, buildingOf) {
+  function movementCost(list2, kind, home, cfg, buildingOf, who = "", periods = 0) {
     if (!list2.length) return 0;
+    if (cfg.route && periods > 0) return routeCost(list2, kind, home, cfg, buildingOf, who, periods).cost;
     const s = [...list2].sort((a, b) => a.slot - b.slot), w = cfg.weights;
     let score2 = 0;
     if (home) score2 += w.startFromHome * buildingDistance(cfg, home, buildingOf(s[0].e));
@@ -11744,6 +11797,65 @@ var ASPCore = (() => {
       if (g1 <= 1 && g2 <= 1 && bx && by && bz && bx === bz && bx !== by) score2 += w.zigzag;
     }
     return score2;
+  }
+  function routeCost(list2, kind, home, cfg, buildingOf, who, periods) {
+    const r = cfg.route, w = cfg.weights, s = [...list2].sort((a, b) => a.slot - b.slot);
+    const base = kind === "student" ? w.studentMove : w.teacherMove, scale = base / (kind === "student" ? MOBILITY_WEIGHTS.studentMove : MOBILITY_WEIGHTS.teacherMove);
+    const periodOf = (cell4) => slotPosition(cell4, periods).period;
+    let cost = 0, moves = 0, jumps = 0;
+    const segs = [];
+    s.forEach((p, i) => {
+      const b = buildingOf(p.e), ps = [...new Set(cellsOf(p.e.duration, p.slot).map(periodOf))];
+      const last = segs[segs.length - 1];
+      if (last && b && last.place === b) {
+        for (const x of ps) if (!last.periods.includes(x)) last.periods.push(x);
+      } else if (b) segs.push({ place: b, periods: ps });
+      if (!i) return;
+      const prev = s[i - 1], a = buildingOf(prev.e);
+      if (!a || !b) return;
+      const gap = p.slot - endHalf(prev), d = buildingDistance(cfg, a, b);
+      let factor = gap <= 1 ? 1 : gap <= 3 ? 0.35 : 0;
+      const overBreak = r.breakFree && cfg.breakAfter > 0 && periodOf(endHalf(prev) - 1) < cfg.breakAfter && periodOf(p.slot) >= cfg.breakAfter;
+      if (d === 0) {
+        cost -= Math.max(0, w.sameBuildingBonus) * factor;
+        return;
+      }
+      if (overBreak) factor *= ROUTE_BREAK;
+      else moves++;
+      cost += base * d * factor;
+      if (r.stepwise && d >= 2 && !overBreak) {
+        cost += w.longJump * (d - 1) * 2 * scale;
+        jumps++;
+      }
+    });
+    if (home && s.length) cost += w.startFromHome * buildingDistance(cfg, home, buildingOf(s[0].e));
+    const backs = r.noBackForth ? Math.max(0, segs.length - new Set(segs.map((x) => x.place)).size - 1) : 0;
+    cost += backs * ROUTE_BACK * scale;
+    const over = r.maxMoves > 0 ? Math.max(0, moves - r.maxMoves) : 0;
+    cost += over * ROUTE_OVER * scale;
+    if (kind === "student" && r.young.has(who)) cost *= r.youngFactor;
+    return { cost, moves, jumps, backs, over, segments: segs };
+  }
+  function routeReport(events, placements, periods, days, raw) {
+    const cfg = mobilityConfig(raw);
+    if (!cfg.route) cfg.route = { stepwise: true, noBackForth: true, maxMoves: 3, breakFree: true, young: /* @__PURE__ */ new Set(), youngFactor: 1 };
+    const by = /* @__PURE__ */ new Map();
+    for (const e of events) {
+      const p = placements[e.id];
+      if (!p || !Number.isInteger(p.slot)) continue;
+      for (const g of e.grades) {
+        const k = `${g}|${slotPosition(p.slot, periods).day}`;
+        (by.get(k) ?? by.set(k, []).get(k)).push({ e, slot: p.slot });
+      }
+    }
+    const out = [];
+    for (const [k, list2] of by) {
+      const i = k.lastIndexOf("|"), g = k.slice(0, i), d = +k.slice(i + 1);
+      const f = routeCost(list2, "student", cfg.gradeBuildings[g] || "", cfg, (e) => eventBuilding(cfg, e), g, periods);
+      out.push({ grade: g, day: d, moves: f.moves, jumps: f.jumps, backs: f.backs, over: f.over, segments: f.segments });
+    }
+    void days;
+    return out.sort((a, b) => a.grade.localeCompare(b.grade) || a.day - b.day);
   }
   function heavyLate(p, periods, cfg, heavy) {
     const period = slotPosition(p.slot, periods).period;
@@ -11780,8 +11892,11 @@ var ASPCore = (() => {
     const building = (e) => eventBuilding(mob, e);
     let mobility = 0;
     for (const p of placed) mobility += heavyLate(p, periods, mob, isHeavyForMobility(p.e, mob.heavySubjects));
-    for (const [k, list2] of group((p) => p.e.grades.map((g) => `${g}|${dayOf(p)}`))) mobility += movementCost(list2, "student", mob.gradeBuildings[k.slice(0, k.lastIndexOf("|"))] || "", mob, building);
-    for (const [k, list2] of byTeacherDay) mobility += movementCost(list2, "teacher", mob.teacherBuildings[k.slice(0, k.lastIndexOf("|"))] || "", mob, building);
+    for (const [k, list2] of group((p) => p.e.grades.map((g) => `${g}|${dayOf(p)}`))) {
+      const g = k.slice(0, k.lastIndexOf("|"));
+      mobility += movementCost(list2, "student", mob.gradeBuildings[g] || "", mob, building, g, periods);
+    }
+    for (const [k, list2] of byTeacherDay) mobility += movementCost(list2, "teacher", mob.teacherBuildings[k.slice(0, k.lastIndexOf("|"))] || "", mob, building, "", periods);
     return { policy, mobility, total: policy + mobility };
   }
   function hasDoubleFree(used, blocked, periods, breakAfter) {
@@ -11928,7 +12043,7 @@ var ASPCore = (() => {
   function coverConfig(raw) {
     const c = raw ?? {}, on = !!c.enabled;
     const target = Math.max(1, Math.min(5, Math.round(Number(c.targetBackups) || 1)));
-    return { enabled: on, target, weight: COVER_WEIGHT * (c.importance === "high" ? 3 : 1) };
+    return { enabled: on, target, weight: COVER_WEIGHT * (c.importance === "high" ? 3 : 1), neighbour: c.neighbourHalf === true };
   }
   function rng(seed) {
     let s = seed >>> 0 || 1;
@@ -11961,6 +12076,8 @@ var ASPCore = (() => {
       const b = mob.teacherBuildings[t.id];
       if (b && active2(t.id)) (pool.get(b) ?? pool.set(b, []).get(b)).push(t.id);
     }
+    const near = /* @__PURE__ */ new Map();
+    if (cov.enabled && cov.neighbour) for (const b of pool.keys()) near.set(b, [...pool].filter(([x]) => x !== b && buildingDistance(mob, b, x) === 1).flatMap(([, ts]) => ts));
     const info = /* @__PURE__ */ new Map();
     for (const e of input.events) info.set(e.id, {
       hard: slotRulesFor(e, setup.slotRules, "hard"),
@@ -12045,9 +12162,9 @@ var ASPCore = (() => {
         case "H":
           return heavyRun(placedIn(`G|${a}|${b}`).filter((p) => info.get(p.e.id).heavyP), periods, pol);
         case "MG":
-          return movementCost(placedIn(`G|${a}|${b}`), "student", mob.gradeBuildings[a] || "", mob, buildingOf);
+          return movementCost(placedIn(`G|${a}|${b}`), "student", mob.gradeBuildings[a] || "", mob, buildingOf, a, periods);
         case "MT":
-          return movementCost(placedIn(`T|${a}|${b}`), "teacher", mob.teacherBuildings[a] || "", mob, buildingOf);
+          return movementCost(placedIn(`T|${a}|${b}`), "teacher", mob.teacherBuildings[a] || "", mob, buildingOf, "", periods);
         case "L": {
           const id = key2.slice(2);
           return heavyLate({ e: events.get(id), slot: slot.get(id) }, periods, mob, info.get(id).heavyM);
@@ -12083,9 +12200,16 @@ var ASPCore = (() => {
         const e = events.get(id), b = info.get(id).building, list2 = b ? pool.get(b) : void 0;
         if (!list2) continue;
         let free = 0;
-        for (const t of list2) if (!e.teachers.includes(t) && !occ.has(`t|${t}|${c}`) && !blocks.has(`${t}|${periodIndex(c)}`)) {
+        const isFree = (t) => !e.teachers.includes(t) && !occ.has(`t|${t}|${c}`) && !blocks.has(`${t}|${periodIndex(c)}`);
+        for (const t of list2) if (isFree(t)) {
           free++;
           if (free >= cov.target) break;
+        }
+        if (free < cov.target) {
+          for (const t of near.get(b) ?? []) if (isFree(t)) {
+            free += 0.5;
+            if (free >= cov.target) break;
+          }
         }
         if (free < cov.target) {
           cost += (cov.target - free) * cov.weight / 2;
@@ -14970,7 +15094,7 @@ var ASPCore = (() => {
   }
 
   // core/src/subexport.ts
-  var SUB_COLUMNS = ["academic_year", "term", "weekday", "period", "class_name", "subject", "teacher"];
+  var SUB_COLUMNS = ["academic_year", "term", "weekday", "period", "class_name", "subject", "teacher", "location", "teacher_building"];
   var FULL_DAYS = { "จ": "จันทร์", "อ": "อังคาร", "พ": "พุธ", "พฤ": "พฤหัสบดี", "ศ": "ศุกร์", "ส": "เสาร์", "อา": "อาทิตย์" };
   var dayName = (d) => {
     const x = String(d ?? "").replace(/^วัน/, "").replace(/\.$/, "").trim();
@@ -14984,6 +15108,7 @@ var ASPCore = (() => {
     const names = new Map(input.teachers.map((t) => [t.id, t.name]));
     const P3 = input.setup.periods, days = input.setup.days, seen = /* @__PURE__ */ new Set(), rows = [];
     let skipped = 0, noTeacher = 0;
+    const mob = mobilityConfig(input.setup.mobility);
     for (const e of input.events) {
       const p = input.placements[e.id];
       if (!p || !Number.isInteger(p.slot)) {
@@ -15005,7 +15130,9 @@ var ASPCore = (() => {
           period: period + 1,
           class_name: g,
           subject: subjectFor(e.subjects, g),
-          teacher: names.get(t) ?? t
+          teacher: names.get(t) ?? t,
+          location: eventBuilding(mob, e),
+          teacher_building: mob.teacherBuildings[t] ?? ""
         };
         const k = [r.weekday, r.period, r.class_name, r.subject, r.teacher].join("|");
         if (seen.has(k)) continue;
@@ -15436,8 +15563,21 @@ var ASPCore = (() => {
       });
     }
     const mob = setup.mobility ?? {};
-    if (mob.gradeBuildings && Object.keys(mob.gradeBuildings).length)
-      out.push({ key: "mobility", section: "mob", title: "นักเรียนและครูเดินข้ามอาคารน้อยที่สุด", strength: "soft", status: "ok", can: "ทำได้ (พยายาม)", how: "", details: [] });
+    if (mob.gradeBuildings && Object.keys(mob.gradeBuildings).length) {
+      const gb = mob.gradeBuildings, tb = mob.teacherBuildings ?? {}, det = [];
+      for (const [g, ids] of Object.entries(setup.homeroom ?? {})) for (const t of ids ?? []) if (gb[g] && tb[t] && tb[t] !== gb[g]) det.push(`ครูประจำชั้น ${g} (${tn(t)}) อยู่${tb[t]} แต่ชั้นเรียนอยู่${gb[g]}`);
+      const route = mob.route && typeof mob.route === "object" && mob.route.enabled !== false;
+      out.push({
+        key: "mobility",
+        section: "mob",
+        title: route ? "เส้นทางเดินของนักเรียน: อยู่ตึกเดียวนานที่สุด ไปตึกข้างเคียงก่อนตึกไกล" : "นักเรียนและครูเดินข้ามอาคารน้อยที่สุด",
+        strength: "soft",
+        status: "ok",
+        can: "ทำได้ (พยายาม)" + (det.length ? ` · ข้อสังเกต ${det.length} ข้อ` : ""),
+        how: det.length ? "ถ้าเป็นไปได้ ให้ครูประจำชั้นอยู่ตึกเดียวกับชั้น — ดูแลและสอนแทนได้สะดวก" : "",
+        details: det
+      });
+    }
     const cov = setup.substituteCoverage ?? {};
     if (cov.enabled) out.push({
       key: "cover",
@@ -15509,6 +15649,12 @@ var ASPCore = (() => {
       out.doubles = { value: have, of: want, text: `ติดกัน ${have}/${want} คู่`, met: have >= want, lower: false };
     }
     out.mobility = { value: Math.round(s.mobility), text: `คะแนน ${Math.round(s.mobility).toLocaleString("en-US")} (ยิ่งต่ำยิ่งดี)`, met: true, lower: true };
+    const mraw = setup.mobility ?? {};
+    if (mraw.route && mraw.route.enabled !== false && mraw.gradeBuildings && Object.keys(mraw.gradeBuildings).length) {
+      const rr = routeReport(events, placements, P3, D, mraw), sum = (k) => rr.reduce((a, x) => a + x[k], 0);
+      const bad = sum("jumps") + sum("backs") + sum("over");
+      out.mobility = { value: bad, text: `ย้ายตึก ${sum("moves")} ครั้ง/สัปดาห์ · กระโดดไกล ${sum("jumps")} · เดินย้อน ${sum("backs")} · เกินกำหนด ${sum("over")}`, met: !bad, lower: true };
+    }
     if (s.coverable) out.cover = { value: s.coverable - s.uncovered, of: s.coverable, text: `มีครูสำรอง ${s.coverable - s.uncovered}/${s.coverable} คาบ`, met: !s.uncovered, lower: false };
     return out;
   }
@@ -15519,7 +15665,7 @@ var ASPCore = (() => {
   }
 
   // core/src/index.ts
-  var VERSION = "0.25.0";
+  var VERSION = "0.26.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -15528,7 +15674,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.43',inits:[],syncs:[]};
+var UX=window.UX={version:'24.44',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -16605,8 +16751,25 @@ function input(){
     placements:JSON.parse(JSON.stringify(t.placements||{})),
     teachers:db.teachers.map(function(x){return {id:x.id,name:x.name,team:!!x.team,status:x.status}}),
     setup:{days:t.days.slice(),periods:t.periods,teacherBlocks:t.teacherBlocks.slice(),dayRules:JSON.parse(JSON.stringify(t.dayRules||[])),
-      taskRooms:Object.assign({},t.taskRooms||{}),schedulePolicy:policy(t),mobility:t.mobility||null,substituteCoverage:t.substituteCoverage||null,slotRules:JSON.parse(JSON.stringify(t.slotRules||[])),homeroom:homerooms()}};
+      taskRooms:Object.assign({},t.taskRooms||{}),schedulePolicy:policy(t),mobility:mobility(t),substituteCoverage:cover(t),slotRules:JSON.parse(JSON.stringify(t.slotRules||[])),homeroom:homerooms()}};
 }
+/* V24.44 เส้นทางเดินแบบทีละขั้น: plans saved before have no route / places / distances — the core then scores walking as the
+   original #18 did. The school asked for the stepwise route on by default, so the page fills these defaults here (the saved data
+   changes only when someone edits them in ⚙ เงื่อนไข → อาคารและการเดิน) and always passes the lunch break. */
+var FIELD='สนามโรงเรียน',COMP='ห้องคอม';
+function lunchAfter(t){var o=(db.docSettings&&db.docSettings.uxOrder)||{},P=t.periods,l=o.lunchAfter==null?Math.min(3,P-1):+o.lunchAfter;return l>0&&l<P?l:0}
+function mobDefaults(m){
+  m=JSON.parse(JSON.stringify(m||{}));var order=Array.isArray(m.buildingOrder)&&m.buildingOrder.length?m.buildingOrder:['ตึกมัธยม','ตึกอนุบาล','ตึกประถม','ตึกยุวนาฏ'];
+  if(!m.route)m.route={enabled:true,stepwise:true,noBackForth:true,maxMoves:3,breakFree:true,youngFactor:2,
+    youngGrades:(db.grades||[]).filter(function(g){return /^(อ\.|อนุบาล|ป\.[12]$)/.test(g)})};
+  if(!Array.isArray(m.places))m.places=[FIELD,COMP];
+  if(!Array.isArray(m.subjectPlaces))m.subjectPlaces=[{keyword:'พละ, พลศึกษา',place:FIELD},{keyword:'คอมพิวเตอร์',place:COMP}];
+  if(!m.distances||typeof m.distances!=='object'){m.distances={};      /* the field is in the middle: next door to every building */
+    m.places.forEach(function(pl){order.forEach(function(b){m.distances[pl<b?pl+'|'+b:b+'|'+pl]=1})})}
+  return m}
+function mobility(t){if(!t.mobility)return null;var m=mobDefaults(t.mobility);m.breakAfter=lunchAfter(t);return m}
+/* substitute cover: a free teacher next door counts half when the building has none (V24.44, on unless switched off) */
+function cover(t){var c=t.substituteCoverage;if(!c)return null;c=Object.assign({},c);if(c.neighbourHalf===undefined)c.neighbourHalf=true;return c}
 /* V24.39 ครูประจำชั้น (teacher details: profile.homeroom) → { grade: [teacher ids] } for the homeroom-first-period rule */
 function homerooms(){var o={};db.teachers.forEach(function(x){if(x.team||x.status!=='active')return;((x.profile||{}).homeroom||[]).forEach(function(g){if(g)(o[g]=o[g]||[]).push(x.id)})});return o}
 /* คาบคู่ (V24.15): a pair may not span the lunch break — the break is a document setting, so pass it along (only when
@@ -16733,7 +16896,7 @@ function build(){
   if(gen)gen.addEventListener('click',function(){if(UX.gen)return;setTimeout(function(){var v=violations();
     if(v>0)UX.toast('สร้างตารางแล้ว แต่ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับให้ดีขึ้น',start)},1600)});
 }
-UX.optimize={homerooms:homerooms,start:start,input:input,violations:violations,run:run2};
+UX.optimize={mobDefaults:mobDefaults,homerooms:homerooms,start:start,input:input,violations:violations,run:run2};
 UX.onInit(build);
 })(window.UX);
 
@@ -19518,12 +19681,94 @@ function secMob(b){
   db.grades.forEach(function(g){gw.appendChild(pick(g,(m.gradeBuildings||{})[g]||'',[['','—']].concat(bs.map(function(x){return [x,x]})),
     function(v){setMob(function(x){x.gradeBuildings=Object.assign({},x.gradeBuildings);x.gradeBuildings[g]=v})},'ts-gb-'+g))});
   b.appendChild(gw);
+  secRoute(b);secPlaces(b);
   var tw=el('div','ux-ts-teachers');tw.appendChild(el('h4',null,'ครูประจำอาคาร และการเดิน'));
   people().forEach(function(t){var r=el('div','ux-ts-trow');r.appendChild(el('span','ux-ts-tn',tname(t.id)));
     r.appendChild(pick('',(m.teacherBuildings||{})[t.id]||'',[['','—']].concat(bs.map(function(x){return [x,x]})),function(v){setMob(function(x){x.teacherBuildings=Object.assign({},x.teacherBuildings);x.teacherBuildings[t.id]=v})},'ts-tb-'+t.id));
     r.appendChild(pick('',(m.teacherMoveMode||{})[t.id]||'teacher_to_class',MOVE,function(v){setMob(function(x){x.teacherMoveMode=Object.assign({},x.teacherMoveMode);x.teacherMoveMode[t.id]=v})},'ts-tm-'+t.id));
     tw.appendChild(r)});
-  b.appendChild(tw)}
+  b.appendChild(tw);secRoutes(b)}
+
+/* ---- 4b. V24.44 เส้นทางเดินแบบทีละขั้น · ระยะระหว่างตึกและสถานที่ · วิชาที่เรียนที่สถานที่เฉพาะ · เส้นทางรายชั้น --------------- */
+/* what the core uses (defaults filled by 45-optimize when a plan has none) · writes fill the defaults first, then change one thing */
+function eff(){return UX.optimize.mobDefaults(mob())}
+function setRoute(fn,msg){change(function(){var m=db.timetable.mobility=mob()||{},f=UX.optimize.mobDefaults(m);
+  ['route','places','subjectPlaces','distances'].forEach(function(k){if(m[k]===undefined)m[k]=f[k]});fn(m)},msg)}
+function locs(m){return (m.buildingOrder||[]).concat((m.places||[]).filter(function(x){return (m.buildingOrder||[]).indexOf(x)<0}))}
+function pk(a,b){return a<b?a+'|'+b:b+'|'+a}
+function dist(m,a,b){var k=pk(a,b);if(m.distances&&m.distances[k]!=null)return +m.distances[k];var o=m.buildingOrder||[],x=o.indexOf(a),y=o.indexOf(b);return x<0||y<0?1:Math.min(3,Math.abs(x-y))}
+var DIST=[['0','อยู่ด้วยกัน'],['1','ติดกัน'],['2','ไกล'],['3','ไกลมาก']];
+function short(n){return String(n||'').replace(/^ตึก/,'')}
+function secRoute(b){
+  var m=eff(),r=m.route||{},on=r.enabled!==false,w=el('div','ux-ts-route');w.dataset.k='ts-route';
+  w.appendChild(el('h4',null,'เส้นทางเดินของนักเรียน'));
+  w.appendChild(check('เดินแบบทีละขั้น: อยู่ตึกเดียวกันให้นานที่สุด ไปตึกข้างเคียงก่อนตึกที่ไกลกว่า',on,function(v){setRoute(function(x){x.route=Object.assign({},x.route,{enabled:v})})},'ts-route-on',
+    'จบวันที่ตึกไหนก็ได้ ไม่ต้องกลับตึกของชั้น · ใช้กับนักเรียน และครูที่เดินไปห้องเรียน'));
+  if(on){var g=el('div','ux-ts-subopts');
+    g.appendChild(check('ไม่กระโดดข้ามตึก',r.stepwise!==false,function(v){setRoute(function(x){x.route=Object.assign({},x.route,{stepwise:v})})},'ts-route-step','จากตึกหนึ่งไปตึกที่ "ไกล" ทันทีโดยไม่แวะตึกกลางทาง = เสียคะแนนมาก'));
+    g.appendChild(check('ไม่เดินย้อนไปมา',r.noBackForth!==false,function(v){setRoute(function(x){x.route=Object.assign({},x.route,{noBackForth:v})})},'ts-route-back','ไปตึกข้างเคียงแล้วกลับตึกเดิมได้ 1 ครั้งต่อวัน · กลับไปกลับมามากกว่านั้นเสียคะแนน'));
+    g.appendChild(check('ย้ายตึกช่วงพักกลางวันไม่นับ',r.breakFree!==false,function(v){setRoute(function(x){x.route=Object.assign({},x.route,{breakFree:v})})},'ts-route-break',
+      lunch()?'ย้ายตึกระหว่างคาบ '+lunch()+' กับคาบ '+(lunch()+1)+' แทบไม่เสียคะแนน (นักเรียนเดินตอนพักอยู่แล้ว)':'ยังไม่ได้ตั้งพักกลางวัน (ส่วน "วันและคาบ")'));
+    var row=el('div','ux-ts-row');
+    row.appendChild(num('ย้ายตึกไม่เกิน (ครั้ง/วัน) · 0 = ไม่จำกัด',r.maxMoves==null?3:r.maxMoves,0,P(),function(v){setRoute(function(x){x.route=Object.assign({},x.route,{maxMoves:v})})},'ts-route-max'));
+    row.appendChild(pick('เด็กเล็กเดินน้อยกว่า',String(r.youngFactor||2),[['1','เท่ากัน'],['1.5','×1.5'],['2','×2'],['3','×3']],function(v){setRoute(function(x){x.route=Object.assign({},x.route,{youngFactor:+v})})},'ts-route-young'));
+    g.appendChild(row);
+    var ch=el('div','ux-ts-chips');ch.appendChild(el('span','ux-ts-rl','ชั้นเด็กเล็ก'));var yg=(r.youngGrades||[]).slice();
+    (db.grades||[]).forEach(function(gr){var on2=yg.indexOf(gr)>-1,c=btn('ux-ts-tog'+(on2?' on':''),gr,function(){setRoute(function(x){var a=((x.route||{}).youngGrades||[]).slice(),i=a.indexOf(gr);if(i>-1)a.splice(i,1);else a.push(gr);x.route=Object.assign({},x.route,{youngGrades:a})})});
+      c.dataset.k='ts-route-yg-'+gr;c.setAttribute('aria-pressed',String(on2));ch.appendChild(c)});
+    g.appendChild(ch);w.appendChild(g)}
+  b.appendChild(w)}
+function renameLoc(from,to){setRoute(function(m){var sw=function(v){return v===from?to:v};
+  m.buildingOrder=(m.buildingOrder||[]).map(sw);m.places=(m.places||[]).map(sw);
+  ['gradeBuildings','teacherBuildings','eventBuildings'].forEach(function(k){var o=m[k]||{};Object.keys(o).forEach(function(x){o[x]=sw(o[x])})});
+  m.subjectPlaces=(m.subjectPlaces||[]).map(function(x){return Object.assign({},x,{place:sw(x.place)})});
+  var d={};Object.keys(m.distances||{}).forEach(function(k){var ab=k.split('|');d[pk(sw(ab[0]),sw(ab[1]))]=m.distances[k]});m.distances=d},'เปลี่ยนชื่อ "'+from+'" เป็น "'+to+'" ทุกที่แล้ว (ย้อนกลับได้)')}
+function secPlaces(b){
+  var m=eff(),L=locs(m),w=el('div','ux-ts-places');w.dataset.k='ts-places';
+  w.appendChild(el('h4',null,'ระยะระหว่างตึกและสถานที่'));
+  w.appendChild(el('p','ux-tt-hint','ตั้งตามสภาพจริง: "ติดกัน" = เดินถึงเร็ว · "ไกล" / "ไกลมาก" = ควรแวะตึกกลางทาง · "อยู่ด้วยกัน" = นับเป็นที่เดียวกัน (ไม่เสียคะแนน)'));
+  var nl=el('div','ux-ts-locs');
+  L.forEach(function(n,i){var r=el('div','ux-ts-loc'),inp=el('input');inp.value=n;inp.dataset.k='ts-loc-'+i;inp.setAttribute('aria-label','ชื่อ '+n);
+    inp.onchange=function(){var v=inp.value.trim();if(!v||v===n)return;if(L.indexOf(v)>-1){UX.toast('มีชื่อ "'+v+'" แล้ว');inp.value=n;return}renameLoc(n,v)};r.appendChild(inp);
+    var special=(m.buildingOrder||[]).indexOf(n)<0;r.appendChild(el('small','ux-tt-hint',special?'สถานที่พิเศษ':'ตึก'));
+    if(special){var x=btn('ux-asg-x','✕',function(){setRoute(function(mm){mm.places=(mm.places||[]).filter(function(p){return p!==n});
+        mm.subjectPlaces=(mm.subjectPlaces||[]).filter(function(p){return p.place!==n});Object.keys(mm.distances||{}).forEach(function(k){if(k.split('|').indexOf(n)>-1)delete mm.distances[k]})},'ลบ "'+n+'" แล้ว (ย้อนกลับได้)')},'ลบ '+n);x.dataset.k='ts-loc-del-'+i;r.appendChild(x)}
+    nl.appendChild(r)});
+  var ar=el('div','ux-ts-loc'),ai=el('input');ai.placeholder='เพิ่มสถานที่ เช่น ห้องวิทยาศาสตร์';ai.dataset.k='ts-loc-new';ai.setAttribute('aria-label','ชื่อสถานที่ใหม่');ar.appendChild(ai);
+  var ab=btn('ux-btn','เพิ่ม',function(){var v=ai.value.trim();if(!v)return;if(L.indexOf(v)>-1){UX.toast('มีชื่อ "'+v+'" แล้ว');return}
+    setRoute(function(mm){mm.places=(mm.places||[]).concat([v]);mm.distances=mm.distances||{};locs(mm).forEach(function(o){if(o!==v)mm.distances[pk(o,v)]=1})},'เพิ่ม "'+v+'" แล้ว — ตั้งระยะด้านล่าง')});ab.dataset.k='ts-loc-add';ar.appendChild(ab);nl.appendChild(ar);
+  w.appendChild(nl);
+  var pr=el('div','ux-ts-pairs');
+  for(var i=0;i<L.length;i++)for(var j=i+1;j<L.length;j++)(function(a,c){var r=el('label','ux-ts-pair');r.appendChild(el('span',null,short(a)+' ↔ '+short(c)));
+    var sl=el('select');sl.dataset.k='ts-dist-'+pk(a,c);sl.setAttribute('aria-label','ระยะ '+a+' กับ '+c);DIST.forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];sl.appendChild(op)});
+    sl.value=String(Math.min(3,dist(m,a,c)));sl.onchange=function(){setRoute(function(mm){mm.distances=Object.assign({},mm.distances);mm.distances[pk(a,c)]=+sl.value})};r.appendChild(sl);pr.appendChild(r)})(L[i],L[j]);
+  w.appendChild(pr);
+  var sp=el('div','ux-ts-splaces');sp.appendChild(el('h4',null,'วิชาที่เรียนที่สถานที่เฉพาะ (ไม่ว่าครูคนไหนสอน)'));
+  (m.subjectPlaces||[]).forEach(function(x,i){var r=el('div','ux-ts-row'),kw=el('input');kw.value=x.keyword;kw.dataset.k='ts-sp-kw-'+i;kw.setAttribute('aria-label','ชื่อวิชา');
+    var n=0;try{var ks=String(x.keyword).split(/[,，;]/).map(function(k){return k.trim()}).filter(Boolean);n=ttBuild().events.filter(function(e){return ks.some(function(k){return e.subjects.some(function(s){return s.indexOf(k)>-1})})}).length}catch(e){}
+    kw.onchange=function(){setRoute(function(mm){mm.subjectPlaces=mm.subjectPlaces.slice();mm.subjectPlaces[i]=Object.assign({},mm.subjectPlaces[i],{keyword:kw.value.trim()})})};r.appendChild(kw);
+    var pl=el('select');pl.dataset.k='ts-sp-pl-'+i;pl.setAttribute('aria-label','สถานที่');L.forEach(function(o){var op=el('option',null,o);op.value=o;pl.appendChild(op)});pl.value=x.place;
+    pl.onchange=function(){setRoute(function(mm){mm.subjectPlaces=mm.subjectPlaces.slice();mm.subjectPlaces[i]=Object.assign({},mm.subjectPlaces[i],{place:pl.value})})};r.appendChild(pl);
+    r.appendChild(el('small','ux-ts-count',n?'ตรงกับ '+n+' คาบ':'ไม่ตรงกับวิชาใด'));
+    var xx=btn('ux-asg-x','✕',function(){setRoute(function(mm){mm.subjectPlaces=mm.subjectPlaces.filter(function(_,k){return k!==i})})},'ลบ '+x.keyword);xx.dataset.k='ts-sp-del-'+i;r.appendChild(xx);sp.appendChild(r)});
+  var add=btn('ux-btn','+ เพิ่มวิชา',function(){setRoute(function(mm){mm.subjectPlaces=(mm.subjectPlaces||[]).concat([{keyword:'',place:L[0]||''}])})});add.dataset.k='ts-sp-add';sp.appendChild(add);
+  sp.appendChild(el('small','ux-tt-hint','พิมพ์บางส่วนของชื่อวิชา คั่นด้วย , ได้หลายคำ เช่น พละ, พลศึกษา'));
+  w.appendChild(sp);b.appendChild(w)}
+function secRoutes(b){
+  var d,rr=[];try{d=UX.optimize.input();if(d.setup.mobility)rr=C.routeReport(d.events,d.placements,d.setup.periods,d.setup.days.length,d.setup.mobility)}catch(e){}
+  if(!rr.length)return;
+  var w=el('details','ux-ts-routes');w.dataset.k='ts-routes';
+  var tot=function(k){return rr.reduce(function(a,x){return a+x[k]},0)};
+  w.appendChild(el('summary',null,'เส้นทางเดินรายชั้น (ตารางตอนนี้): ย้ายตึก '+tot('moves')+' ครั้ง/สัปดาห์ · กระโดดไกล '+tot('jumps')+' · เดินย้อน '+tot('backs')+' · เกินกำหนด '+tot('over')));
+  var t=el('table','ux-ts-rtbl'),hd=el('tr');hd.appendChild(el('th',null,'ชั้น'));days().forEach(function(x){hd.appendChild(el('th',null,x))});t.appendChild(hd);
+  var by={};rr.forEach(function(x){(by[x.grade]=by[x.grade]||{})[x.day]=x});
+  (db.grades||[]).forEach(function(g){if(!by[g])return;var tr=el('tr');tr.appendChild(el('th',null,g));
+    days().forEach(function(_,di){var x=by[g][di],td=el('td');if(x){td.textContent=x.segments.map(function(s){return short(s.place)+' '+s.periods.map(function(p){return p+1}).join(',')}).join(' → ');
+        if(x.jumps||x.backs||x.over){td.className='bad';td.title=[x.jumps?'กระโดดไกล '+x.jumps:'',x.backs?'เดินย้อน '+x.backs:'',x.over?'ย้ายเกินกำหนด '+x.over:''].filter(Boolean).join(' · ')}}
+      tr.appendChild(td)});t.appendChild(tr)});
+  var wr=el('div','ux-codes-wrap');wr.appendChild(t);w.appendChild(wr);
+  w.appendChild(el('small','ux-tt-hint','ตัวเลข = คาบ · สีแดง = กระโดดไกล / เดินย้อน / ย้ายเกินกำหนด (ชี้ดูรายละเอียด) · ปรับได้ด้วย ✦ จัดตารางอัตโนมัติ'));
+  b.appendChild(w)}
 
 /* ---- 5. substitute cover in the same building ---------------------------------------------------------------------------- */
 /* the same measure the optimizer uses (core optimize.ts): lessons whose building has no free teacher at that time */
@@ -19595,7 +19840,8 @@ function summary(){
     blocks:tb.size?tb.size+' คน · '+bl.length+' คาบ':'ทุกคนว่างทุกคาบ',
     rules:(sr.length||(T().dayRules||[]).length)?[sr.length?'กฎคาบ '+sr.length+' ข้อ ('+sr.map(function(r){return C.slotRuleLabel(r).split(',')[0].trim()}).join(', ')+')':'',(T().dayRules||[]).length?'กฎวันแบบเดิม '+(T().dayRules||[]).length+' ข้อ':''].filter(Boolean).join(' · '):'ไม่มี',
     policy:'ว่าง ≥'+p.minTeacherFreePeriods+' · ติดกัน ≤'+p.maxTeacherConsecutivePeriods+' · วันละ ≤'+p.maxTeacherPeriodsPerDay+(p.minTeacherPeriodsPerDay?' · วันละ ≥'+p.minTeacherPeriodsPerDay:'')+((T().schedulePolicy||{}).minTeacherPeriodsPerWeek?' · สัปดาห์ละ ≥'+T().schedulePolicy.minTeacherPeriodsPerWeek:'')+((T().schedulePolicy||{}).teacherBothHalves?' · ทั้งเช้าและบ่าย':'')+((T().schedulePolicy||{}).minDoubleFreeDays?' · ว่าง 2 คาบติด ≥'+T().schedulePolicy.minDoubleFreeDays+' วัน':'')+' · บังคับ '+hardN+' ข้อ',
-    mob:Object.keys(m.gradeBuildings||{}).length?(m.buildingOrder||[]).length+' อาคาร · นักเรียน: '+LEVEL[+level(m.weights,'studentMove')][1]+' · ครู: '+LEVEL[+level(m.weights,'teacherMove')][1]:'ยังไม่กำหนด',
+    mob:Object.keys(m.gradeBuildings||{}).length?(m.buildingOrder||[]).length+' อาคาร · นักเรียน: '+LEVEL[+level(m.weights,'studentMove')][1]+' · ครู: '+LEVEL[+level(m.weights,'teacherMove')][1]+
+      (function(){var r=(UX.optimize.mobDefaults(m).route)||{};return r.enabled===false?'':' · เดินทีละขั้น'+(r.maxMoves?' · ย้าย ≤'+r.maxMoves+'/วัน':'')})():'ยังไม่กำหนด',
     cov:c.enabled?'เปิด · ต้องมีครูว่าง '+(c.targetBackups||1)+' คน · ความสำคัญ'+(c.importance==='high'?'มาก':'ปกติ'):'ปิด',
     flex:f.enabled?'เปิด · ช่วยอยู่ '+Object.keys(f.assignments||{}).length+' คาบ':'ปิด',
     hr:(function(){var m=hrMin(),n=(db.grades||[]).filter(hrOf).length;if(!m)return n?'ปิด · มีครูประจำชั้น '+n+' ชั้น':'ปิด';
@@ -20251,7 +20497,7 @@ var t=0;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout
 
 /* >>> 71-subexport.js */
 /* 71-subexport.js — "ส่งออกสำหรับระบบสอนแทน" (V24.36): the timetable as CSV for the substitute-teaching system.
-   Columns academic_year, term, weekday, period, class_name, subject, teacher — one row per teacher per class per period
+   Columns academic_year, term, weekday, period, class_name, subject, teacher (+ V24.44 location, teacher_building) — one row per teacher per class per period
    (ASPCore.substitutionRows / substitutionCsv, unit-tested). A small window confirms ปีการศึกษา / ภาคเรียน (from the
    documents' settings), shows how many rows and what is left out, previews the first rows, then downloads
    "ตารางสอน_ระบบสอนแทน_<ปี>_ภาค<n>.csv" (UTF-8 with BOM). Read only — the plan is not changed.
@@ -20608,7 +20854,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="f0792baee419";window.__UX_WEBAPP_LABEL="24.43";
+(function(){window.__UX_WEBAPP="02a9e673f508";window.__UX_WEBAPP_LABEL="24.44";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
