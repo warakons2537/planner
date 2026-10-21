@@ -3259,6 +3259,51 @@ body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-a
 @media (max-width:600px){.ux-hr-tbl thead{display:none}.ux-hr-tbl tr{display:grid;grid-template-columns:56px 1fr;gap:4px 8px;padding:6px 0;border-bottom:1px solid var(--ux-line)}
   .ux-hr-tbl th,.ux-hr-tbl td{border:0;padding:2px 0}.ux-hr-tbl tbody th{grid-row:span 3}.ux-hr-tbl select{max-width:none}}
 
+/* >>> 73-plan.css */
+/* 73-plan.css — the ✦ จัดตารางอัตโนมัติ window (js/73-plan.js): condition check → one run → before/after. Frame = .ux-opt dialog. */
+.ux-plan{width:min(760px,96vw);max-height:92vh;overflow:auto}
+.ux-plan-head{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;padding:10px 12px;border-radius:var(--ux-radius-sm);margin:0 0 10px;font-size:var(--ux-fs-md);background:var(--ux-ok-bg);color:var(--ux-ok)}
+.ux-plan-head[data-status=warn]{background:var(--ux-warn-bg);color:var(--ux-warn)}
+.ux-plan-head[data-status=bad]{background:var(--ux-bad-bg);color:var(--ux-bad)}
+.ux-plan-head span{color:var(--ux-ink-soft);font-size:var(--ux-fs-sm)}
+.ux-plan-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px}
+.ux-plan-i{border:1px solid var(--ux-line);border-left:4px solid var(--ux-ok);border-radius:var(--ux-radius-sm);padding:8px 12px;background:#fff}
+.ux-plan-i.warn{border-left-color:#d08a12}.ux-plan-i.bad{border-left-color:var(--ux-bad)}
+.ux-plan-i.focus{box-shadow:0 0 0 2px var(--ux-saffron)}
+.ux-plan-top{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.ux-plan-ic{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-weight:700;font-size:var(--ux-fs-sm);background:var(--ux-ok-bg);color:var(--ux-ok);flex:none}
+.ux-plan-i.warn .ux-plan-ic{background:var(--ux-warn-bg);color:var(--ux-warn)}.ux-plan-i.bad .ux-plan-ic{background:var(--ux-bad-bg);color:var(--ux-bad)}
+.ux-plan-t{font-size:var(--ux-fs-md);flex:1 1 240px;min-width:0}
+.ux-plan-str{font-size:var(--ux-fs-xs);padding:1px 8px;border-radius:999px;background:var(--ux-brand-soft);color:var(--ux-brand-dark);font-weight:600}
+.ux-plan-str.hard{background:var(--ux-saffron-soft);color:var(--ux-saffron-ink)}.ux-plan-str.info{background:var(--ux-page);color:var(--ux-ink-soft)}
+.ux-plan-now{font-size:var(--ux-fs-sm);color:var(--ux-ink-soft);margin-left:auto}
+.ux-plan-now b.better{color:var(--ux-ok)}.ux-plan-now b.worse{color:var(--ux-bad)}.ux-plan-now b.same{color:var(--ux-ink)}.ux-plan-now b.same.ok{color:var(--ux-ok)}
+.ux-plan-can,.ux-plan-how{margin:4px 0 0 30px;font-size:var(--ux-fs-sm);line-height:1.55}
+.ux-plan-how{color:var(--ux-ink-soft)}
+.ux-plan-det{margin:4px 0 0 30px;font-size:var(--ux-fs-sm)}
+.ux-plan-det summary{cursor:pointer;color:var(--ux-brand)}
+.ux-plan-det ul{margin:4px 0 0;padding-left:18px;line-height:1.55;max-height:180px;overflow:auto}
+.ux-plan-act{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 0 auto}
+.ux-plan-act .ux-btn{min-height:34px;padding:4px 12px;font-size:var(--ux-fs-sm)}
+.ux-plan-mode{border:1px solid var(--ux-line);border-radius:var(--ux-radius-sm);padding:8px 12px 10px;margin:0 0 10px;display:flex;flex-direction:column;gap:6px}
+.ux-plan-mode legend{font-weight:700;font-size:var(--ux-fs-sm);padding:0 4px}
+.ux-plan-opt{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:var(--ux-fs-md)}
+.ux-plan-opt input{margin-top:4px;flex:none;width:18px;height:18px}
+.ux-plan-opt span{display:flex;flex-direction:column}.ux-plan-opt small{color:var(--ux-ink-soft);font-size:var(--ux-fs-sm)}
+.ux-plan-flex{border-top:1px dashed var(--ux-line);padding-top:6px}
+.ux-plan-result{border-radius:var(--ux-radius-sm);padding:10px 12px;margin:0 0 12px;background:var(--ux-brand-soft);font-size:var(--ux-fs-md)}
+.ux-plan-result[data-applied=false]{background:var(--ux-warn-bg)}
+.ux-plan-result p{margin:4px 0 0;font-size:var(--ux-fs-sm)}
+.ux-plan-next{margin:6px 0 0;padding-left:18px;font-size:var(--ux-fs-sm);line-height:1.6}
+.ux-plan-relaxes{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.ux-plan-next li.ok{color:var(--ux-ok);font-weight:600}
+.ux-plan-next .ux-btn{min-height:32px;padding:3px 10px;font-size:var(--ux-fs-sm)}
+/* ⚙ เงื่อนไข: headline + one entry */
+.ux-ts-planbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;padding:10px 12px;margin:0 0 12px;border-radius:var(--ux-radius-sm);background:var(--ux-ok-bg);color:var(--ux-ok);font-weight:600;font-size:var(--ux-fs-md)}
+.ux-ts-planbar[data-status=warn]{background:var(--ux-warn-bg);color:var(--ux-warn)}
+.ux-ts-planbar[data-status=bad]{background:var(--ux-bad-bg);color:var(--ux-bad)}
+@media (max-width:560px){.ux-plan{padding:16px 14px}.ux-plan-can,.ux-plan-how,.ux-plan-det{margin-left:0}.ux-plan-now{margin-left:30px;flex-basis:100%}}
+
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0a5a9c"></head>
 <body class=""><noscript id="ux-noscript"><style>body>*:not(noscript){display:none!important}</style><div style="max-width:560px;margin:40px auto;padding:24px;font:17px/1.6 -apple-system,Sukhumvit Set,Tahoma,sans-serif;color:#152a3c"><h1 style="font-size:22px;margin:0 0 12px">WL Scheduler ต้องเปิดในเบราว์เซอร์</h1><p>ไฟล์นี้เป็นโปรแกรม ตัวดูไฟล์ (แอปไฟล์ของ iPhone/iPad, LINE, Messenger, อีเมล) แสดงได้เพียงภาพนิ่งของหน้าจอ จึงกดใช้งานไม่ได้ และไม่บันทึกอะไร</p><p style="margin:16px 0 6px"><b>วิธีเปิด</b></p><ul style="margin:0;padding-left:22px"><li><b>Mac / คอมพิวเตอร์:</b> ดับเบิลคลิกไฟล์ (Safari หรือ Chrome)</li><li><b>iPad / iPhone:</b> ใช้ WL Scheduler แบบเว็บแอปที่ติดตั้งบนหน้าจอโฮม (ดู WEBAPP.md) แล้วนำเข้าไฟล์สำรอง .json หรือเปิดไฟล์ในแอปที่มีเบราว์เซอร์ในตัว</li></ul></div></noscript><header><div><div class="eyebrow">TEACHING PLANNER V12.4 · DOCUMENT WORKSPACE</div><h1>ระบบวางแผนรายวิชาและอัตรากำลังครู</h1><p>จัดสรรวิชา · จัดการเรียนรวม · ตรวจสอบภาระงาน · เปรียบเทียบแผน</p></div><div class="header-actions"><button class="btn dark" disabled="" id="undoBtn" title="ย้อนกลับการแก้ไขล่าสุด (Ctrl+Z เมื่อไม่ได้พิมพ์ข้อความ)">↶ ย้อนกลับ</button><button class="btn dark" disabled="" id="redoBtn" title="ทำซ้ำการแก้ไขที่ย้อนกลับไป (Ctrl+Y)">↷ ทำซ้ำ</button><button class="btn dark" id="v11HelpQuick" title="เปิดคำแนะนำการใช้งานสำหรับผู้ใช้ใหม่" type="button">? วิธีใช้</button><span class="undo-info" id="undoInfo">ย้อนกลับได้ 100 ขั้นในครั้งที่เปิดใช้งาน</span><button class="btn dark" id="exportHtml" title="บันทึกข้อมูลลงในโปรแกรม HTML เพื่อเปิดต่อได้แม้เปลี่ยนเครื่อง">💾 บันทึกแผนพร้อมโปรแกรม .html</button><button class="btn dark" id="connectFile" title="เลือกไฟล์ JSON ที่ให้โปรแกรมเขียนทุกครั้งเมื่อแก้ไข (รองรับใน Chrome / Edge บางสภาพแวดล้อม)">เชื่อมไฟล์บันทึกอัตโนมัติ</button><button class="btn dark" id="exportJson">สำรองข้อมูล .json</button><button class="btn dark" id="exportCsv">ส่งออก Excel (.csv)</button><button class="btn dark" id="importBtn">นำเข้าข้อมูล</button><input accept=".json,application/json" hidden="" id="importFile" type="file"><details class="v11-save-details no-print" id="v11SaveDetails"><summary>บันทึก / นำเข้า ▾</summary><div class="v11-save-buttons" id="v11SaveButtons"></div></details></div></header>
 <dialog class="co-dialog" id="coDialog"><h2 id="coDialogTitle" style="margin:0">เลือกครูร่วมสอน</h2><p class="hint" id="coDialogHint">เลือกได้หลายคน และนับชั่วโมงตามเวลาที่ร่วมสอนจริง</p><div class="callout" id="coLeadHours" style="display:none;margin-bottom:12px"></div><div class="co-picks" id="coPicks"></div><div class="button-row" style="justify-content:flex-end"><button class="btn" id="coCancel" type="button">ยกเลิก</button><button class="btn primary" id="coSave" type="button">บันทึกครูร่วม</button></div></dialog><div aria-live="polite" class="alert warn" id="saveStatus" role="status">กำลังตรวจข้อมูลที่บันทึกไว้…</div><main><section aria-label="ตัวเลือกแผน" class="scenario-bar no-print"><div class="scenario-bar-top"><div><b>แผนที่กำลังแก้ไข: <span id="activeScenarioName"></span></b><p class="hint" id="activeScenarioNote" style="margin:3px 0 0"></p></div><button class="btn primary" id="newScenarioQuick">+ คัดลอกเป็นแผนใหม่</button><button class="btn" id="openCompareQuick">เปรียบเทียบทุกแผน</button></div><div class="scenario-chips" id="scenarioChips"></div></section><nav aria-label="เมนูหลัก" class="v11-main-nav no-print" id="v11MainNav">
@@ -11045,6 +11090,7 @@ var ASPCore = (() => {
     coverConfig: () => coverConfig,
     crc32: () => crc32,
     curriculumRows: () => curriculumRows,
+    dayCapacity: () => dayCapacity,
     decide: () => decide,
     defaultTimes: () => defaultTimes,
     diffProjects: () => diffProjects,
@@ -11101,7 +11147,10 @@ var ASPCore = (() => {
     passwordProblem: () => passwordProblem,
     periodIndex: () => periodIndex,
     placeRemaining: () => placeRemaining,
+    planCheck: () => planCheck,
     planCommands: () => planCommands,
+    planHeadline: () => planHeadline,
+    planMeasure: () => planMeasure,
     planSummary: () => planSummary,
     policyConfig: () => policyConfig,
     presetInput: () => presetInput,
@@ -11607,9 +11656,9 @@ var ASPCore = (() => {
     const loose = runs.filter((r) => !touches(r)).length;
     return Math.max(0, loose - (runs.some(touches) ? 0 : 1));
   }
-  function teacherBalance(loads, pol) {
+  function teacherBalance(loads2, pol) {
     if (!pol.balanceTeacherDailyLoad) return 0;
-    const nz = loads.filter((x) => x > 0);
+    const nz = loads2.filter((x) => x > 0);
     if (nz.length < 2) return 0;
     return Math.max(0, Math.max(...nz) - Math.min(...nz) - pol.maxTeacherDailyLoadSpread) * pol.weights.dailyImbalance;
   }
@@ -11717,13 +11766,13 @@ var ASPCore = (() => {
     const byTeacherDay = group((p) => p.e.teachers.map((t) => `${t}|${dayOf(p)}`));
     for (const t of input.teachers) {
       if (t.team || t.status !== "active") continue;
-      const loads = [];
+      const loads2 = [];
       for (let d = 0; d < days; d++) {
         const r = teacherDayPolicy(byTeacherDay.get(`${t.id}|${d}`) ?? [], periods, pol, `${t.id}|${d}`);
-        loads.push(r.used);
+        loads2.push(r.used);
         policy += r.cost;
       }
-      policy += teacherBalance(loads, pol);
+      policy += teacherBalance(loads2, pol);
     }
     for (const list2 of group((p) => p.e.grades.map((g) => `${g}|${cleanSubject(p.e.subjects[0] ?? p.e.origin)}|${dayOf(p)}`)).values()) policy += subjectDayCost(list2, periods, pol);
     const heavyP = (e) => isHeavyForPolicy(e, mob.heavySubjects);
@@ -11901,7 +11950,7 @@ var ASPCore = (() => {
     const maxSteps = options.maxSteps ?? 4e4, patience = options.patience ?? 15e3;
     const events = new Map(input.events.map((e) => [e.id, e]));
     const teacherInfo = new Map(input.teachers.map((t) => [t.id, t]));
-    const active = (t) => {
+    const active2 = (t) => {
       const i = teacherInfo.get(t);
       return !!i && !i.team && i.status === "active";
     };
@@ -11910,7 +11959,7 @@ var ASPCore = (() => {
     const pool = /* @__PURE__ */ new Map();
     if (cov.enabled) for (const t of input.teachers) {
       const b = mob.teacherBuildings[t.id];
-      if (b && active(t.id)) (pool.get(b) ?? pool.set(b, []).get(b)).push(t.id);
+      if (b && active2(t.id)) (pool.get(b) ?? pool.set(b, []).get(b)).push(t.id);
     }
     const info = /* @__PURE__ */ new Map();
     for (const e of input.events) info.set(e.id, {
@@ -11988,9 +12037,9 @@ var ASPCore = (() => {
       const [kind, a, b, c] = key2.split("|");
       switch (kind) {
         case "P":
-          return active(a) ? tdPolicy(a, +b).cost : 0;
+          return active2(a) ? tdPolicy(a, +b).cost : 0;
         case "B":
-          return active(a) ? teacherBalance(Array.from({ length: days }, (_, d) => tdPolicy(a, d).used), pol) : 0;
+          return active2(a) ? teacherBalance(Array.from({ length: days }, (_, d) => tdPolicy(a, d).used), pol) : 0;
         case "S":
           return subjectDayCost(placedIn(`S|${a}|${b}|${c}`), periods, pol);
         case "H":
@@ -12012,7 +12061,7 @@ var ASPCore = (() => {
         case "HR":
           return hr ? homeroomCost(hrMet(a), hr) : 0;
         case "DF":
-          return active(a) ? doubleFreeCost(dfDays(a), pol, target(a)) : 0;
+          return active2(a) ? doubleFreeCost(dfDays(a), pol, target(a)) : 0;
       }
       return 0;
     }
@@ -12084,10 +12133,10 @@ var ASPCore = (() => {
       }
       for (const t of teachers) for (let d = 0; d < days; d++) {
         keys.add(`P|${t}|${d}`);
-        if (active(t)) violations += tdPolicy(t, d).violations;
+        if (active2(t)) violations += tdPolicy(t, d).violations;
       }
       if (pol.minDoubleFreeDays && pol.enforceDoubleFree) {
-        for (const t of teachers) if (active(t) && dfDays(t) < target(t)) violations++;
+        for (const t of teachers) if (active2(t) && dfDays(t) < target(t)) violations++;
       }
       for (const k of keys) {
         if (k.startsWith("CV|")) {
@@ -12213,7 +12262,7 @@ var ASPCore = (() => {
     if (movable.length) {
       const byGrade = /* @__PURE__ */ new Map();
       for (const id of movable) for (const g of events.get(id).grades) (byGrade.get(g) ?? byGrade.set(g, []).get(g)).push(id);
-      const teacherDays = [...new Set(movable.flatMap((id) => events.get(id).teachers.filter(active)))].flatMap((t) => Array.from({ length: days }, (_, d) => [t, d]));
+      const teacherDays = [...new Set(movable.flatMap((id) => events.get(id).teachers.filter(active2)))].flatMap((t) => Array.from({ length: days }, (_, d) => [t, d]));
       for (; step < maxSteps && sinceBest < patience; step++, sinceBest++) {
         if (options.timeBudgetMs && options.now && options.now() - t0 > options.timeBudgetMs) break;
         const temperature = 60 * (1 - step / maxSteps);
@@ -12526,7 +12575,7 @@ var ASPCore = (() => {
     const pol = policyConfig(setup.schedulePolicy, periods, setup.teacherBlocks);
     const hr = homeroomConfig(setup.schedulePolicy, setup.homeroom, days);
     const teacherInfo = new Map(input.teachers.map((t) => [t.id, t]));
-    const active = (t) => {
+    const active2 = (t) => {
       const i = teacherInfo.get(t);
       return !!i && !i.team && i.status === "active";
     };
@@ -12622,12 +12671,12 @@ var ASPCore = (() => {
       const d = slotPosition(s, periods).day;
       let c = 0;
       for (const t of e.teachers) {
-        if (!active(t)) continue;
+        if (!active2(t)) continue;
         const list2 = [...byDay.get(`T|${t}|${d}`) ?? []].map((id) => ({ e: events.get(id), slot: slot.get(id) }));
         c += teacherDayPolicy([...list2, { e, slot: s }], periods, pol, `${t}|${d}`).cost - teacherDayPolicy(list2, periods, pol, `${t}|${d}`).cost;
       }
       if (pol.minDoubleFreeDays) {
-        for (const t of e.teachers) if (active(t)) {
+        for (const t of e.teachers) if (active2(t)) {
           const tg = doubleFreeTarget(fixedDay, t, days, periods, pol);
           c += doubleFreeCost(dfDays(t, { e, s }), pol, tg) - doubleFreeCost(dfDays(t), pol, tg);
         }
@@ -13294,7 +13343,7 @@ var ASPCore = (() => {
     const strict = !!setup.schedulePolicy?.strictManualPlacement;
     if (!e) return { options: [], best: null, counts, strict };
     const name = new Map(input.teachers.map((t) => [t.id, t.name]));
-    const active = new Set(input.teachers.filter((t) => !t.team && t.status === "active").map((t) => t.id));
+    const active2 = new Set(input.teachers.filter((t) => !t.team && t.status === "active").map((t) => t.id));
     const blocks = new Set(setup.teacherBlocks), okDays = allowedDays(e, days, setup.dayRules), hardRules = slotRulesFor(e, setup.slotRules, "hard");
     const pol = policyConfig(setup.schedulePolicy, periods, setup.teacherBlocks), mob = mobilityConfig(setup.mobility);
     const current = input.placements[id];
@@ -13409,7 +13458,7 @@ var ASPCore = (() => {
       }
       o.score = scoreWith(s);
       o.delta = o.score - base;
-      if (e.teachers.some((t) => active.has(t) && teacherDayPolicy(dayList(t, d, s), periods, pol, `${t}|${d}`).violations > teacherDayPolicy(dayList(t, d, null), periods, pol, `${t}|${d}`).violations)) {
+      if (e.teachers.some((t) => active2.has(t) && teacherDayPolicy(dayList(t, d, s), periods, pol, `${t}|${d}`).violations > teacherDayPolicy(dayList(t, d, null), periods, pol, `${t}|${d}`).violations)) {
         o.state = "policy";
         o.who = "ครูผิดนโยบายวันนั้น" + (strict ? " (โรงเรียนตั้งให้ห้ามวาง)" : "");
       }
@@ -13572,17 +13621,17 @@ var ASPCore = (() => {
     return out;
   }
   function workloadSummary(rows, minHours = 12) {
-    const active = rows.filter((r) => r.active), total = rows.reduce((a, r) => a + r.load, 0);
-    const avg = active.length ? active.reduce((a, r) => a + r.load, 0) / active.length : 0;
+    const active2 = rows.filter((r) => r.active), total = rows.reduce((a, r) => a + r.load, 0);
+    const avg = active2.length ? active2.reduce((a, r) => a + r.load, 0) / active2.length : 0;
     return {
       teachers: rows.length,
-      active: active.length,
+      active: active2.length,
       total,
       avg,
-      max: active.reduce((a, r) => Math.max(a, r.load), 0),
-      min: active.length ? active.reduce((a, r) => Math.min(a, r.load), Infinity) : 0,
+      max: active2.reduce((a, r) => Math.max(a, r.load), 0),
+      min: active2.length ? active2.reduce((a, r) => Math.min(a, r.load), Infinity) : 0,
       over: rows.filter((r) => r.limit > 0 && r.load > r.limit + 1e-9).length,
-      under: active.filter((r) => minHours > 0 && r.load < minHours - 1e-9).length
+      under: active2.filter((r) => minHours > 0 && r.load < minHours - 1e-9).length
     };
   }
   function buildWorkloadDoc(input) {
@@ -14589,15 +14638,15 @@ var ASPCore = (() => {
     const last = /* @__PURE__ */ new Map();
     for (const c of changes) last.set(c.key, c);
     const out = changes.filter((c) => last.get(c.key) === c);
-    const loads = {};
-    for (const id of /* @__PURE__ */ new Set([...Object.keys(start), ...Object.keys(load)])) if (round(start[id] ?? 0) !== round(load[id] ?? 0)) loads[id] = [round(start[id] ?? 0), round(load[id] ?? 0)];
+    const loads2 = {};
+    for (const id of /* @__PURE__ */ new Set([...Object.keys(start), ...Object.keys(load)])) if (round(start[id] ?? 0) !== round(load[id] ?? 0)) loads2[id] = [round(start[id] ?? 0), round(load[id] ?? 0)];
     const seen = /* @__PURE__ */ new Set(), uniq = notes.filter((n2) => {
       const k = n2.sentence + "|" + n2.text;
       if (seen.has(k)) return false;
       seen.add(k);
       return true;
     });
-    return { changes: out, notes: uniq, loads };
+    return { changes: out, notes: uniq, loads: loads2 };
   }
   var round = (x) => Math.round(x * 10) / 10;
   var fmtVal = (v) => v === true ? "เปิด" : v === false ? "ปิด" : v == null || v === "" ? "—" : String(v);
@@ -15112,8 +15161,365 @@ var ASPCore = (() => {
     return "";
   }
 
+  // core/src/plancheck.ts
+  var PERIODS_OF = (e) => e.duration === 1 ? 1 : 0.5;
+  var fmt2 = (n2) => String(Math.round(n2 * 10) / 10);
+  var active = (input) => input.teachers.filter((t) => !t.team && (t.status ?? "active") === "active");
+  var worst = (a, b) => a === "bad" || b === "bad" ? "bad" : a === "warn" || b === "warn" ? "warn" : "ok";
+  function loads(events) {
+    const m = /* @__PURE__ */ new Map();
+    for (const e of events) for (const t of e.teachers) m.set(t, (m.get(t) ?? 0) + PERIODS_OF(e));
+    return m;
+  }
+  function dayCapacity(free, pol, raw, periods, hardOnly) {
+    let cap = free;
+    const use = (flag) => !hardOnly || !!raw[flag];
+    if (use("enforceMaxTeacherPeriodsPerDay")) cap = Math.min(cap, pol.maxTeacherPeriodsPerDay);
+    if (use("enforceMinTeacherFree")) cap = Math.min(cap, periods - pol.minTeacherFreePeriods);
+    if (use("enforceMaxTeacherConsecutive")) {
+      const k = pol.maxTeacherConsecutivePeriods;
+      cap = Math.min(cap, periods - Math.floor(periods / (k + 1)));
+    }
+    return Math.max(0, cap);
+  }
+  function planCheck(input, names = {}) {
+    const { setup, events } = input, P3 = setup.periods, D = setup.days.length;
+    const tn = names.teacher ?? ((id) => input.teachers.find((t) => t.id === id)?.name ?? id);
+    const dn = names.day ?? ((d) => setup.days[d] ?? String(d + 1));
+    const raw = setup.schedulePolicy ?? {};
+    const pol = policyConfig(setup.schedulePolicy, P3, setup.teacherBlocks);
+    const blocked = blockedByDay(setup.teacherBlocks, P3), people = active(input), load = loads(events);
+    const freeOn = (t, d) => P3 - new Set(blocked.get(`${t}|${d}`) ?? []).size;
+    const out = [];
+    {
+      const det = [], grade = /* @__PURE__ */ new Map();
+      for (const e of events) for (const g of e.grades) grade.set(g, (grade.get(g) ?? 0) + PERIODS_OF(e));
+      for (const [g, n2] of grade) if (n2 > P3 * D) det.push(`${g} มีเรียน ${fmt2(n2)} คาบ/สัปดาห์ แต่มีแค่ ${P3 * D} คาบ`);
+      for (const t of people) {
+        const n2 = load.get(t.id) ?? 0;
+        let cap = 0;
+        for (let d = 0; d < D; d++) cap += freeOn(t.id, d);
+        if (n2 > cap) det.push(`${tn(t.id)} สอน ${fmt2(n2)} คาบ แต่ว่างแค่ ${cap} คาบ (ตั้งไม่ว่างไว้ ${P3 * D - cap} คาบ)`);
+      }
+      out.push({
+        key: "base",
+        section: "blocks",
+        title: "ลงครบทุกคาบ ไม่ชนกัน และไม่ลงเวลาที่ครูไม่ว่าง",
+        strength: "hard",
+        status: det.length ? "bad" : "ok",
+        can: det.length ? `ทำไม่ได้ครบ: ${det.length} รายการมีคาบมากกว่าช่องที่มี` : `ช่องเวลาพอสำหรับทั้ง ${events.length} รายการ`,
+        how: det.length ? "ลดเวลาที่ครูไม่ว่าง ลดชั่วโมงของชั้น หรือย้ายรายวิชาให้ครูคนอื่น" : "",
+        details: det
+      });
+    }
+    const rules = (setup.slotRules ?? []).filter((r) => r && !r.off);
+    if (rules.length) {
+      let st = "ok";
+      const det = [], lockedOut = [];
+      for (const r of rules) {
+        const hard = r.strength !== "soft", mine = events.filter((e) => slotRuleMatches(e, r)), label2 = slotRuleLabel(r);
+        if (!mine.length) {
+          st = worst(st, "warn");
+          det.push(`“${label2}” ไม่ตรงกับรายวิชาใด — กฎนี้ไม่มีผล`);
+          continue;
+        }
+        const allowed = [];
+        for (let d = 0; d < D; d++) for (let p = 0; p < P3; p++) if (!slotRuleBroken({ ...mine[0], duration: 1 }, (d * P3 + p) * 2, P3, r)) allowed.push(d * P3 + p);
+        const by = /* @__PURE__ */ new Map();
+        for (const e of mine) for (const g of e.grades) by.set(g, (by.get(g) ?? 0) + PERIODS_OF(e));
+        for (const [g, n2] of by) if (n2 > allowed.length) {
+          st = worst(st, hard ? "bad" : "warn");
+          det.push(`“${label2}” ${g} มี ${fmt2(n2)} คาบ แต่กฎให้ลงได้แค่ ${allowed.length} ช่อง${hard ? "" : " (บางคาบจะอยู่นอกกฎ)"}`);
+        }
+        const byT = /* @__PURE__ */ new Map();
+        for (const e of mine) for (const t of e.teachers) byT.set(t, (byT.get(t) ?? 0) + PERIODS_OF(e));
+        for (const [t, n2] of byT) {
+          const room = allowed.filter((c) => !(blocked.get(`${t}|${Math.floor(c / P3)}`) ?? []).includes(c % P3)).length;
+          if (n2 > room) {
+            st = worst(st, hard ? "bad" : "warn");
+            det.push(`“${label2}” ${tn(t)} สอน ${fmt2(n2)} คาบ แต่ว่างในช่องที่กฎให้แค่ ${room} ช่อง`);
+          }
+        }
+        if (hard) for (const e of mine) {
+          const p = input.placements[e.id];
+          if (p?.locked && Number.isInteger(p.slot) && slotRuleBroken(e, p.slot, P3, r)) lockedOut.push(e.id);
+        }
+      }
+      if (lockedOut.length) {
+        st = worst(st, "bad");
+        det.push(`ล็อกไว้นอกกฎบังคับ ${lockedOut.length} รายการ — ตัวจัดตารางย้ายให้ไม่ได้`);
+      }
+      const hardN = rules.filter((r) => r.strength !== "soft").length;
+      out.push({
+        key: "slotRules",
+        section: "rules",
+        title: `กฎวันและคาบเรียน ${rules.length} ข้อ`,
+        strength: hardN ? "hard" : "soft",
+        status: st,
+        can: st === "ok" ? "ทำได้ทุกข้อ" : st === "bad" ? "บางข้อทำไม่ได้" : "บางข้ออาจไม่ครบ",
+        how: st === "ok" ? "" : lockedOut.length ? "ปลดล็อกรายการที่อยู่นอกกฎ หรือเพิ่มวัน/คาบที่กฎอนุญาต" : 'เพิ่มวัน/คาบที่กฎอนุญาต ลดเวลาที่ครูไม่ว่าง หรือเปลี่ยนเป็น "พยายาม"',
+        details: det,
+        fix: lockedOut.length ? { kind: "unlock", ids: lockedOut, label: `ปลดล็อก ${lockedOut.length} รายการ` } : void 0
+      });
+    }
+    const min = Math.max(0, Math.min(D, Math.round(Number(raw.homeroomFirstMin) || 0)));
+    if (min) {
+      const cfg = homeroomConfig(raw, setup.homeroom, D), hard = !!raw.enforceHomeroomFirst;
+      if (!cfg) out.push({
+        key: "homeroom",
+        section: "homeroom",
+        title: `ครูประจำชั้นพบนักเรียนคาบแรก ≥ ${min} วัน/สัปดาห์`,
+        strength: hard ? "hard" : "soft",
+        status: "warn",
+        can: "ยังไม่มีผล: ยังไม่ได้ตั้งครูประจำชั้นของชั้นใด",
+        how: "ตั้งครูประจำชั้นก่อน (หน้าครู หรือในเงื่อนไขนี้)",
+        details: [],
+        fix: { kind: "homeroom", label: "🏫 ตั้งครูประจำชั้น" }
+      });
+      else {
+        let st = "ok";
+        const det = [], count = /* @__PURE__ */ new Map();
+        for (const [, ids] of cfg.teachers) for (const t of ids) count.set(t, (count.get(t) ?? 0) + 1);
+        for (const r of homeroomReport(events, {}, P3, cfg)) {
+          const who = r.teachers.map(tn).join(" + ");
+          const firstFree = Math.max(...r.teachers.map((t) => {
+            let n2 = 0;
+            for (let d = 0; d < D; d++) if (!(blocked.get(`${t}|${d}`) ?? []).includes(0)) n2++;
+            return n2;
+          }));
+          if (!r.possible) {
+            st = worst(st, "warn");
+            det.push(`${r.grade}: ${who} ไม่ได้สอนชั้นนี้ — ทำไม่ได้`);
+          } else if (r.possible < min) {
+            st = worst(st, "warn");
+            det.push(`${r.grade}: ${who} สอนชั้นนี้แค่ ${fmt2(r.possible)} คาบ/สัปดาห์ ได้ไม่เกิน ${Math.floor(r.possible)} วัน`);
+          } else if (firstFree < min) {
+            st = worst(st, "warn");
+            det.push(`${r.grade}: ${who} ไม่ว่างคาบ 1 จนเหลือ ${firstFree} วัน`);
+          }
+        }
+        for (const [t, n2] of count) if (n2 * min > D) {
+          st = worst(st, "warn");
+          det.push(`${tn(t)} ประจำชั้น ${n2} ชั้น แต่คาบแรกมีวันละครั้ง — ครบทุกชั้นไม่ได้`);
+        }
+        out.push({
+          key: "homeroom",
+          section: "homeroom",
+          title: `ครูประจำชั้นพบนักเรียนคาบแรก ≥ ${min} วัน/สัปดาห์`,
+          strength: hard ? "hard" : "soft",
+          status: st,
+          can: st === "ok" ? `ทำได้ · ${cfg.teachers.size} ชั้นมีครูประจำชั้น` : `ทำได้บางชั้น (${det.length} ข้อสังเกต)`,
+          how: st === "ok" ? "" : "เปลี่ยนครูประจำชั้นเป็นครูที่สอนชั้นนั้น ลดจำนวนวัน หรือลดเวลาที่ไม่ว่างคาบ 1",
+          details: det
+        });
+      }
+    }
+    {
+      const hardOn = ["enforceMinTeacherFree", "enforceMaxTeacherConsecutive", "enforceMaxTeacherPeriodsPerDay"].some((k) => !!raw[k]);
+      const det = [];
+      let st = "ok";
+      for (const t of people) {
+        const n2 = load.get(t.id) ?? 0;
+        if (!n2) continue;
+        let capHard = 0, capAll = 0;
+        for (let d = 0; d < D; d++) {
+          const f = freeOn(t.id, d);
+          capHard += dayCapacity(f, pol, raw, P3, true);
+          capAll += dayCapacity(f, pol, raw, P3, false);
+        }
+        if (hardOn && n2 > capHard) {
+          st = "bad";
+          det.push(`${tn(t.id)} สอน ${fmt2(n2)} คาบ แต่นโยบายบังคับให้สอนได้ไม่เกิน ${capHard} คาบ/สัปดาห์ — จะเว้นไว้ ${fmt2(n2 - capHard)} คาบ`);
+        } else if (n2 > capAll) {
+          st = worst(st, "warn");
+          det.push(`${tn(t.id)} สอน ${fmt2(n2)} คาบ ตามนโยบายสอนได้ ${capAll} คาบ — บางวันต้องผิดนโยบาย`);
+        }
+      }
+      out.push({
+        key: "policy",
+        section: "policy",
+        title: `นโยบายครู: ว่าง ≥ ${pol.minTeacherFreePeriods} · ติดกัน ≤ ${pol.maxTeacherConsecutivePeriods} · วันละ ≤ ${pol.maxTeacherPeriodsPerDay} คาบ`,
+        strength: hardOn ? "hard" : "soft",
+        status: st,
+        can: st === "ok" ? "เวลาของครูทุกคนพอเมื่อนับทั้งสัปดาห์ — ถ้าหลายเงื่อนไขชนกันในวันเดียว อาจต้องเว้นบางคาบ (บอกหลังจัด พร้อมปุ่มผ่อนกฎ)" : st === "bad" ? `ทำไม่ได้ครบ: ${det.length} คนมีคาบมากกว่าที่นโยบายบังคับให้` : `อาจไม่ครบ: ${det.length} คนคาบเยอะ`,
+        how: st === "bad" ? 'ผ่อนกฎเป็น "พยายาม" ลดเวลาที่ครูไม่ว่าง หรือย้ายรายวิชาให้ครูคนอื่น — ไม่อย่างนั้นคาบที่เกินจะยังไม่ถูกลง' : st === "warn" ? "ตัวจัดตารางจะเลือกวันที่ผิดน้อยที่สุด — ถ้าต้องการให้ครบ ให้ลดภาระของครูเหล่านี้" : "",
+        details: det,
+        fix: st === "bad" ? { kind: "relaxPolicy", label: 'ผ่อนนโยบายเป็น "พยายาม"' } : void 0
+      });
+    }
+    if (pol.minTeacherPeriodsPerDay > 0) {
+      const det = [];
+      if (pol.minTeacherPeriodsEveryDay) for (const t of people) {
+        const n2 = load.get(t.id) ?? 0;
+        if (!n2) continue;
+        if (n2 < pol.minTeacherPeriodsPerDay * D) det.push(`${tn(t.id)} สอน ${fmt2(n2)} คาบ/สัปดาห์ ไม่พอวันละ ${pol.minTeacherPeriodsPerDay} คาบทุกวัน`);
+      }
+      out.push({
+        key: "minDaily",
+        section: "policy",
+        title: `ครูสอนอย่างน้อย ${pol.minTeacherPeriodsPerDay} คาบ/วัน${pol.minTeacherPeriodsEveryDay ? " ทุกวัน" : " (วันที่มีสอน)"}`,
+        strength: pol.enforceMinTeacherPeriodsPerDay ? "hard" : "soft",
+        status: det.length ? "warn" : "ok",
+        can: det.length ? `ทำได้บางคน: ${det.length} คนมีคาบไม่พอ` : "ทำได้",
+        how: det.length ? 'ปิด "นับทุกวัน" หรือเพิ่มภาระครูเหล่านี้ (ตารางสอนเพิ่มคาบไม่ได้)' : "",
+        details: det
+      });
+    }
+    const wk = Math.max(0, Number(raw.minTeacherPeriodsPerWeek) || 0);
+    if (wk > 0) {
+      const short = teacherWeekLoads(events, input.teachers, wk).filter((x) => x.short > 0);
+      out.push({
+        key: "weekLoad",
+        section: "policy",
+        title: `ภาระสอนอย่างน้อย ${wk} คาบ/สัปดาห์`,
+        strength: "info",
+        status: short.length ? "warn" : "ok",
+        can: short.length ? `ตารางสอนแก้ไม่ได้: ${short.length} คนต่ำกว่า` : "ครบทุกคน",
+        how: short.length ? 'เพิ่มรายวิชาให้ครูเหล่านี้ที่หน้า "ครู" หรือ "เรียนรวม"' : "",
+        details: short.map((x) => `${tn(x.id)} ${fmt2(x.periods)} คาบ (ขาด ${fmt2(x.short)})`)
+      });
+    }
+    if (pol.teacherBothHalves) {
+      const split = afternoonFrom(pol, P3), off = halfOffSet(setup.teacherBlocks, P3, split).size;
+      out.push({
+        key: "halves",
+        section: "policy",
+        title: "ครูมีสอนทั้งช่วงเช้าและช่วงบ่าย",
+        strength: pol.enforceTeacherBothHalves ? "hard" : "soft",
+        status: "ok",
+        can: `ทำได้${off ? ` · ไม่นับ ${off} วัน-ครูที่ตั้งไม่ว่างไว้ทั้งช่วง` : ""}`,
+        how: "",
+        details: []
+      });
+    }
+    if (pol.minDoubleFreeDays > 0) {
+      const fixed = fixedByDay(setup.teacherBlocks, events, input.placements, P3), det = [];
+      let st = "ok";
+      for (const t of people) {
+        let can = 0;
+        const caps = [];
+        for (let d = 0; d < D; d++) {
+          const f = freeOn(t.id, d);
+          caps.push(f);
+          if (hasDoubleFree([], fixed.get(`${t.id}|${d}`) ?? [], P3, pol.breakAfter)) can++;
+        }
+        const want = Math.min(pol.minDoubleFreeDays, can), n2 = load.get(t.id) ?? 0;
+        const room = caps.sort((a, b) => b - a).reduce((s, c, i) => s + (i >= D - want ? Math.max(0, c - 2) : c), 0);
+        if (can < pol.minDoubleFreeDays) det.push(`${tn(t.id)}: ไม่ว่าง/ล็อกไว้จนทำได้แค่ ${can} วัน (ไม่นับเป็นข้อผิด)`);
+        if (n2 > room) {
+          st = worst(st, "warn");
+          det.push(`${tn(t.id)} สอน ${fmt2(n2)} คาบ — เหลือคาบว่างไม่พอให้ว่าง 2 คาบติดกัน ${want} วัน`);
+        }
+      }
+      out.push({
+        key: "doubleFree",
+        section: "policy",
+        title: `ครูมีคาบว่าง 2 คาบติดกัน ≥ ${pol.minDoubleFreeDays} วัน/สัปดาห์`,
+        strength: pol.enforceDoubleFree ? "hard" : "soft",
+        status: st,
+        can: st === "ok" ? "ทำได้" : "บางคนอาจไม่ครบ",
+        how: st === "ok" ? "" : "ลดภาระหรือเวลาที่ไม่ว่างของครูเหล่านี้ หรือลดจำนวนวัน",
+        details: det
+      });
+    }
+    if (pol.doubles.size) {
+      const rep = doubleReport(events, input.placements, P3, pol), want = rep.reduce((a, x) => a + x.pairsWanted, 0);
+      out.push({
+        key: "doubles",
+        section: "policy",
+        title: `คาบคู่ (เรียน 2 คาบติดกัน) ${pol.doubles.size} วิชา`,
+        strength: "soft",
+        status: "ok",
+        can: `ทำได้ · ต้องการ ${want} คู่`,
+        how: "",
+        details: []
+      });
+    }
+    const mob = setup.mobility ?? {};
+    if (mob.gradeBuildings && Object.keys(mob.gradeBuildings).length)
+      out.push({ key: "mobility", section: "mob", title: "นักเรียนและครูเดินข้ามอาคารน้อยที่สุด", strength: "soft", status: "ok", can: "ทำได้ (พยายาม)", how: "", details: [] });
+    const cov = setup.substituteCoverage ?? {};
+    if (cov.enabled) out.push({
+      key: "cover",
+      section: "cov",
+      title: `เผื่อครูสอนแทนในอาคาร ${Math.max(1, Number(cov.targetBackups) || 1)} คน/คาบ`,
+      strength: "soft",
+      status: "ok",
+      can: "ทำได้บางส่วน — ขึ้นกับจำนวนครูในแต่ละอาคาร (พยายาม)",
+      how: "",
+      details: []
+    });
+    void dn;
+    return out;
+  }
+  function planMeasure(input) {
+    const { setup, events, placements } = input, P3 = setup.periods, D = setup.days.length;
+    const pol = policyConfig(setup.schedulePolicy, P3, setup.teacherBlocks), raw = setup.schedulePolicy ?? {};
+    const chk = checkTimetable(input, { requireComplete: false }), s = optimizeTimetable(input, { maxSteps: 0 }).before;
+    const placed = events.filter((e) => Number.isInteger(placements[e.id]?.slot)).length, total = events.length;
+    const out = {};
+    const clash = chk.hardCount;
+    out.base = { value: placed, of: total, text: `ลงแล้ว ${placed}/${total}${clash ? ` · ชน/ผิดกฎ ${clash} จุด` : ""}`, met: placed === total && !clash, lower: false };
+    const rules = (setup.slotRules ?? []).filter((r) => r && !r.off);
+    if (rules.length) {
+      const hardOut = chk.counts.slotRule;
+      out.slotRules = { value: hardOut + s.preferMissed, text: hardOut + s.preferMissed ? `นอกกฎ ${hardOut + s.preferMissed} คาบ${hardOut ? ` (บังคับ ${hardOut})` : ""}` : "ตรงกฎทุกคาบ", met: !(hardOut + s.preferMissed), lower: true };
+    }
+    const cfg = homeroomConfig(raw, setup.homeroom, D);
+    if (cfg) {
+      const rows = homeroomReport(events, placements, P3, cfg), ok = rows.filter((r) => r.ok).length;
+      out.homeroom = { value: ok, of: rows.length, text: `ครบ ${ok}/${rows.length} ชั้น`, met: ok === rows.length, lower: false };
+    }
+    out.policy = { value: s.violations, text: s.violations ? `ผิด ${s.violations} จุด` : "ไม่ผิดเลย", met: !s.violations, lower: true };
+    if (pol.minTeacherPeriodsPerDay > 0) {
+      const used = /* @__PURE__ */ new Map(), act = new Set(active(input).map((t) => t.id));
+      for (const e of events) {
+        const p = placements[e.id];
+        if (!p || !Number.isInteger(p.slot)) continue;
+        for (const c of cellsOf(e.duration, p.slot)) {
+          const q = slotPosition(c, P3);
+          for (const t of e.teachers) if (act.has(t)) {
+            const k = `${t}|${q.day}`;
+            (used.get(k) ?? used.set(k, /* @__PURE__ */ new Set()).get(k)).add(q.period);
+          }
+        }
+      }
+      let n2 = 0;
+      for (const t of act) for (let d = 0; d < D; d++) {
+        const u = used.get(`${t}|${d}`)?.size ?? 0;
+        if ((u || pol.minTeacherPeriodsEveryDay) && u < pol.minTeacherPeriodsPerDay) n2++;
+      }
+      out.minDaily = { value: n2, text: n2 ? `ต่ำกว่า ${n2} วัน-ครู` : "ครบ", met: !n2, lower: true };
+    }
+    const wk = Math.max(0, Number(raw.minTeacherPeriodsPerWeek) || 0);
+    if (wk > 0) {
+      const n2 = teacherWeekLoads(events, input.teachers, wk).filter((x) => x.short > 0).length;
+      out.weekLoad = { value: n2, text: n2 ? `ต่ำกว่า ${n2} คน` : "ครบ", met: !n2, lower: true };
+    }
+    if (pol.teacherBothHalves) {
+      const n2 = halfDayReport(events, placements, input.teachers, P3, D, pol).length;
+      out.halves = { value: n2, text: n2 ? `ช่วงเดียว ${n2} วัน-ครู` : "ครบทุกวัน", met: !n2, lower: true };
+    }
+    if (pol.minDoubleFreeDays > 0) {
+      const r = doubleFreeReport(events, placements, input.teachers, P3, D, pol, setup.teacherBlocks), ok = r.filter((x) => x.ok).length;
+      out.doubleFree = { value: ok, of: r.length, text: `ครบ ${ok}/${r.length} คน`, met: ok === r.length, lower: false };
+    }
+    if (pol.doubles.size) {
+      const r = doubleReport(events, placements, P3, pol), have = r.reduce((a, x) => a + Math.min(x.pairs, x.pairsWanted), 0), want = r.reduce((a, x) => a + x.pairsWanted, 0);
+      out.doubles = { value: have, of: want, text: `ติดกัน ${have}/${want} คู่`, met: have >= want, lower: false };
+    }
+    out.mobility = { value: Math.round(s.mobility), text: `คะแนน ${Math.round(s.mobility).toLocaleString("en-US")} (ยิ่งต่ำยิ่งดี)`, met: true, lower: true };
+    if (s.coverable) out.cover = { value: s.coverable - s.uncovered, of: s.coverable, text: `มีครูสำรอง ${s.coverable - s.uncovered}/${s.coverable} คาบ`, met: !s.uncovered, lower: false };
+    return out;
+  }
+  function planHeadline(items) {
+    const bad = items.filter((i) => i.status === "bad").length, warn = items.filter((i) => i.status === "warn").length;
+    const st = bad ? "bad" : warn ? "warn" : "ok";
+    return { status: st, text: `เงื่อนไข ${items.length} ข้อ · ` + (st === "ok" ? "ไม่พบข้อที่ทำไม่ได้" : [bad ? `ทำไม่ได้ ${bad} ข้อ` : "", warn ? `อาจไม่ครบ ${warn} ข้อ` : ""].filter(Boolean).join(" · ")) };
+  }
+
   // core/src/index.ts
-  var VERSION = "0.24.0";
+  var VERSION = "0.25.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -15122,7 +15528,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.42',inits:[],syncs:[]};
+var UX=window.UX={version:'24.43',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -16271,6 +16677,16 @@ function fallback(o){
     catch(e){status('ปรับไม่สำเร็จ: '+e.message)}},50);
 }
 
+/* V24.43 headless run for the ✦ window: cb(result|null, error) — nothing applied here */
+function run2(cb,onProgress){
+  stop();run++;var data=input(),opts={input:data,seed:run,maxSteps:40000,budget:8000};
+  var w=makeWorker();UX.optimize.mode=w?'worker':'page';
+  function page(){setTimeout(function(){try{cb(C.optimizeTimetable(data,{seed:opts.seed,maxSteps:15000,now:function(){return performance.now()},timeBudgetMs:3000}),null,data)}catch(e){cb(null,e.message)}},50)}
+  if(!w){page();return}
+  worker=w;
+  w.onmessage=function(e){var m=e.data;if(m.type==='progress'){if(onProgress)onProgress(m)}else{stop();if(m.type==='done')cb(m.r,null,data);else cb(null,m.message)}};
+  w.onerror=function(ev){if(ev&&ev.preventDefault)ev.preventDefault();stop();page()};
+  w.postMessage(opts)}
 function show(r){
   result=r;var a=r.before,b=r.after,tb=$('uxOptTable').tBodies[0];
   var locked=Object.keys(r.placements).filter(function(id){return r.placements[id].locked}).length;
@@ -16317,7 +16733,7 @@ function build(){
   if(gen)gen.addEventListener('click',function(){if(UX.gen)return;setTimeout(function(){var v=violations();
     if(v>0)UX.toast('สร้างตารางแล้ว แต่ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับให้ดีขึ้น',start)},1600)});
 }
-UX.optimize={homerooms:homerooms,start:start,input:input,violations:violations};
+UX.optimize={homerooms:homerooms,start:start,input:input,violations:violations,run:run2};
 UX.onInit(build);
 })(window.UX);
 
@@ -16666,23 +17082,26 @@ function makeWorker(){
 function label(t){var b=$('uxGen');if(b){b.textContent=t}}
 function busy(on){S.busy=on;var b=$('uxGen');if(!b)return;b.disabled=on;b.setAttribute('aria-busy',String(on));if(!on)label('✦ จัดตารางอัตโนมัติ')}
 
-function start(){
+/* V24.43 opts (from the ✦ window, 73-plan.js): {quiet: no toasts — the window reports, onProgress(text), onDone(outcome)}
+   outcome = {applied, line, r, reason?} · without opts: exactly as before */
+function start(opts){
+  opts=opts&&typeof opts==='object'&&!opts.type?opts:{};
   if(S.busy)return;
   var ready=ttReady();
-  if(ready.errors.length){var m='กรุณาแก้ข้อมูลพื้นฐาน '+ready.errors.length+' รายการก่อนสร้างตาราง';ttFlash(m,true);UX.toast(m);return}
-  run++;var data=UX.optimize.input(),startSig=sig(),opts={input:data,seed:run,budget:12000};
-  busy(true);label('⏳ กำลังสร้าง…');UX.live('กำลังสร้างตารางสอนเบื้องหลัง ใช้โปรแกรมต่อได้');
-  UX.toast('กำลังสร้างตารางเบื้องหลัง — ใช้โปรแกรมต่อได้ ระหว่างนี้อย่าแก้รายวิชา');
-  function done(r){stop();busy(false);finish(r,startSig)}
-  function fail(msg){stop();busy(false);UX.toast('สร้างตารางไม่สำเร็จ: '+msg,'✦ ลองแบบเดิม',function(){UX.clickId(UX.ORIG.buttons.generate)})}
+  if(ready.errors.length){var m='กรุณาแก้ข้อมูลพื้นฐาน '+ready.errors.length+' รายการก่อนสร้างตาราง';ttFlash(m,true);if(!opts.quiet)UX.toast(m);if(opts.onDone)opts.onDone({applied:false,reason:m});return}
+  run++;var data=UX.optimize.input(),startSig=sig(),wopts={input:data,seed:run,budget:12000};
+  S.opts=opts;busy(true);label('⏳ กำลังสร้าง…');UX.live('กำลังสร้างตารางสอนเบื้องหลัง ใช้โปรแกรมต่อได้');
+  if(!opts.quiet)UX.toast('กำลังสร้างตารางเบื้องหลัง — ใช้โปรแกรมต่อได้ ระหว่างนี้อย่าแก้รายวิชา');
+  function done(r){stop();busy(false);var o=finish(r,startSig,opts);if(opts.onDone)opts.onDone(o)}
+  function fail(msg){stop();busy(false);if(opts.onDone)opts.onDone({applied:false,reason:'สร้างตารางไม่สำเร็จ: '+msg});if(!opts.quiet)UX.toast('สร้างตารางไม่สำเร็จ: '+msg,'✦ ลองแบบเดิม',function(){UX.clickId(UX.ORIG.buttons.generate)})}
   worker=makeWorker();S.mode=worker?'worker':'page';
   if(worker){
     worker.onmessage=function(e){var m=e.data;
-      if(m.type==='progress')label(m.p.phase==='build'?'⏳ วางคาบ '+m.p.placed+'/'+m.p.total:'⏳ ปรับนโยบาย'+(m.p.violations!=null?' · เหลือ '+m.p.violations+' จุด':''));
+      if(m.type==='progress'){var tx=m.p.phase==='build'?'⏳ วางคาบ '+m.p.placed+'/'+m.p.total:'⏳ ปรับนโยบาย'+(m.p.violations!=null?' · เหลือ '+m.p.violations+' จุด':'');label(tx);if(opts.onProgress)opts.onProgress(tx,m.p)}
       else if(m.type==='done')done(m.r);else fail(m.message)};
-    worker.onerror=function(ev){if(ev&&ev.preventDefault)ev.preventDefault();stop();inPage(opts,done,fail)};
-    worker.postMessage(opts);
-  }else inPage(opts,done,fail);
+    worker.onerror=function(ev){if(ev&&ev.preventDefault)ev.preventDefault();stop();inPage(wopts,done,fail)};
+    worker.postMessage(wopts);
+  }else inPage(wopts,done,fail);
 }
 /* no Worker: run in the page with a smaller budget (screen busy for at most ~4 s) */
 function inPage(o,done,fail){
@@ -16692,21 +17111,23 @@ function inPage(o,done,fail){
 }
 function stop(){if(worker){worker.terminate();worker=null}}
 
-function finish(r,startSig){
-  S.last=r;
-  if(r.error){ttFlash(r.error,true);UX.toast(r.error);return}
-  if(sig()!==startSig){UX.toast('รายวิชา ครู หรือคาบที่ล็อกถูกแก้ระหว่างสร้าง จึงยังไม่ใช้ผลนี้','✦ สร้างใหม่',start);return}
+function finish(r,startSig,opts){
+  S.last=r;opts=opts||{};var q=!!opts.quiet;
+  if(r.error){ttFlash(r.error,true);if(!q)UX.toast(r.error);return {applied:false,reason:r.error,r:r}}
+  if(sig()!==startSig){var m1='รายวิชา ครู หรือคาบที่ล็อกถูกแก้ระหว่างสร้าง จึงยังไม่ใช้ผลนี้';if(!q)UX.toast(m1,'✦ สร้างใหม่',start);return {applied:false,reason:m1,r:r}}
   var rp={held:r.held||[],left:new Array(r.policyLeft||0)},have=r.have;
-  if(!r.ok&&r.placed<=have){UX.toast('สร้างใหม่ได้ '+r.placed+'/'+r.total+' รายการ ไม่มากกว่าตารางเดิม จึงยังไม่เปลี่ยน','ทำไมลงไม่ได้',why);return}
+  if(!r.ok&&r.placed<=have){var m2='สร้างใหม่ได้ '+r.placed+'/'+r.total+' รายการ ไม่มากกว่าตารางเดิม ('+have+') จึงยังไม่เปลี่ยน';if(!q)UX.toast(m2,'ทำไมลงไม่ได้',why);return {applied:false,reason:m2,r:r}}
   var v=rp.left.length;
   var line='จัดได้ '+r.placed+'/'+r.total+' รายการ'+(rp.held.length?' · เว้นไว้ตามนโยบายบังคับ '+rp.held.length+' รายการ':'')+(r.score&&!rp.held.length?' · ครูผิดนโยบาย '+v+' จุด':'')+' (สร้างเบื้องหลัง)';
   S.applyAt=performance.now();
   act(function(){db.timetable.placements=r.placements;db.timetable.signature=ttSourceKey();db.timetable.lastResult=line});
   ttFlash(line,!r.ok);
+  if(q)return {applied:true,line:line,r:r};                                  /* the ✦ window does the follow-ups and the report */
   if(UX.gen.followUp)try{UX.gen.followUp('generate')}catch(e){}            /* V24.27: เผื่อครูสอนแทน / ครูยืดหยุ่น (64-ttsetup.js) */
   if(!r.ok)UX.toast('สร้างตารางแล้ว แต่ลงไม่ได้ '+(r.total-r.placed)+' รายการ'+(rp.held.length?' ('+rp.held.length+' รายการเพราะนโยบายบังคับ)':''),'ทำไมลงไม่ได้',why);
   else if(v>0)UX.toast('สร้างตารางแล้ว '+r.placed+'/'+r.total+' · ครูยังผิดนโยบาย '+v+' จุด','⚖ ปรับให้ดีขึ้น',UX.optimize.start);
   else UX.toast('สร้างตารางแล้ว '+r.placed+'/'+r.total+' ไม่ชนกันและตรงนโยบายครู','↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)});
+  return {applied:true,line:line,r:r};
 }
 
 /* "ทำไมลงไม่ได้": every lesson not in the timetable, with the reason found now (ASPCore.explainUnplaced) — grouped:
@@ -16738,18 +17159,20 @@ function why(){
   if(!d.open)d.showModal();
 }
 /* "↻ จัดที่เหลือ": only the missing lessons, nothing placed moves; one Undo step */
-function repair(){
-  var ready=ttReady();
-  if(ready.errors.length){var m='กรุณาแก้ข้อมูลพื้นฐาน '+ready.errors.length+' รายการก่อนจัดตาราง';ttFlash(m,true);UX.toast(m);return}
+function repair(opts){
+  var q=!!(opts&&opts.quiet),ready=ttReady();
+  if(ready.errors.length){var m='กรุณาแก้ข้อมูลพื้นฐาน '+ready.errors.length+' รายการก่อนจัดตาราง';ttFlash(m,true);if(!q)UX.toast(m);return {applied:false,reason:m}}
   var d=UX.optimize.input(),r=C.placeRemaining(d,d.placements);S.lastRepair={added:r.added.length,left:r.left.length};
+  if(q&&!r.added.length)return {applied:false,reason:r.left.length?'ไม่มีช่องที่ลง '+r.left.length+' รายการที่เหลือได้โดยไม่ผิดกฎ':'ทุกรายการลงคาบแล้ว'};
   if(!r.added.length){UX.toast(r.left.length?'ไม่มีช่องที่ลง '+r.left.length+' รายการที่เหลือได้โดยไม่ผิดกฎ':'ทุกรายการลงคาบแล้ว',r.left.length?'ทำไมลงไม่ได้':null,why);return}
   var total=d.events.length,placed=Object.keys(r.placements).length,line='จัดที่เหลือ: ลงเพิ่ม '+r.added.length+' รายการ · '+placed+'/'+total;
   act(function(){db.timetable.placements=r.placements;db.timetable.signature=ttSourceKey();db.timetable.lastResult=line});
   ttFlash(line,!!r.left.length);
+  if(q)return {applied:true,line:line};
   if(UX.gen.followUp)try{UX.gen.followUp('repair')}catch(e){}
   UX.toast(line+(r.left.length?' · ยังเหลือ '+r.left.length:''),r.left.length?'ทำไมลงไม่ได้':'↶ ย้อนกลับ',r.left.length?why:function(){UX.clickId(UX.ORIG.buttons.undo)})}
 /* "ผ่อนกฎนี้": the rule stops being "บังคับ" (still scored as a preference) and the lessons it held go in — one Undo step */
-function relax(rule){
+function relax(rule,opts){
   var flag=C.POLICY_FLAG[rule];if(!flag)return;
   var d=UX.optimize.input();if(!d.setup.schedulePolicy)return;
   d.setup.schedulePolicy=Object.assign({},d.setup.schedulePolicy);d.setup.schedulePolicy[flag]=false;
@@ -16758,11 +17181,12 @@ function relax(rule){
   act(function(){db.timetable.schedulePolicy=Object.assign({},db.timetable.schedulePolicy);db.timetable.schedulePolicy[flag]=false;
     db.timetable.placements=r.placements;db.timetable.signature=ttSourceKey();db.timetable.lastResult=line});
   ttFlash(line,!!r.left.length);S.lastRelax={rule:rule,added:r.added.length,left:r.left.length};
+  if(opts&&opts.quiet)return {applied:true,line:line};
   UX.toast(line,r.left.length?'ทำไมลงไม่ได้':'↶ ย้อนกลับ',r.left.length?why:function(){UX.clickId(UX.ORIG.buttons.undo)})}
 
 function build(){
   var g=$('uxGen');if(!g||g.dataset.core)return;
-  g.dataset.core='1';g.onclick=start;g.title='สร้างตารางสอนอัตโนมัติ (ทำงานเบื้องหลัง ย้อนกลับได้)';
+  g.dataset.core='1';g.onclick=function(){if(UX.plan)UX.plan.open();else start()};g.title='ตรวจเงื่อนไขทั้งหมด แล้วสร้างตารางสอนอัตโนมัติ (ทำงานเบื้องหลัง ย้อนกลับได้)';
   var rep=$('uxRepair');if(rep&&!rep.dataset.core){rep.dataset.core='1';rep.onclick=repair;rep.title='ลงเฉพาะรายการที่ยังไม่ได้ลง — คาบที่ลงแล้วไม่ย้าย (ย้อนกลับได้)'}
   var menu=$('uxMenu');
   if(menu&&!menu.querySelector('[data-legacy-repair]')){var lr=document.createElement('button');lr.setAttribute('role','menuitem');lr.dataset.id=UX.ORIG.buttons.repair;lr.dataset.legacyRepair='1';
@@ -16960,7 +17384,7 @@ UX.facts=function(){
 UX.runAction=function(a){
   if(!a)return;
   if(a.go){UX.go(a.go);return}
-  if(a.command==='generate'){UX.go('timetable');setTimeout(function(){if(UX.gen)UX.gen.start();else UX.clickId('uxGen')},200)}
+  if(a.command==='generate'){UX.go('timetable');setTimeout(function(){if(UX.plan)UX.plan.open();else if(UX.gen)UX.gen.start();else UX.clickId('uxGen')},200)}
   else if(a.command==='optimize'){UX.go('timetable');setTimeout(function(){if(UX.optimize)UX.optimize.start()},200)}
   else if(a.command==='backup')UX.clickId(UX.ORIG.buttons.exportJson)};
 
@@ -18814,6 +19238,9 @@ function tname(id){var t=db.teachers.find(function(x){return x.id===id});return 
 function people(){return db.teachers.filter(function(t){return !t.team&&t.status==='active'})}
 function rerender(){if(UX.tt)UX.tt.render()}
 function change(fn,msg){act(fn);rerender();if(msg)UX.toast(msg)}
+/* V24.43: every section reaches the same ✦ window (73-plan.js) — it checks all conditions, schedules once, reports before → after */
+function planBtn(key,k,label){var b=btn('ux-btn ux-primary',label||'✦ ตรวจเงื่อนไขและจัดตาราง…',function(){if(UX.plan)UX.plan.open(key);else if(UX.gen)UX.gen.start()});b.dataset.k=k;
+  b.title='เปิดหน้าต่างจัดตารางอัตโนมัติ: ตรวจทุกเงื่อนไขว่าทำได้ไหม แล้วจัดในครั้งเดียว';return b}
 /* each layer's own normaliser fills its defaults (and may write them): read through it, never invent our own */
 function pol(){try{return window.V193Policy?V193Policy.config():T().schedulePolicy||{}}catch(e){return T().schedulePolicy||{}}}
 function mob(){try{return window.V190Mobility?V190Mobility.config():T().mobility||{}}catch(e){return T().mobility||{}}}
@@ -19014,10 +19441,8 @@ function secHomeroom(b){
   if(min){var cnt={};(db.grades||[]).forEach(function(g){var t=hrOf(g);if(t)cnt[t]=(cnt[t]||0)+1});
     Object.keys(cnt).forEach(function(t){if(cnt[t]*min>days().length){var w=el('p','ux-ts-hrwarn');w.dataset.k='ts-hr-many';
       w.textContent='⚠ '+tname(t)+' เป็นครูประจำชั้น '+cnt[t]+' ชั้น แต่คาบแรกมีวันละครั้ง ('+days().length+' วัน) — ทำครบ '+min+' วันทุกชั้นไม่ได้';b.appendChild(w)}})}
-  if(min&&set){var row2=el('div','ux-ts-row');
-    var g1=btn('ux-btn ux-primary','✦ จัดตารางใหม่ตามกฎนี้',function(){if(UX.gen)UX.gen.start()});g1.dataset.k='ts-hr-gen';row2.appendChild(g1);
-    var g2=btn('ux-btn','⚖ ปรับจากตารางเดิม',function(){UX.optimize.start()});g2.dataset.k='ts-hr-run';row2.appendChild(g2);b.appendChild(row2);
-    b.appendChild(el('small','ux-tt-hint','ตารางที่จัดเต็มแล้วมักขยับให้ครบได้ยาก — "จัดตารางใหม่" ทำได้ดีกว่า (คาบที่ล็อกไว้ไม่ย้าย)'))}}
+  if(min&&set){var row2=el('div','ux-ts-row');row2.appendChild(planBtn('homeroom','ts-hr-gen'));b.appendChild(row2);
+    b.appendChild(el('small','ux-tt-hint','ตารางที่จัดเต็มแล้วมักขยับให้ครบได้ยาก — เลือก "จัดใหม่ทั้งตาราง" ในหน้าต่างจะทำได้ดีกว่า (คาบที่ล็อกไว้ไม่ย้าย)'))}}
 
 /* ---- 3. teacher policy -------------------------------------------------------------------------------------------------- */
 function setPol(patch){change(function(){var p=db.timetable.schedulePolicy=Object.assign({},pol(),db.timetable.schedulePolicy||{});Object.assign(p,patch)})}
@@ -19050,8 +19475,7 @@ function secPolicy(b){
   if(dfm>0){var dr=dfReport(),short=dr.filter(function(x){return !x.ok}),rp=el('div','ux-ts-report');rp.dataset.k='ts-df-report';
     rp.appendChild(el('b',null,short.length?'ครูที่ยังไม่มีคาบว่าง 2 คาบติดกันครบ '+dfm+' วัน: '+short.length+' คน':'ครูทุกคนมีคาบว่าง 2 คาบติดกันอย่างน้อย '+dfm+' วัน/สัปดาห์ ✓'));
     if(short.length){var ul0=el('ul');short.forEach(function(x){ul0.appendChild(el('li',null,tname(x.teacher)+' — '+(x.days.length?x.days.length+' วัน ('+x.days.map(function(d){return days()[d]}).join(' ')+')':'ยังไม่มีเลย')))});rp.appendChild(ul0);
-      var r0=el('div','ux-ts-row'),a0=btn('ux-btn ux-primary','✦ จัดตารางใหม่ตามกฎนี้',function(){if(UX.gen)UX.gen.start()});a0.dataset.k='ts-df-gen';r0.appendChild(a0);
-      var a1=btn('ux-btn','⚖ ปรับจากตารางเดิม',function(){UX.optimize.start()});a1.dataset.k='ts-df-run';r0.appendChild(a1);rp.appendChild(r0)}
+      var r0=el('div','ux-ts-row');r0.appendChild(planBtn('doubleFree','ts-df-gen'));rp.appendChild(r0)}
     b.appendChild(rp)}
   /* V24.41 ครูมีสอนทั้งเช้าและบ่าย */
   var hh=el('div','ux-ts-rule');hh.appendChild(check('ครูมีสอนทั้งช่วงเช้าและช่วงบ่าย',p.teacherBothHalves,function(v){setPol({teacherBothHalves:v})},'ts-halves',
@@ -19062,8 +19486,7 @@ function secPolicy(b){
     rep.appendChild(el('b',null,hr.length?'ตอนนี้มีสอนช่วงเดียว '+hr.length+' วัน-ครู':'ตอนนี้ครูทุกคนมีสอนทั้งเช้าและบ่ายทุกวันที่สอน ✓'));
     if(hr.length){var ul=el('ul');hr.slice(0,10).forEach(function(x){ul.appendChild(el('li',null,tname(x.teacher)+' — วัน'+(days()[x.day]||'?')+' สอนเฉพาะช่วง'+x.half+' '+x.periods+' คาบ'))});
       if(hr.length>10)ul.appendChild(el('li','ux-tt-hint','และอีก '+(hr.length-10)+' วัน-ครู'));rep.appendChild(ul);
-      var row=el('div','ux-ts-row'),g1=btn('ux-btn ux-primary','✦ จัดตารางใหม่ตามกฎนี้',function(){if(UX.gen)UX.gen.start()});g1.dataset.k='ts-halves-gen';row.appendChild(g1);
-      var g2=btn('ux-btn','⚖ ปรับจากตารางเดิม',function(){UX.optimize.start()});g2.dataset.k='ts-halves-run';row.appendChild(g2);rep.appendChild(row)}
+      var row=el('div','ux-ts-row');row.appendChild(planBtn('halves','ts-halves-gen'));rep.appendChild(row)}
     b.appendChild(rep)}
   b.appendChild(check('คาบว่างของครูอยู่ติดกัน หรือติดพักกลางวัน',p.groupTeacherFree,function(v){setPol({groupTeacherFree:v})},'ts-groupfree','ใช้ตอนเผื่อเวลาประชุม / งานอื่น (พยายาม)'));
   b.appendChild(check('ตรวจคาบที่ลากเองให้ตรงนโยบาย "บังคับ"',p.strictManualPlacement,function(v){setPol({strictManualPlacement:v})},'ts-strict'));
@@ -19126,7 +19549,7 @@ function secCov(b){
       if(a.none)s.appendChild(el('span',null,' · ยังไม่มีครูสำรอง '+a.none+' คาบ'));b.appendChild(s);
       if(a.risks&&a.risks.length){var ul=el('ul','ux-ts-risks');a.risks.slice(0,8).forEach(function(x){ul.appendChild(el('li',null,'วัน'+x.day+' คาบ '+x.period+' · '+x.grade+' '+x.subject))});
         if(a.risks.length>8)ul.appendChild(el('li','ux-tt-hint','และอีก '+(a.risks.length-8)+' คาบ'));b.appendChild(ul)}}
-    var go=btn('ux-btn','⚖ ปรับตารางตอนนี้ (นโยบาย + การเดิน + เผื่อสอนแทน)',function(){UX.optimize.start()});go.dataset.k='ts-cov-run';b.appendChild(go)}}
+    b.appendChild(planBtn('cover','ts-cov-run'))}}
 
 /* ---- 6. flexible teachers ------------------------------------------------------------------------------------------------- */
 function setFlex(patch){change(function(){db.timetable.flexTeacherSolver=Object.assign({},flex(),patch)})}
@@ -19180,7 +19603,12 @@ function summary(){
       return 'อย่างน้อย '+m+' วัน/สัปดาห์ · '+((T().schedulePolicy||{}).enforceHomeroomFirst?'บังคับ':'พยายาม')+' · ครบ '+ok+'/'+n+' ชั้น'})()}}
 function node(){
   var w=el('div','ux-ts');w.id='uxTTSetup';var s=summary();
-  w.appendChild(el('p','ux-ts-lead','ทุกเงื่อนไขที่ใช้จัดตารางอยู่ที่นี่ — แก้แล้วมีผลกับ ✦ จัดตารางอัตโนมัติ, ↻ ลงคาบที่เหลือ และ ⚖ ปรับให้ดีขึ้นทันที (ย้อนกลับได้ทุกครั้ง)'));
+  w.appendChild(el('p','ux-ts-lead','ทุกเงื่อนไขที่ใช้จัดตารางอยู่ที่นี่ — ตั้งค่าเสร็จแล้วกด ✦ ครั้งเดียว: ระบบตรวจว่าแต่ละข้อทำได้ไหม จัดตารางตามทุกข้อพร้อมกัน แล้วบอกผลทีละข้อ (ย้อนกลับได้ทุกครั้ง)'));
+  /* V24.43 one place to act on all of them */
+  var hl=UX.plan&&UX.plan.headline();
+  if(hl){var bar=el('div','ux-ts-planbar');bar.dataset.status=hl.status;bar.dataset.k='ts-plan-bar';
+    bar.appendChild(el('span','ux-ts-planhl',(hl.status==='ok'?'✓ ':hl.status==='bad'?'✕ ':'⚠ ')+hl.text));
+    bar.appendChild(planBtn('','ts-plan','✦ ตรวจเงื่อนไขและจัดตาราง…'));w.appendChild(bar)}
   w.appendChild(section('time','วันและคาบ',s.time,secTime));
   w.appendChild(section('blocks','เวลาที่ครูไม่ว่าง',s.blocks,secBlocks));
   w.appendChild(section('rules','กฎวันและคาบเรียน',s.rules,secRules));
@@ -19523,7 +19951,7 @@ function empty(k){
   if(k==='timetable'&&!f.lessons){box=el('div','ux-empty');box.appendChild(el('b',null,'ยังไม่มีคาบให้จัด'));box.appendChild(el('span',null,'ตารางสอนสร้างจากรายวิชาที่มีครูสอนแล้ว'));
     var t1=btn('ux-btn ux-primary','ไปที่รายวิชา',function(){UX.go('courses')});t1.dataset.k='empty-go-courses';box.appendChild(t1)}
   else if(k==='timetable'&&f.lessons&&!f.placed){box=el('div','ux-empty');box.appendChild(el('b',null,'พร้อมจัดตาราง '+n(f.lessons)+' คาบ'));box.appendChild(el('span',null,'ตั้งเงื่อนไขก่อนก็ได้ (⚙ เงื่อนไข) หรือให้โปรแกรมจัดเลยแล้วค่อยแก้'));
-    var t2=btn('ux-btn ux-primary','✦ จัดตารางอัตโนมัติ',function(){if(UX.gen)UX.gen.start();else UX.clickId('uxGen')});t2.dataset.k='empty-generate';box.appendChild(t2)}
+    var t2=btn('ux-btn ux-primary','✦ จัดตารางอัตโนมัติ',function(){if(UX.plan)UX.plan.open();else if(UX.gen)UX.gen.start();else UX.clickId('uxGen')});t2.dataset.k='empty-generate';box.appendChild(t2)}
   if(box)host.appendChild(box)}
 
 UX.guide={render:function(){S.sig='';render()},status:function(k){var fl=UX.facts();return fl?status(k,fl.facts,fl.list):null}};
@@ -19773,7 +20201,7 @@ function onTT(fn){return function(){if(UX.cur()!=='timetable')UX.go('timetable')
 function sheetGen(){
   var s=sheet('จัดตาราง'),f=(UX.facts&&UX.facts()||{}).facts||{};
   s.b.appendChild(el('p','ux-sheet-p',f.lessons?'ลงแล้ว '+f.placed+'/'+f.lessons+' คาบ'+(f.policyViolations?' · ผิดนโยบาย '+f.policyViolations+' จุด (ไม่บังคับ)':''):'ยังไม่มีคาบให้จัด — เพิ่มรายวิชาและเลือกครูก่อน'));
-  item(s.b,'✦','จัดตารางอัตโนมัติ','สร้างทั้งตารางเบื้องหลัง · ย้อนกลับได้',onTT(function(){if(UX.gen)UX.gen.start();else UX.clickId('uxGen')}),'tab-gen-run',true);
+  item(s.b,'✦','จัดตารางอัตโนมัติ','สร้างทั้งตารางเบื้องหลัง · ย้อนกลับได้',onTT(function(){if(UX.plan)UX.plan.open();else if(UX.gen)UX.gen.start();else UX.clickId('uxGen')}),'tab-gen-run',true);
   item(s.b,'⚖','ปรับให้ดีขึ้น','ย้ายคาบให้ตรงเงื่อนไขครูมากขึ้น — ดูก่อน-หลังแล้วค่อยใช้',onTT(function(){if(UX.optimize)UX.optimize.start()}),'tab-gen-opt');
   item(s.b,'↻','ลงคาบที่เหลือ','ลงเฉพาะคาบที่ยังไม่ได้ลง คาบอื่นไม่ย้าย',onTT(function(){if(UX.gen)UX.gen.repair()}),'tab-gen-repair');
   item(s.b,'?','ทำไมลงไม่ได้','รายการที่ยังไม่ได้ลง พร้อมเหตุผล',onTT(function(){if(UX.gen)UX.gen.why()}),'tab-gen-why');
@@ -19963,6 +20391,207 @@ UX.homeroom={open:open,of:of,current:current,gradesOf:gradesOf,suggest:suggest,s
 UX.onSync(entries);
 })(window.UX);
 
+/* >>> 73-plan.js */
+/* 73-plan.js — V24.43 "✦ จัดตารางอัตโนมัติ" as ONE continuous step: the button opens a window that
+     1. checks every condition before scheduling (ASPCore.planCheck): ✓ ทำได้ / ⚠ อาจไม่ครบ / ✕ ทำไม่ได้ — why, and how to fix
+        (one-tap fixes where there is one: ปลดล็อก, ผ่อนนโยบายเป็น "พยายาม", ตั้งครูประจำชั้น, ไปที่การตั้งค่า);
+     2. runs everything in one go: จัดใหม่ทั้งตาราง (generate → optimize, in the Worker) or ปรับจากตารางเดิม (optimize) or
+        ลงเฉพาะคาบที่เหลือ — then ครูยืดหยุ่น for what is still out (when ticked) — one Undo step per change, as before;
+     3. reports each condition before → after (ASPCore.planMeasure) with what to do next (ทำไมลงไม่ได้, ⚖ ปรับต่ออีกรอบ, ↶ ย้อนกลับ).
+   Before this, each condition section of ⚙ เงื่อนไข had its own ✦/⚖ buttons and the report came as separate toasts.
+   UX.gen.start() / UX.optimize.start() called directly still behave exactly as before. DOM nodes + textContent only.
+   Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var C=window.ASPCore,S={items:[],before:null,after:null,running:false,mode:'new',flex:null,result:null,focus:''};
+var ICON={ok:'✓',warn:'⚠',bad:'✕'},WORD={ok:'ทำได้',warn:'อาจไม่ครบ',bad:'ทำไม่ได้'},STR={hard:'บังคับ',soft:'พยายาม',info:'ข้อมูล'};
+
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn,k){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;if(k)b.dataset.k=k;return b}
+function tname(id){var t=db.teachers.find(function(x){return x.id===id});return t?t.name.replace(/^ครู\s*/,''):id}
+function placedCount(){var p=db.timetable.placements||{};return Object.keys(p).filter(function(k){return p[k]&&Number.isInteger(p[k].slot)}).length}
+function unplaced(){try{var d=UX.optimize.input();return d.events.filter(function(e){var p=d.placements[e.id];return !p||!Number.isInteger(p.slot)}).length}catch(e){return 0}}
+function flexCfg(){try{return window.V200FlexTeacher?V200FlexTeacher.config():db.timetable.flexTeacherSolver||{}}catch(e){return {}}}
+
+/* ---- data ---------------------------------------------------------------------------------------------------------------- */
+function check(){
+  var d=UX.optimize.input(),items=C.planCheck(d,{teacher:tname}),ready=ttReady(),errs=(ready.errors||[]).map(String);
+  if(errs.length)items.unshift({key:'ready',section:'',title:'ข้อมูลพื้นฐานของรายวิชาและครู',strength:'hard',status:'bad',
+    can:'ยังจัดไม่ได้: ต้องแก้ '+errs.length+' รายการก่อน',how:'แก้ในหน้ารายวิชา / ครู ตามรายการด้านล่าง',details:errs.slice(0,30)});
+  return {items:items,measure:C.planMeasure(d),ready:!errs.length}}
+function measure(){try{return C.planMeasure(UX.optimize.input())}catch(e){return {}}}
+
+/* ---- the window ---------------------------------------------------------------------------------------------------------- */
+function dialog(){
+  var d=$('uxPlanDialog');if(d)return d;
+  d=el('dialog','ux-opt ux-plan no-print');d.id='uxPlanDialog';d.setAttribute('aria-labelledby','uxPlanTitle');
+  var h=el('h2',null,'✦ จัดตารางอัตโนมัติ');h.id='uxPlanTitle';d.appendChild(h);
+  d.appendChild(el('p','ux-opt-lead','ตรวจทุกเงื่อนไขก่อน แล้วจัดในครั้งเดียว: วางคาบ → ปรับตามเงื่อนไขทุกข้อ → ให้ครูยืดหยุ่นช่วย (ถ้าเลือก) · คาบที่ล็อกไว้ไม่ย้าย · ย้อนกลับได้'));
+  var hd=el('div','ux-plan-head');hd.id='uxPlanHead';d.appendChild(hd);
+  var ul=el('ul','ux-plan-list');ul.id='uxPlanList';ul.setAttribute('aria-label','เงื่อนไขที่ใช้จัดตาราง');d.appendChild(ul);
+  var md=el('fieldset','ux-plan-mode');md.id='uxPlanMode';d.appendChild(md);
+  var st=el('div','ux-opt-status ux-plan-status');st.id='uxPlanStatus';st.setAttribute('role','status');st.setAttribute('aria-live','polite');d.appendChild(st);
+  var rs=el('div','ux-plan-result');rs.id='uxPlanResult';rs.hidden=true;d.appendChild(rs);
+  var a=el('div','ux-opt-actions');
+  a.appendChild(btn('ux-btn','ปิด',function(){d.close()},'plan-close'));
+  var u=btn('ux-btn','↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo);S.result=null;refresh();status('ย้อนกลับแล้ว — ตารางเป็นแบบก่อนจัด')},'plan-undo');u.id='uxPlanUndo';u.hidden=true;a.appendChild(u);
+  var w=btn('ux-btn','ทำไมลงไม่ได้',function(){if(UX.gen)UX.gen.why()},'plan-why');w.id='uxPlanWhy';w.hidden=true;a.appendChild(w);
+  var g=btn('ux-btn ux-primary','✦ เริ่มจัดตาราง',go,'plan-go');g.id='uxPlanGo';a.appendChild(g);
+  d.appendChild(a);
+  d.addEventListener('close',function(){S.focus=''});
+  document.body.appendChild(d);return d}
+function status(t){var e=$('uxPlanStatus');if(e)e.textContent=t||''}
+
+function open(focus){
+  if(S.running){var d0=dialog();if(!d0.open)d0.showModal();return}
+  var d=dialog();S.focus=focus||'';S.result=null;S.after=null;
+  var p=placedCount();S.mode=p?(S.mode==='fill'&&!unplaced()?'new':S.mode):'new';
+  var f=flexCfg();S.flex=f.enabled?(S.flex==null?f.autoAfterGenerate===true:S.flex):null;
+  refresh();status('');
+  if(!d.open)d.showModal();
+  var fo=S.focus&&d.querySelector('.ux-plan-i[data-key="'+S.focus+'"]');if(fo)fo.scrollIntoView({block:'nearest'});
+}
+function refresh(){
+  var c;try{c=check()}catch(e){status('ตรวจเงื่อนไขไม่สำเร็จ: '+e.message);return}
+  S.items=c.items;S.ready=c.ready;if(!S.result)S.before=c.measure;
+  var hl=C.planHeadline(S.items),hd=$('uxPlanHead');hd.textContent='';hd.dataset.status=hl.status;
+  hd.appendChild(el('b',null,ICON[hl.status]+' '+hl.text));
+  if(hl.status!=='ok')hd.appendChild(el('span',null,!S.ready?' — ต้องแก้ข้อมูลพื้นฐานก่อน จึงจะจัดได้':hl.status==='bad'?' — กดจัดได้ แต่ข้อที่ทำไม่ได้จะไม่ครบ ดูวิธีแก้ในแต่ละข้อ':' — ตัวจัดตารางจะทำให้ได้มากที่สุด'));
+  list();modes();
+  var g=$('uxPlanGo');g.disabled=!S.ready||S.running;g.textContent=S.result?'✦ จัดอีกครั้ง':'✦ เริ่มจัดตาราง';
+  $('uxPlanUndo').hidden=!(S.result&&S.result.applied);
+  $('uxPlanWhy').hidden=!(S.result&&unplaced());
+  result()}
+
+function list(){
+  var ul=$('uxPlanList');ul.textContent='';
+  S.items.forEach(function(it){
+    var li=el('li','ux-plan-i '+it.status);li.dataset.key=it.key;li.dataset.status=it.status;if(it.key===S.focus)li.classList.add('focus');
+    var top=el('div','ux-plan-top');
+    var ic=el('span','ux-plan-ic',ICON[it.status]);ic.setAttribute('aria-label',WORD[it.status]);top.appendChild(ic);
+    top.appendChild(el('b','ux-plan-t',it.title));
+    top.appendChild(el('span','ux-plan-str '+it.strength,STR[it.strength]));
+    var b=S.before&&S.before[it.key],a=S.after&&S.after[it.key];
+    if(b){var now=el('span','ux-plan-now');now.dataset.k='plan-now-'+it.key;
+      if(a){now.appendChild(document.createTextNode(b.text+' → '));var x=el('b',diff(b,a),a.text);now.appendChild(x)}else now.textContent='ตอนนี้: '+b.text;
+      top.appendChild(now)}
+    li.appendChild(top);
+    li.appendChild(el('p','ux-plan-can',it.can));
+    if(it.how)li.appendChild(el('p','ux-plan-how','ทำอย่างไร: '+it.how));
+    if(it.details&&it.details.length){var dt=el('details','ux-plan-det');dt.appendChild(el('summary',null,'รายละเอียด '+it.details.length+' รายการ'));
+      var dl=el('ul');it.details.forEach(function(x){dl.appendChild(el('li',null,x))});dt.appendChild(dl);if(it.status==='bad'&&it.details.length<=4)dt.open=true;li.appendChild(dt)}
+    var ac=el('div','ux-plan-act');
+    if(it.fix)ac.appendChild(btn('ux-btn ux-plan-fix',it.fix.label,function(){fix(it)},'plan-fix-'+it.key));
+    if(it.section)ac.appendChild(btn('ux-btn ux-plan-set','ตั้งค่า',function(){settings(it.section)},'plan-set-'+it.key));
+    if(ac.childNodes.length)top.appendChild(ac);
+    ul.appendChild(li)})}
+function diff(b,a){if(a.value===b.value)return a.met?'same ok':'same';return (a.lower?a.value<b.value:a.value>b.value)?'better':'worse'}
+
+function modes(){
+  var f=$('uxPlanMode');f.textContent='';f.appendChild(el('legend',null,'วิธีจัด'));
+  var p=placedCount(),u=unplaced(),opts=[['new','จัดใหม่ทั้งตาราง','วางทุกคาบใหม่ตามเงื่อนไข (คาบที่ล็อกไว้ไม่ย้าย) — ได้ผลดีที่สุด']];
+  if(p)opts.push(['improve','ปรับจากตารางเดิม','ไม่วางใหม่ทั้งหมด: ย้าย/สลับคาบที่ไม่ได้ล็อก เท่าที่ทำให้ตรงเงื่อนไขมากขึ้น']);
+  if(p&&u)opts.push(['fill','ลงเฉพาะคาบที่เหลือ ('+u+' รายการ)','ไม่ย้ายคาบที่ลงแล้ว']);
+  if(!opts.some(function(o){return o[0]===S.mode}))S.mode='new';
+  opts.forEach(function(o){var l=el('label','ux-plan-opt'),i=el('input');i.type='radio';i.name='uxPlanMode';i.value=o[0];i.checked=S.mode===o[0];i.dataset.k='plan-mode-'+o[0];
+    i.onchange=function(){S.mode=o[0]};l.appendChild(i);var t=el('span');t.appendChild(el('b',null,o[1]));t.appendChild(el('small',null,o[2]));l.appendChild(t);f.appendChild(l)});
+  if(S.flex!=null){var l=el('label','ux-plan-opt ux-plan-flex'),i=el('input');i.type='checkbox';i.checked=!!S.flex;i.dataset.k='plan-flex';
+    i.onchange=function(){S.flex=i.checked};l.appendChild(i);var t=el('span');t.appendChild(el('b',null,'ถ้ายังลงไม่ครบ ให้ครูคนอื่นช่วยสอน (ครูยืดหยุ่น)'));
+    t.appendChild(el('small',null,'เปลี่ยนครูผู้สอนของคาบที่ลงไม่ได้ — ดูรายชื่อได้ใน ⚙ เงื่อนไข · คืนครูเดิมได้'));l.appendChild(t);f.appendChild(l)}
+  f.disabled=S.running}
+
+function result(){
+  var r=$('uxPlanResult');r.textContent='';r.hidden=!S.result;if(!S.result)return;
+  var x=S.result;r.dataset.applied=String(!!x.applied);
+  r.appendChild(el('b',null,x.applied?'✓ '+x.line:'ยังไม่เปลี่ยนตาราง: '+x.reason));
+  if(x.flex)r.appendChild(el('p',null,x.flex));
+  var miss=S.items.filter(function(it){var a=S.after&&S.after[it.key];return a&&!a.met&&it.strength!=='info'&&it.key!=='mobility'});
+  var u=unplaced();
+  if(x.applied){
+    var nx=el('ul','ux-plan-next');
+    if(u){var li0=el('li',null,'ยังลงไม่ได้ '+u+' รายการ');var rl=held();
+      if(rl.length){li0.appendChild(document.createTextNode(' — เพราะนโยบายครูที่ตั้งเป็น "บังคับ" ถ้าเปลี่ยนเป็น "พยายาม":'));var ch=el('ul','ux-plan-relaxes');
+        rl.forEach(function(x){var it=el('li');
+          if(x.gain>0){it.appendChild(btn('ux-btn ux-plan-relax','ผ่อน '+x.label+' → ลงได้เพิ่ม '+x.gain+' รายการ',function(){relax(x.rules)},'plan-relax-'+x.rules.join('-')))}
+          else it.appendChild(el('span','ux-tt-hint','ผ่อน '+x.label+' อย่างเดียว → ยังลงไม่ได้ (ติดกฎข้ออื่นด้วย)'));
+          ch.appendChild(it)});li0.appendChild(ch)}
+      else li0.appendChild(document.createTextNode(' — กด "ทำไมลงไม่ได้" ดูเหตุผลทีละรายการ'));
+      nx.appendChild(li0)}
+    miss.forEach(function(it){var a=S.after[it.key];nx.appendChild(el('li',null,it.title+': '+a.text+(it.status!=='ok'&&it.how?' — '+it.how:'')))});
+    if(!u&&!miss.length)nx.appendChild(el('li','ok','ทุกเงื่อนไขเป็นไปตามที่ตั้งไว้'));
+    else{var li=el('li');li.appendChild(document.createTextNode('ลองอีกรอบได้: '));
+      li.appendChild(btn('ux-btn ux-plan-more','⚖ ปรับต่ออีกรอบ',function(){S.mode='improve';go()},'plan-more'));nx.appendChild(li)}
+    r.appendChild(nx)}}
+
+/* lessons out because of an enforced teacher-policy rule: which rules, and — tried in advance (ASPCore.placeRemaining on a
+   copy) — how many lessons each choice really puts in. A lesson is often held by two rules at once, so relaxing one alone
+   may put in none: the window says so instead of offering a button that does nothing. */
+function rlabel(r){return C.RULE_LABELS[r].replace(/^นโยบาย:\s*/,'')}
+function tryRelax(d,rules){var e=JSON.parse(JSON.stringify(d));e.setup.schedulePolicy=Object.assign({},e.setup.schedulePolicy||{});
+  rules.forEach(function(r){e.setup.schedulePolicy[C.POLICY_FLAG[r]]=false});return C.placeRemaining(e,e.placements)}
+function held(){try{var d=UX.optimize.input();if(!d.setup.schedulePolicy)return [];var by={};
+  C.explainUnplaced(d,d.placements).forEach(function(x){if(x.rule&&C.POLICY_FLAG[x.rule])by[x.rule]=(by[x.rule]||0)+1});
+  var rules=Object.keys(by),out=rules.map(function(r){return {rules:[r],n:by[r],gain:tryRelax(d,[r]).added.length,label:'"'+rlabel(r)+'"'}});
+  if(rules.length>1){var g=tryRelax(d,rules).added.length,best=Math.max.apply(null,out.map(function(x){return x.gain}));     /* only when it puts in more than one rule alone */
+    if(g>best)out.push({rules:rules,n:rules.reduce(function(a,r){return a+by[r]},0),gain:g,label:'ทั้ง '+rules.length+' ข้อ'})}
+  return out}catch(e){return []}}
+/* ผ่อนกฎ inside the window: the rule(s) become "พยายาม" and the lessons that now fit go in — one Undo step */
+function relax(rules){
+  var d=UX.optimize.input(),r=tryRelax(d,rules),total=d.events.length,placed=Object.keys(r.placements).length;
+  var line='ผ่อนกฎ '+rules.map(function(x){return '"'+rlabel(x)+'"'}).join(' + ')+' · ลงเพิ่ม '+r.added.length+' รายการ · '+placed+'/'+total;
+  act(function(){var p=db.timetable.schedulePolicy=Object.assign({},db.timetable.schedulePolicy);rules.forEach(function(x){p[C.POLICY_FLAG[x]]=false});
+    db.timetable.placements=r.placements;db.timetable.signature=ttSourceKey();db.timetable.lastResult=line});
+  if(typeof ttFlash==='function')ttFlash(line,!!r.left.length);if(UX.tt)UX.tt.render();
+  S.result={applied:true,line:S.result&&S.result.applied?S.result.line+' · '+line:line};S.after=measure();refresh();status('ผ่อนกฎแล้ว (ย้อนกลับได้) — ดูผลด้านบน')}
+/* ---- fixes --------------------------------------------------------------------------------------------------------------- */
+function fix(it){
+  var f=it.fix;if(!f)return;
+  if(f.kind==='unlock'){act(function(){f.ids.forEach(function(id){var p=db.timetable.placements[id];if(p)db.timetable.placements[id]=Object.assign({},p,{locked:false})})});
+    if(UX.tt)UX.tt.render();status('ปลดล็อก '+f.ids.length+' รายการแล้ว (ย้อนกลับได้)');refresh();return}
+  if(f.kind==='relaxPolicy'){act(function(){var p=db.timetable.schedulePolicy=Object.assign({},db.timetable.schedulePolicy||{});
+      p.enforceMinTeacherFree=false;p.enforceMaxTeacherConsecutive=false;p.enforceMaxTeacherPeriodsPerDay=false});
+    if(UX.tt)UX.tt.render();status('นโยบายครูเป็น "พยายาม" แล้ว — ตัวจัดตารางจะลงทุกคาบและผิดนโยบายให้น้อยที่สุด (ย้อนกลับได้)');refresh();return}
+  if(f.kind==='homeroom'&&UX.homeroom){$('uxPlanDialog').close();UX.homeroom.open()}}
+function settings(sec){
+  $('uxPlanDialog').close();UX.go('timetable');
+  setTimeout(function(){if(!UX.tt)return;UX.tt.state.tab='setup';if(UX.ttsetup){UX.ttsetup.state.open[sec]=true;try{localStorage.setItem('ux_ts_open_v1',JSON.stringify(UX.ttsetup.state.open))}catch(e){}}
+    UX.tt.render();setTimeout(function(){var s=document.querySelector('.ux-ts-sec[data-sec="'+sec+'"]');if(s){s.open=true;s.scrollIntoView({block:'start'});var f=s.querySelector('summary');if(f)f.focus()}},80)},120)}
+
+/* ---- run ----------------------------------------------------------------------------------------------------------------- */
+function busy(on){S.running=on;var g=$('uxPlanGo');if(g){g.disabled=on||!S.ready;g.setAttribute('aria-busy',String(on))}var m=$('uxPlanMode');if(m)m.disabled=on}
+function go(){
+  if(S.running||!S.ready)return;
+  S.before=measure();S.after=null;S.result=null;$('uxPlanResult').hidden=true;$('uxPlanUndo').hidden=true;$('uxPlanWhy').hidden=true;
+  busy(true);var mode=S.mode;
+  if(mode==='new'){status('⏳ กำลังจัดตารางใหม่ทั้งตาราง… (ทำงานเบื้องหลัง)');
+    UX.gen.start({quiet:true,onProgress:function(t){status(t+' · จัดใหม่ทั้งตาราง')},onDone:done})}
+  else if(mode==='improve'){status('⏳ กำลังปรับจากตารางเดิม…');
+    var startSig=JSON.stringify(db.timetable.placements);
+    UX.optimize.run(function(r,err){
+      if(err||!r){done({applied:false,reason:'ปรับไม่สำเร็จ'+(err?': '+err:'')});return}
+      if(JSON.stringify(db.timetable.placements)!==startSig){done({applied:false,reason:'ตารางถูกแก้ระหว่างปรับ — กดอีกครั้ง'});return}
+      if(!r.moved.length){done({applied:false,reason:'ตารางนี้ดีที่สุดเท่าที่หาได้แล้ว ไม่ต้องย้ายคาบ'});return}
+      var line='ปรับจากตารางเดิม: ย้าย '+r.moved.length+' คาบ · ครูผิดนโยบาย '+r.before.violations+' → '+r.after.violations+' จุด';
+      act(function(){Object.keys(r.placements).forEach(function(id){var p=db.timetable.placements[id];if(p&&p.slot!==r.placements[id].slot)p.slot=r.placements[id].slot});db.timetable.lastResult=line});
+      done({applied:true,line:line})},function(m){status('⏳ กำลังปรับ… ครูผิดนโยบาย '+m.start.violations+' → '+m.best.violations+' จุด')})}
+  else{status('⏳ กำลังลงคาบที่เหลือ…');setTimeout(function(){done(UX.gen.repair({quiet:true}))},30)}}
+function done(o){
+  o=o||{applied:false,reason:'ไม่ทราบสาเหตุ'};
+  if(o.applied&&S.flex&&UX.ttsetup&&unplaced())try{o.flex=UX.ttsetup.runFlex().text}catch(e){}
+  if(UX.tt)try{UX.tt.render()}catch(e){}
+  busy(false);S.result=o;S.after=measure();
+  refresh();
+  status(o.applied?'จัดเสร็จแล้ว — ดูผลแต่ละเงื่อนไขด้านบน (ก่อน → หลัง)':'');
+  UX.live(o.applied?'จัดตารางเสร็จ '+(o.line||''):'ยังไม่เปลี่ยนตาราง '+(o.reason||''));
+  var d=$('uxPlanDialog');if(d&&!d.open)UX.toast(o.applied?o.line:'ยังไม่เปลี่ยนตาราง: '+o.reason,o.applied?'ดูผลแต่ละเงื่อนไข':null,o.applied?function(){d.showModal()}:null);
+  var rs=$('uxPlanResult');if(rs&&d.open)rs.scrollIntoView({block:'nearest'})}
+
+/* one line for ⚙ เงื่อนไข: "เงื่อนไข 7 ข้อ · ทำได้ทั้งหมด" */
+function headline(){try{return C.planHeadline(check().items)}catch(e){return null}}
+UX.plan={open:open,check:check,headline:headline,state:S,go:go};
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -19979,7 +20608,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="5d2d51f0f345";window.__UX_WEBAPP_LABEL="24.42";
+(function(){window.__UX_WEBAPP="f0792baee419";window.__UX_WEBAPP_LABEL="24.43";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
