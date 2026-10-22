@@ -2498,6 +2498,14 @@ body.ux-rail .ux-railbtn:not([hidden]){position:static;flex:none;margin:0 auto 4
 .ux-emblem-img{cursor:pointer;border-radius:4px}.ux-emblem-img:hover{outline:1.5px dashed var(--ux-brand);outline-offset:3px}
 .ux-emblem-img:focus-visible{outline:3px solid var(--ux-brand);outline-offset:3px}
 @media print{.ux-emblem-row{display:none}}
+/* V24.47 ชุดคำสั่ง: เลือกครูของชุดรายคน · ลายเซ็นสแกน */
+.ux-od-pick summary{cursor:pointer;color:var(--ux-brand);font-size:var(--ux-fs-sm);margin:4px 0}
+.ux-od-picklist{display:flex;flex-direction:column;gap:2px;max-height:220px;overflow:auto;border:1px solid var(--ux-line);border-radius:var(--ux-radius-sm);padding:6px 8px;margin-top:6px}
+.ux-od-chk{display:flex;gap:8px;align-items:center;font-size:var(--ux-fs-sm)}
+.ux-od-sigrow{display:flex;flex-direction:column;gap:4px;padding:6px 0;border-bottom:1px dashed var(--ux-line)}
+.ux-od-sigimg{max-width:180px;max-height:60px;object-fit:contain;background:repeating-conic-gradient(#f3f5f7 0 25%,#fff 0 50%) 0 0/12px 12px;border:1px solid var(--ux-line);border-radius:6px;padding:2px}
+.ux-od-siguse{display:flex;flex-direction:column;gap:2px;margin-top:6px;font-size:var(--ux-fs-sm)}
+.ux-od-siguse>span{font-weight:600}
 
 /* >>> 60-responsive.css */
 /* 60-responsive.css — Mac (wide) and iPad (touch, portrait + landscape) */
@@ -11210,6 +11218,7 @@ var ASPCore = (() => {
     movementCost: () => movementCost,
     newerSide: () => newerSide,
     optimizeTimetable: () => optimizeTimetable,
+    orderSettings: () => orderSettings,
     pairKey: () => pairKey,
     para: () => para,
     parseCommands: () => parseCommands,
@@ -11256,6 +11265,8 @@ var ASPCore = (() => {
     sheetLabel: () => sheetLabel,
     sheetSection: () => sheetSection,
     shouldRenew: () => shouldRenew,
+    signCell: () => signCell,
+    signRow: () => signRow,
     slotOf: () => slotOf,
     slotOptions: () => slotOptions,
     slotPosition: () => slotPosition,
@@ -13556,24 +13567,28 @@ var ASPCore = (() => {
   }
   var W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"';
   var JC = { left: "left", center: "center", right: "right", both: "both", thaiDistribute: "thaiDistribute" };
-  function runXml(r, size) {
+  function runXml(r, size, ctx) {
+    if (r.image && ctx) return inlineImage(r.image, ctx);
     const sz = Math.round((r.size ?? size) * 2);
     const pr = `<w:rPr>${r.bold ? "<w:b/><w:bCs/>" : ""}${r.underline ? '<w:u w:val="single"/>' : ""}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/></w:rPr>`;
     const parts = String(r.text).split("	").map((t, i) => (i ? "<w:tab/>" : "") + (t ? `<w:t xml:space="preserve">${esc(t)}</w:t>` : ""));
     return (r.br ? `<w:r>${pr}<w:br/></w:r>` : "") + `<w:r>${pr}${parts.join("")}</w:r>`;
   }
-  function paraXml(p, size) {
+  function paraXml(p, size, ctx) {
     const s = p.size ?? size;
     const ind = p.firstLine || p.left ? `<w:ind${p.left ? ` w:left="${twip(p.left)}"` : ""}${p.firstLine ? ` w:firstLine="${twip(p.firstLine)}"` : ""}/>` : "";
     const pr = `<w:pPr>${p.keepNext ? "<w:keepNext/>" : ""}<w:spacing w:before="${Math.round((p.before ?? 0) * 20)}" w:after="${Math.round((p.after ?? 0) * 20)}" w:line="240" w:lineRule="auto"/>${ind}<w:jc w:val="${JC[p.align ?? "left"]}"/></w:pPr>`;
-    return `<w:p>${pr}${p.runs.map((r) => runXml(r, s)).join("")}</w:p>`;
+    return `<w:p>${pr}${p.runs.map((r) => runXml(r, s, ctx)).join("")}</w:p>`;
   }
   function imageXml(im, ctx, align = "center") {
+    return `<w:p><w:pPr><w:spacing w:before="0" w:after="0"/><w:jc w:val="${JC[align]}"/></w:pPr>${inlineImage(im, ctx)}</w:p>`;
+  }
+  function inlineImage(im, ctx) {
     const n3 = ctx.images.length + 1, id = `rIdImg${n3}`, cx = emu(im.width), cy = emu(im.height);
     ctx.images.push({ id, name: `media/image${n3}.${im.type === "png" ? "png" : "jpeg"}`, bytes: im.bytes, type: im.type });
-    return `<w:p><w:pPr><w:spacing w:before="0" w:after="0"/><w:jc w:val="${JC[align]}"/></w:pPr><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${n3}" name="image${n3}"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="${n3}" name="image${n3}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${id}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`;
+    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${n3}" name="image${n3}"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="${n3}" name="image${n3}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${id}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
   }
-  function tableXml(t, size) {
+  function tableXml(t, size, ctx) {
     const s = t.size ?? size, b = t.borders !== false;
     const line = (side) => `<w:${side} w:val="${b ? "single" : "nil"}" w:sz="4" w:space="0" w:color="000000"/>`;
     const borders = `<w:tblBorders>${["top", "left", "bottom", "right", "insideH", "insideV"].map(line).join("")}</w:tblBorders>`;
@@ -13585,7 +13600,7 @@ var ASPCore = (() => {
       for (const c of r.cells) {
         const span = c.span ?? 1, w2 = t.widths.slice(col, col + span).reduce((a, x) => a + twip(x), 0);
         col += span;
-        xml += `<w:tc><w:tcPr><w:tcW w:w="${w2}" w:type="dxa"/>${span > 1 ? `<w:gridSpan w:val="${span}"/>` : ""}${c.merge === "start" ? '<w:vMerge w:val="restart"/>' : c.merge === "cont" ? "<w:vMerge/>" : ""}${c.fill ? `<w:shd w:val="clear" w:color="auto" w:fill="${c.fill}"/>` : ""}${c.vertical ? '<w:textDirection w:val="btLr"/>' : ""}<w:vAlign w:val="${c.vAlign ?? "center"}"/></w:tcPr>` + (c.merge === "cont" || !c.paras.length ? "<w:p/>" : c.paras.map((p) => paraXml(p, s)).join("")) + `</w:tc>`;
+        xml += `<w:tc><w:tcPr><w:tcW w:w="${w2}" w:type="dxa"/>${span > 1 ? `<w:gridSpan w:val="${span}"/>` : ""}${c.merge === "start" ? '<w:vMerge w:val="restart"/>' : c.merge === "cont" ? "<w:vMerge/>" : ""}${c.fill ? `<w:shd w:val="clear" w:color="auto" w:fill="${c.fill}"/>` : ""}${c.vertical ? '<w:textDirection w:val="btLr"/>' : ""}<w:vAlign w:val="${c.vAlign ?? "center"}"/></w:tcPr>` + (c.merge === "cont" || !c.paras.length ? "<w:p/>" : c.paras.map((p) => paraXml(p, s, ctx)).join("")) + `</w:tc>`;
       }
       xml += `</w:tr>`;
     }
@@ -13600,7 +13615,7 @@ var ASPCore = (() => {
     const thin = (inner = "") => `<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="20" w:lineRule="exact"/><w:rPr><w:sz w:val="2"/><w:szCs w:val="2"/></w:rPr>${inner}</w:pPr></w:p>`;
     doc.sections.forEach((sec, i) => {
       sec.blocks.forEach((b, k) => {
-        body += b.kind === "p" ? paraXml(b, doc.size) : b.kind === "table" ? tableXml(b, doc.size) : imageXml(b, ctx);
+        body += b.kind === "p" ? paraXml(b, doc.size, ctx) : b.kind === "table" ? tableXml(b, doc.size, ctx) : imageXml(b, ctx);
         if (b.kind === "table" && (sec.blocks[k + 1]?.kind === "table" || k === sec.blocks.length - 1 && i === doc.sections.length - 1)) body += thin();
       });
       if (i < doc.sections.length - 1) body += thin(sectPr(sec));
@@ -13633,6 +13648,7 @@ var ASPCore = (() => {
   }
   var CSS_ALIGN = { left: "left", center: "center", right: "right", both: "justify", thaiDistribute: "justify" };
   function runHtml(r, edit) {
+    if (r.image) return `<img class="dx-sig" alt="ลายเซ็น" src="${esc(r.image.src ?? "")}" style="width:${r.image.width}cm;height:${r.image.height}cm;vertical-align:bottom">`;
     const st = (r.bold ? "font-weight:700;" : "") + (r.underline ? "text-decoration:underline;" : "") + (r.size ? `font-size:${r.size}pt;` : "");
     const text = esc(r.text).replace(/\t/g, '<span class="dx-tab"></span>');
     const inner = r.field && edit ? `<span class="dx-field" data-field="${esc(r.field)}" contenteditable="true" spellcheck="false">${text}</span>` : text;
@@ -13716,8 +13732,22 @@ var ASPCore = (() => {
     include: { cover: true, list: true, sheets: true },
     positions: {},
     periodTimes: [],
-    lunchAfter: 3
+    lunchAfter: 3,
+    packLayout: "combined",
+    packTitle: "บัญชีมอบหมายงานสอนรายบุคคล",
+    listSign: true,
+    sigUse: { cover: true, list: true, personal: true, reports: true }
   };
+  function orderSettings(x) {
+    return {
+      ...ORDER_DEFAULTS,
+      ...x,
+      include: { ...ORDER_DEFAULTS.include, ...x.include ?? {} },
+      positions: { ...x.positions ?? {} },
+      sigUse: { ...ORDER_DEFAULTS.sigUse, ...x.sigUse ?? {} },
+      packLayout: x.packLayout === "separate" ? "separate" : "combined"
+    };
+  }
   function fill(text, s) {
     return String(text ?? "").replace(/\{school\}/g, s.school).replace(/\{semester\}/g, s.semester).replace(/\{year\}/g, s.year);
   }
@@ -13748,13 +13778,20 @@ var ASPCore = (() => {
   var RUN = (text, o = {}) => ({ text, ...o });
   var P = (runs, o = {}) => para(runs, o);
   var cell = (lines, o = {}, align = "center") => ({ paras: lines.map((l) => P(l, { align })), ...o });
+  function signCell(who, s, place, o = {}) {
+    const img = s.sigUse?.[place] !== false ? s.sigImg?.[who] : null;
+    const name = who === "director" ? s.signerName : s.academicName, f = who === "director" ? "signerName" : "academicName";
+    const role = o.role ? " " + o.role : "";
+    const first = img ? [RUN("ลงชื่อ "), { text: "", image: img }, ...role ? [RUN(role)] : []] : [RUN("ลงชื่อ ........................................" + role)];
+    return cell([first, [RUN("("), RUN(name, { field: f }), RUN(")")], ...o.title ? [[RUN(o.title)]] : []]);
+  }
+  function signRow(s, place, width, roles = {}) {
+    const dirTitle = fill(s.signerTitle, s), d = signCell("director", s, place, { role: roles.director, title: dirTitle });
+    if (s.academicSign === false) return { kind: "table", borders: false, widths: [width / 4, width / 2, width / 4], rows: [{ cells: [cell([[RUN("")]]), d, cell([[RUN("")]])] }] };
+    return { kind: "table", borders: false, widths: [width / 2, width / 2], rows: [{ cells: [signCell("academic", s, place, { role: roles.academic, title: s.academicTitle }), d] }] };
+  }
   function buildOrderDoc(input) {
-    const s = {
-      ...ORDER_DEFAULTS,
-      ...input.settings,
-      include: { ...ORDER_DEFAULTS.include, ...input.settings.include ?? {} },
-      positions: { ...input.settings.positions ?? {} }
-    };
+    const s = orderSettings(input.settings);
     const F = (t) => fill(t, s);
     const sections = [];
     const dated = `${s.dateDay} ${s.dateMonth} พ.ศ. ${s.dateYear || s.year}`;
@@ -13779,9 +13816,7 @@ var ASPCore = (() => {
           RUN(s.dateYear || s.year, { field: "dateYear" })
         ], { left: 5.4, after: 30 }),
         { kind: "table", borders: false, widths: [6.5, 10.75], rows: [
-          { cells: [{ paras: [] }, cell([[RUN("ลงชื่อ...................................................")]])] },
-          { cells: [{ paras: [] }, cell([[RUN("("), RUN(s.signerName, { field: "signerName" }), RUN(")")]])] },
-          { cells: [{ paras: [] }, cell([[RUN(F(s.signerTitle), { field: "signerTitle" })]])] }
+          { cells: [{ paras: [] }, coverSign(s)] }
         ] }
       );
       sections.push({ name: "หน้าคำสั่ง", margins: { top: 1.75, bottom: 1, left: 2, right: 1.75 }, blocks });
@@ -13840,14 +13875,29 @@ var ASPCore = (() => {
         ...s.showAck ? [cell([""], { fill: "F2F2F2" })] : []
       ] });
       const table = { kind: "table", widths: cols.map((c) => c.w), rows, size: s.tableSize };
-      sections.push({ name: "บัญชีแนบท้ายคำสั่ง", margins: { top: 1.75, bottom: 1.5, left: 2, right: 1.5 }, blocks: [
+      sections.push({ name: "บัญชีแนบท้ายคำสั่ง (สรุป)", margins: { top: 1.75, bottom: 1.5, left: 2, right: 1.5 }, blocks: [
         P([RUN(F(s.listTitle), { bold: true, field: "listTitle" })], { align: "center" }),
         P(`แนบท้ายคำสั่งโรงเรียน${s.school} ที่ ${s.orderNo}/${s.dateYear || s.year} ลงวันที่ ${dated}`, { align: "center" }),
         P(`ภาคเรียนที่ ${s.semester} ปีการศึกษา ${s.year}`, { align: "center", after: 8 }),
-        table
+        table,
+        ...s.listSign ? [P("", { after: 14 }), signRow(s, "list", width, { academic: "ผู้จัดทำ", director: "ผู้อนุมัติ" })] : []
       ] });
     }
-    if (s.include.sheets) for (const sh of input.sheets) sections.push(sheetSection(sh, s));
+    if (s.include.sheets) {
+      const byId = new Map(input.sheets.map((sh) => [sh.id, sh]));
+      const want = input.only ? new Set(input.only) : null;
+      const known = new Set(input.teachers.map((t) => t.id));
+      const people = [...input.teachers, ...input.sheets.filter((sh) => !known.has(sh.id)).map((sh) => ({ id: sh.id, name: sh.name, items: [] }))];
+      for (const t of people) {
+        if (want && !want.has(t.id)) continue;
+        const sh = byId.get(t.id);
+        if (!sh && !t.items.length) continue;
+        if (s.packLayout === "separate") {
+          if (t.items.length) sections.push(personalList(t, s, input.gradeOrder, dated));
+          if (sh) sections.push(sheetSection(sh, s, "personal"));
+        } else sections.push(personalSheet(t, sh ?? null, s, input.gradeOrder));
+      }
+    }
     if (s.thaiDigits) for (const sec of sections) for (const b of sec.blocks) digits(b);
     return { font: s.font, size: s.size, title: `คำสั่งโรงเรียน${s.school} เรื่อง ${F(s.subjectLine)}`, sections };
   }
@@ -13858,7 +13908,7 @@ var ASPCore = (() => {
     if (b.kind === "p") runs(b);
     else if (b.kind === "table") b.rows.forEach((r) => r.cells.forEach((c) => c.paras.forEach(runs)));
   }
-  function sheetSection(sh, s) {
+  function sheetSection(sh, s, place = "reports") {
     const lunch = s.lunchAfter > 0 && s.lunchAfter < sh.periods ? s.lunchAfter : 0;
     const times = s.periodTimes.length >= sh.periods ? s.periodTimes : defaultTimes(sh.periods, lunch);
     const width = 29.7 - 1.5 - 1.5, dayW = 2.6, lunchW = lunch ? 1.1 : 0, pw = (width - dayW - lunchW) / sh.periods;
@@ -13884,10 +13934,6 @@ var ASPCore = (() => {
       { cells: [{ paras: [], merge: "cont" }, ...periodCells((p) => cell([times[p] ?? ""]), 2)] },
       ...sh.days.map((d, di) => ({ height: 1.3, cells: [cell([d]), ...periodCells((p) => cell(sh.cells[di]?.[p] ?? [""]), 3)] }))
     ];
-    const sig = (title, name, nameField) => [cell([
-      [RUN("ลงชื่อ ........................................ " + title)],
-      [RUN("("), RUN(name, { field: nameField }), RUN(")")]
-    ])];
     return {
       name: "ตารางสอน " + sh.name,
       landscape: true,
@@ -13901,16 +13947,79 @@ var ASPCore = (() => {
         ] }] },
         { kind: "table", widths, rows, size: Math.max(12, s.size - 2) },
         P("", { after: 12 }),
-        s.academicSign === false ? { kind: "table", borders: false, widths: [width / 4, width / 2, width / 4], rows: [{ cells: [
-          cell([[RUN("")]]),
-          ...sig(s.signerTitle.replace(/\{school\}/g, ""), s.signerName, "signerName"),
-          cell([[RUN("")]])
-        ] }] } : { kind: "table", borders: false, widths: [width / 2, width / 2], rows: [{ cells: [
-          ...sig(s.academicTitle, s.academicName, "academicName"),
-          ...sig(s.signerTitle.replace(/\{school\}/g, ""), s.signerName, "signerName")
-        ] }] }
+        sheetSigns(s, place, width)
       ]
     };
+  }
+  function sheetSigns(s, place, width) {
+    const dir = signCell("director", s, place, { role: s.signerTitle.replace(/\{school\}/g, "").trim() });
+    if (s.academicSign === false) return { kind: "table", borders: false, widths: [width / 4, width / 2, width / 4], rows: [{ cells: [cell([[RUN("")]]), dir, cell([[RUN("")]])] }] };
+    return { kind: "table", borders: false, widths: [width / 2, width / 2], rows: [{ cells: [signCell("academic", s, place, { role: s.academicTitle }), dir] }] };
+  }
+  function coverSign(s) {
+    const c = signCell("director", s, "cover");
+    c.paras.push(P([RUN(fill(s.signerTitle, s), { field: "signerTitle" })], { align: "center" }));
+    return c;
+  }
+  var totalOf = (t) => t.items.reduce((a, x) => a + x.hours, 0);
+  function personHead(t, s, size) {
+    const pos = s.positions[t.id], hr = (t.homeroom ?? []).filter(Boolean);
+    return [
+      RUN("ชื่อ ", { bold: true, size }),
+      RUN(t.name, { size }),
+      ...pos ? [RUN("   ตำแหน่ง ", { bold: true, size }), RUN(pos, { size, field: "pos:" + t.id })] : [],
+      ...hr.length ? [RUN("   ครูประจำชั้น ", { bold: true, size }), RUN(hr.join(", "), { size })] : []
+    ];
+  }
+  function personalList(t, s, gradeOrder, dated) {
+    const width = 21 - 2 - 1.5;
+    const cols = [{ label: "ที่", w: 1 }, { label: "รายวิชา / กิจกรรม", w: 7 }, ...s.showCode ? [{ label: "รหัสวิชา", w: 2.6 }] : [], { label: "ชั้น", w: 3 }, { label: "ชม./สัปดาห์", w: 2.2 }];
+    cols[1].w += width - cols.reduce((a, c) => a + c.w, 0);
+    const rows = [
+      { header: true, cells: cols.map((c) => cell([c.label], { fill: "F2F2F2" })) },
+      ...t.items.map((x, i) => ({ cells: [
+        cell([String(i + 1)]),
+        cell([x.label + (x.joint ? " (เรียนรวม)" : "")], {}, "left"),
+        ...s.showCode ? [cell([x.code || "–"])] : [],
+        cell([gradeRange(x.grades, gradeOrder)]),
+        cell([hoursText(x.hours)])
+      ] })),
+      { cells: [cell([[RUN("รวม", { bold: true })]], { span: cols.length - 1, fill: "F2F2F2" }, "right"), cell([[RUN(hoursText(totalOf(t)), { bold: true })]], { fill: "F2F2F2" })] }
+    ];
+    return { name: "รายวิชา " + t.name, margins: { top: 1.75, bottom: 1.5, left: 2, right: 1.5 }, blocks: [
+      P([RUN(fill(s.packTitle, s), { bold: true, field: "packTitle" })], { align: "center" }),
+      P(`แนบท้ายคำสั่งโรงเรียน${s.school} ที่ ${s.orderNo}/${s.dateYear || s.year} ลงวันที่ ${dated}`, { align: "center" }),
+      P(`ภาคเรียนที่ ${s.semester} ปีการศึกษา ${s.year}`, { align: "center", after: 8 }),
+      P(personHead(t, s, s.size), { after: 6 }),
+      { kind: "table", widths: cols.map((c) => c.w), rows, size: s.tableSize },
+      P("", { after: 18 }),
+      signRow(s, "personal", width, { academic: "ผู้จัดทำ", director: "ผู้อนุมัติ" })
+    ] };
+  }
+  function personalSheet(t, sh, s, gradeOrder) {
+    const many = t.items.length > 8, width = 29.7 - 1.5 - 1.5, small = many ? Math.max(11, s.size - 4) : Math.max(12, s.size - 2);
+    const blocks = [];
+    if (sh) {
+      const sec = sheetSection(sh, s, "personal");
+      const grid = sec.blocks[2];
+      for (const r of grid.rows) if (r.height) r.height = many ? 0.9 : 1.1;
+      if (many) grid.size = small;
+      blocks.push(sec.blocks[0], sec.blocks[1], grid);
+    } else blocks.push(P([RUN("โรงเรียน" + s.school, { bold: true, size: 18 })], { align: "center", after: 4 }), P([RUN(t.name, { bold: true, size: 18 })], { align: "center" }));
+    if (s.positions[t.id] || (t.homeroom ?? []).some(Boolean) || !sh) blocks.push(P(personHead(t, s, small), { before: 6, after: 3 }));
+    else blocks.push(P("", { after: 4 }));
+    if (t.items.length) {
+      const unit = [{ label: "รหัสวิชา", w: 2.3 }, { label: "รายวิชา / กิจกรรม", w: 6.2 }, { label: "ชั้น", w: 2.6 }, { label: "ชม.", w: 1.3 }];
+      const one = unit.reduce((a, c) => a + c.w, 0), stretch = width / 2 - one;
+      unit[1].w += stretch;
+      const half = Math.ceil(t.items.length / 2), rows = [{ header: true, cells: [...unit, ...unit].map((c) => cell([c.label], { fill: "F2F2F2" })) }];
+      const four = (x) => x ? [cell([x.code || "–"]), cell([x.label + (x.joint ? " (เรียนรวม)" : "")], {}, "left"), cell([gradeRange(x.grades, gradeOrder)]), cell([hoursText(x.hours)])] : [cell([""]), cell([""]), cell([""]), cell([""])];
+      for (let i = 0; i < half; i++) rows.push({ cells: [...four(t.items[i]), ...four(t.items[i + half])] });
+      rows.push({ cells: [cell([[RUN(`รวม ${t.items.length} รายการ`, { bold: true })]], { span: 7, fill: "F2F2F2" }, "right"), cell([[RUN(hoursText(totalOf(t)), { bold: true })]], { fill: "F2F2F2" })] });
+      blocks.push({ kind: "table", widths: [...unit, ...unit].map((c) => c.w), rows, size: small });
+    }
+    blocks.push(P("", { after: 8 }), sheetSigns(s, "personal", width));
+    return { name: "ชุดรายคน " + t.name, landscape: true, margins: { top: 1.2, bottom: 1, left: 1.5, right: 1.5 }, blocks };
   }
 
   // core/src/placement.ts
@@ -14144,7 +14253,7 @@ var ASPCore = (() => {
   var P2 = (runs, o = {}) => para(runs, o);
   var cell2 = (lines, o = {}, align = "center") => ({ paras: lines.map((l) => P2(l, { align })), ...o });
   function settingsOf(x) {
-    return { ...ORDER_DEFAULTS, ...x, include: { ...ORDER_DEFAULTS.include, ...x.include ?? {} }, positions: { ...x.positions ?? {} } };
+    return orderSettings(x);
   }
   function finish(sections, s, title) {
     if (s.thaiDigits) for (const sec of sections) for (const b of sec.blocks) digits(b);
@@ -14172,21 +14281,7 @@ var ASPCore = (() => {
     ];
   }
   function signatures(s, left = "ผู้รายงาน", right = "ผู้อำนวยการ", width = WIDTH) {
-    const sig = (role, name, f, title) => cell2([
-      [RUN2("ลงชื่อ ........................................ " + role)],
-      [RUN2("("), RUN2(name, { field: f }), RUN2(")")],
-      [RUN2(title)]
-    ]);
-    if (s.academicSign === false)
-      return [P2("", { after: 18 }), { kind: "table", borders: false, widths: [width / 4, width / 2, width / 4], rows: [{ cells: [
-        cell2([[RUN2("")]]),
-        sig(right, s.signerName, "signerName", fill(s.signerTitle, s)),
-        cell2([[RUN2("")]])
-      ] }] }];
-    return [P2("", { after: 18 }), { kind: "table", borders: false, widths: [width / 2, width / 2], rows: [{ cells: [
-      sig(left, s.academicName, "academicName", s.academicTitle),
-      sig(right, s.signerName, "signerName", fill(s.signerTitle, s))
-    ] }] }];
+    return [P2("", { after: 18 }), signRow(s, "reports", width, { academic: left, director: right })];
   }
   function fit(cols, stretch, width = WIDTH) {
     const fixed = cols.reduce((a, c2) => a + c2.w, 0), c = cols.find((x) => x.key === stretch);
@@ -16659,7 +16754,7 @@ var ASPCore = (() => {
   }
 
   // core/src/index.ts
-  var VERSION = "0.28.0";
+  var VERSION = "0.29.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -16668,7 +16763,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.46',inits:[],syncs:[]};
+var UX=window.UX={version:'24.47',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -19131,7 +19226,15 @@ function settings(){
   var s=Object.assign({},C.ORDER_DEFAULTS,{school:d.school||db.school||'',year:year,signerName:d.adminName||C.ORDER_DEFAULTS.signerName},o);
   s.school=noPrefix(s.school);                       /* "คำสั่งโรงเรียน" + name: the saved name may already start with โรงเรียน */
   if(!s.year)s.year=String(new Date().getFullYear()+543);
+  s.sigImg={director:sigImage('director'),academic:sigImage('academic')};      /* V24.47 runtime only — never saved in uxOrder */
   return s}
+/* ---- V24.47 ลายเซ็นสแกน: db.docSettings.uxSign = {director:{src,width,height}, academic:{…}} (PNG, white made transparent) ---- */
+function sigs(){return Object.assign({},ds().uxSign||{})}
+function dataImage(e,alt){
+  if(!e||!e.src)return null;
+  try{var b64=e.src.split(',')[1],bin=atob(b64),bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    return {kind:'image',bytes:bytes,type:/png/.test(e.src.slice(0,30))?'png':'jpeg',width:e.width,height:e.height,src:e.src}}catch(err){return null}}
+function sigImage(who){return dataImage(sigs()[who])}
 function noPrefix(x){return String(x||'').replace(/^\s*โรงเรียน\s*/,'').trim()}
 function save(patch){
   act(function(){ds().uxOrder=Object.assign(saved(),patch)});
@@ -19144,7 +19247,7 @@ function teacherList(){
   var cd=codes();
   return db.teachers.filter(function(t){return !t.team}).map(function(t){
     var items=[];try{items=docOrderWork(t.id)}catch(e){}
-    return {id:t.id,name:t.name,items:items.map(function(x){
+    return {id:t.id,name:t.name,homeroom:((t.profile||{}).homeroom||[]).filter(Boolean),items:items.map(function(x){
       var g=x.kind==='G'?(db.jointGroups||[]).find(function(j){return j.id===x.origin}):null;
       return {label:x.kind==='G'?String(x.origin):strip(x.subjects[0]),joint:x.kind==='G',grades:x.grades.slice(),hours:+x.hours||0,
         code:x.kind==='R'?(cd[x.origin]||''):((g&&g.members)||[]).map(function(id){return cd[id]}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i}).join(' / ')}})}})}
@@ -19162,13 +19265,16 @@ function sheets(list){
     return {id:t.id,name:t.name,days:days,periods:P,cells:cells,count:count}})}
 function emblem(s){
   var e=s.emblem;if(!e||!e.src)return null;
-  try{var b64=e.src.split(',')[1],bin=atob(b64),bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
-    return {kind:'image',bytes:bytes,type:/png/.test(e.src.slice(0,30))?'png':'jpeg',width:e.width||2.7,height:e.height||3,src:e.src}}catch(err){return null}}
-function model(){
-  var s=settings(),list=teacherList();
-  S.model=C.buildOrderDoc({settings:s,teachers:list,sheets:sheets(list),gradeOrder:db.grades.slice(),emblem:emblem(s)});
+  return dataImage({src:e.src,width:e.width||2.7,height:e.height||3})}
+function model(over,only){
+  var s=Object.assign(settings(),over||{}),list=teacherList(),pick=only||chosen();
+  S.model=C.buildOrderDoc({settings:s,teachers:list,sheets:sheets(list),gradeOrder:db.grades.slice(),emblem:emblem(s),only:pick});
   S.counts={teachers:list.filter(function(t){return t.items.length}).length,hours:list.reduce(function(a,t){return a+t.items.reduce(function(b,x){return b+x.hours},0)},0)};
   return S.model}
+
+/* V24.47 ชุดรายคน for some teachers only (null = everyone) — kept while the app is open, not saved */
+function chosen(){return S.only&&S.only.length?S.only.slice():null}
+function packTeachers(){return teacherList().filter(function(t){return t.items.length})}
 
 /* ---- export --------------------------------------------------------------------------------------------------------- */
 function fileName(ext){var s=settings();return ('คำสั่งมอบหมายให้ปฏิบัติการสอน_ภาค'+s.semester+'_'+s.year).replace(/[\\/:*?"<>|]+/g,'-')+ext}
@@ -19178,6 +19284,23 @@ function exportWord(){
     setTimeout(function(){URL.revokeObjectURL(url)},2000);
     UX.toast('ส่งออก Word แล้ว — เปิดแก้ต่อใน Microsoft Word ได้');UX.order.lastExport=bytes.length}
   catch(e){UX.toast('ส่งออก Word ไม่สำเร็จ: '+e.message)}}
+/* V24.47 แยกไฟล์รายคน: one Word file per teacher (their pack, with the order page when ticked) in one .zip */
+function safe(n){return String(n||'').replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,'_').slice(0,60)}
+function exportEach(){
+  var s=settings(),ids=chosen()||packTeachers().map(function(t){return t.id}),files=[],names={};
+  if(!ids.length){UX.toast('ยังไม่มีครูที่มีรายวิชา');return}
+  try{
+    ids.forEach(function(id,i){
+      var t=db.teachers.find(function(x){return x.id===id});if(!t)return;
+      var m=model({include:{cover:s.eachCover!==false,list:false,sheets:true}},[id]);
+      var base=String(i+1).padStart(2,'0')+'_'+safe(t.name),n=base,k=2;while(names[n])n=base+'_'+(k++);names[n]=1;
+      files.push({name:n+'.docx',data:C.buildDocx(m)})});
+    var zip=C.zipStore(files),blob=new Blob([zip],{type:'application/zip'});
+    var a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=('ชุดรายคน_ภาค'+s.semester+'_'+s.year).replace(/[\\/:*?"<>|]+/g,'-')+'.zip';
+    document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000);
+    model();UX.order.lastEach={files:files.map(function(f){return f.name}),bytes:zip.length};
+    UX.toast('ส่งออกแยกไฟล์รายคนแล้ว '+files.length+' ไฟล์ (Word ในไฟล์ .zip เดียว) — แจกให้ครูแต่ละคนได้')}
+  catch(e){UX.toast('ส่งออกไม่สำเร็จ: '+e.message)}}
 /* print: the same paper in a frame; which = all | portrait | sheets (Safari prints one orientation per job) */
 function printDoc(which){
   var m=model(),secs=m.sections.filter(function(x){return which==='sheets'?x.landscape:which==='portrait'?!x.landscape:true});
@@ -19219,15 +19342,18 @@ function panel(){
   p.appendChild(em);
   var inc=Object.assign({},C.ORDER_DEFAULTS.include,s.include||{}),b=group('ส่วนที่รวมในชุดคำสั่ง');
   b.appendChild(field('หน้าคำสั่ง','inc.cover',inc.cover,'checkbox'));
-  b.appendChild(field('บัญชีรายวิชาแนบท้าย ('+(S.counts?S.counts.teachers:0)+' คน)','inc.list',inc.list,'checkbox'));
-  b.appendChild(field('ตารางสอนรายครู (A4 แนวนอน)','inc.sheets',inc.sheets,'checkbox'));
+  b.appendChild(field('หน้าสรุปสำหรับผู้บริหาร — บัญชีแนบท้ายรวม ('+(S.counts?S.counts.teachers:0)+' คน)','inc.list',inc.list,'checkbox'));
+  b.appendChild(field('ชุดรายคน — รายวิชาและตารางสอนของแต่ละคน','inc.sheets',inc.sheets,'checkbox'));
   p.appendChild(b);
-  var c=group('บัญชีรายวิชา');
+  p.appendChild(packGroup(s));
+  p.appendChild(sigGroup(['cover','list','personal','reports']));
+  var c=group('หน้าสรุปสำหรับผู้บริหาร');
+  c.appendChild(field('ลงชื่อท้ายหน้าสรุป (หัวหน้าวิชาการ ผู้จัดทำ · ผอ. ผู้อนุมัติ)','listSign',s.listSign!==false,'checkbox'));
   c.appendChild(field('แสดงรหัสวิชา','showCode',s.showCode!==false,'checkbox'));
   c.appendChild(field('แสดงตำแหน่ง (พิมพ์ในตารางได้เลย)','showPosition',!!s.showPosition,'checkbox'));
   c.appendChild(field('ช่อง "ลงชื่อรับทราบ"','showAck',!!s.showAck,'checkbox'));
   p.appendChild(c);
-  var P=db.timetable.periods,d=group('ตารางสอนรายครู'),lunch=s.lunchAfter==null?Math.min(3,P-1):s.lunchAfter;
+  var P=db.timetable.periods,d=group('ตารางสอน (ในชุดรายคน)'),lunch=s.lunchAfter==null?Math.min(3,P-1):s.lunchAfter;
   d.appendChild(field('พักกลางวันหลังคาบที่','lunchAfter',String(lunch),'select',[['0','ไม่มีช่องพัก']].concat(Array.from({length:Math.max(0,P-1)},function(_,i){return [String(i+1),String(i+1)]}))));
   var times=(s.periodTimes&&s.periodTimes.length>=P)?s.periodTimes:C.defaultTimes(P,lunch),tw=el('div','ux-od-times');
   times.slice(0,P).forEach(function(t,i){tw.appendChild(field('คาบ '+(i+1),'time.'+i,t))});d.appendChild(tw);
@@ -19240,6 +19366,9 @@ function panel(){
   p.appendChild(e);
   p.addEventListener('change',function(ev){
     var t=ev.target,k=t.dataset&&t.dataset.key;if(!k)return;
+    if(k==='only'){var sel=[].slice.call(p.querySelectorAll('[data-key=only]')).filter(function(x){return x.checked}).map(function(x){return x.value});
+      S.only=sel.length===packTeachers().length?null:sel;render();return}
+    if(k.indexOf('sig.')===0||k.indexOf('use.')===0)return;                         /* sigGroup handles its own */
     if(k.indexOf('inc.')===0){var i2=Object.assign({},C.ORDER_DEFAULTS.include,settings().include||{});i2[k.slice(4)]=t.checked;save({include:i2});return}
     if(k.indexOf('time.')===0){var cur=settings(),PP=db.timetable.periods,ts=(cur.periodTimes&&cur.periodTimes.length>=PP)?cur.periodTimes.slice():C.defaultTimes(PP,cur.lunchAfter==null?Math.min(3,PP-1):cur.lunchAfter);
       ts[+k.slice(5)]=t.value;save({periodTimes:ts});return}
@@ -19249,6 +19378,82 @@ function panel(){
     else patch[k]=k==='school'?noPrefix(t.value):t.value;
     save(patch)});
   return p}
+/* ---- V24.47 ชุดรายคน: layout, which teachers, one file each ------------------------------------------------------------ */
+function packGroup(s){
+  var g=group('ชุดรายคน (แจกครูแต่ละคน)');
+  g.appendChild(field('รูปแบบ','packLayout',s.packLayout==='separate'?'separate':'combined','select',
+    [['combined','รวมในแผ่นเดียว — ตารางสอน + รายวิชา (A4 แนวนอน)'],['separate','แยก 2 หน้า — หน้ารายวิชา (แนวตั้ง) + หน้าตารางสอน (แนวนอน)']]));
+  var all=packTeachers(),pick=chosen(),dt=el('details','ux-od-pick');
+  dt.appendChild(el('summary',null,'ครูที่จะทำชุด: '+(pick?pick.length+' จาก '+all.length+' คน':'ทุกคน ('+all.length+')')));
+  var box=el('div','ux-od-picklist');
+  all.forEach(function(t){var l=el('label','ux-od-chk'),i=el('input');i.type='checkbox';i.value=t.id;i.dataset.key='only';i.checked=!pick||pick.indexOf(t.id)>-1;
+    l.appendChild(i);l.appendChild(el('span',null,t.name));box.appendChild(l)});
+  var row=el('div','ux-od-row'),ab=el('button','ux-btn','เลือกทุกคน');ab.type='button';ab.onclick=function(){S.only=null;render()};
+  var nb=el('button','ux-btn','ไม่เลือกเลย');nb.type='button';nb.onclick=function(){S.only=[];render()};row.appendChild(ab);row.appendChild(nb);
+  dt.appendChild(row);dt.appendChild(box);if(pick)dt.open=true;g.appendChild(dt);
+  g.appendChild(field('ไฟล์รายคนมีหน้าคำสั่งด้วย','eachCover',s.eachCover!==false,'checkbox'));
+  var eb=el('button','ux-btn ux-primary','ส่งออกแยกไฟล์รายคน (Word · .zip)');eb.type='button';eb.id='uxOrderEach';eb.dataset.k='order-each';eb.onclick=exportEach;g.appendChild(eb);
+  g.appendChild(el('p','ux-tt-hint','ได้ไฟล์ Word ของครูแต่ละคน ตั้งชื่อตามชื่อครู · พิมพ์ / PDF ใช้ครูที่เลือกไว้'));
+  return g}
+
+/* ---- V24.47 ลายเซ็นสแกน ----------------------------------------------------------------------------------------------
+   One picture per signer, used on the "ลงชื่อ" line wherever it is switched on (when it is not signed by hand). White is made
+   transparent and the picture trimmed, so it sits on the line like ink. Kept in the plan (db.docSettings.uxSign) — whoever has the
+   plan file has the signature: "ลบลายเซ็น" removes it. `places` = which on/off switches this panel shows. */
+var SIG_LABEL={cover:'หน้าคำสั่ง (ผอ.)',list:'หน้าสรุปสำหรับผู้บริหาร',personal:'ชุดรายคน / ตารางสอน ในชุดคำสั่ง',reports:'เอกสารอื่น (ตารางสอน ตารางเรียน ตารางห้อง รายงาน)'};
+function rerenderAll(){render();if(UX.docs&&UX.docs.render)UX.docs.render()}
+function sigGroup(places){
+  var g=group('ลายเซ็นสแกน (กรณีไม่เซ็นสด)'),sv=sigs(),s=settings();g.classList.add('ux-od-sig');
+  g.appendChild(el('p','ux-tt-hint','รูปลายเซ็นบนกระดาษขาว (PNG / JPG) — ระบบทำพื้นขาวให้โปร่งใสเอง · เก็บในไฟล์แผน: ใครได้ไฟล์แผนก็ได้ลายเซ็นไปด้วย'));
+  [['director','ผู้อำนวยการ',s.signerName],['academic','หัวหน้าฝ่ายวิชาการ',s.academicName]].forEach(function(r){
+    var who=r[0],v=sv[who],w=el('div','ux-od-sigrow');w.dataset.k='sig-'+who;
+    w.appendChild(el('b',null,r[1]+(r[2]&&!/^…/.test(r[2])?' — '+r[2]:'')));
+    if(v&&v.src){var im=el('img','ux-od-sigimg');im.src=v.src;im.alt='ลายเซ็น'+r[1];w.appendChild(im)}
+    else w.appendChild(el('span','ux-tt-hint','ยังไม่มี — ใช้ช่องเซ็นสด'));
+    var a=el('div','ux-od-row');
+    var pk=el('button','ux-btn'+(v?'':' ux-primary'),v?'เปลี่ยนรูป':'เลือกรูปลายเซ็น');pk.type='button';pk.dataset.k='sig-pick-'+who;pk.onclick=function(){pickSig(who)};a.appendChild(pk);
+    if(v){var rm=el('button','ux-btn','ลบลายเซ็น');rm.type='button';rm.dataset.k='sig-remove-'+who;rm.onclick=function(){setSig(who,null)};a.appendChild(rm);
+      var sz=field('กว้าง','sig.'+who,String(v.width),'select',[['2.5','2.5 ซม.'],['3','3 ซม.'],['3.5','3.5 ซม.'],['4','4 ซม.'],['4.5','4.5 ซม.'],['5','5 ซม.']]);
+      sz.querySelector('select').dataset.k='sig-size-'+who;a.appendChild(sz)}
+    w.appendChild(a);g.appendChild(w)});
+  var use=Object.assign({},C.ORDER_DEFAULTS.sigUse,s.sigUse||{}),ul=el('div','ux-od-siguse');
+  ul.appendChild(el('span',null,'ใช้ลายเซ็นสแกนใน:'));
+  places.forEach(function(pl){ul.appendChild(field(SIG_LABEL[pl],'use.'+pl,use[pl]!==false,'checkbox'))});
+  g.appendChild(ul);
+  g.addEventListener('change',function(ev){
+    var t=ev.target,k=t.dataset&&t.dataset.key;if(!k)return;ev.stopPropagation();
+    if(k.indexOf('use.')===0){var u=Object.assign({},C.ORDER_DEFAULTS.sigUse,settings().sigUse||{});u[k.slice(4)]=t.checked;
+      act(function(){ds().uxOrder=Object.assign(saved(),{sigUse:u})});rerenderAll();return}
+    if(k.indexOf('sig.')===0){var who=k.slice(4),cur=sigs()[who];if(!cur)return;var nw=+t.value,k2=nw/cur.width;
+      setSig(who,{src:cur.src,width:nw,height:Math.round(cur.height*k2*100)/100},true)}});
+  return g}
+function setSig(who,v,quiet){
+  act(function(){var o=sigs();if(v)o[who]=v;else delete o[who];ds().uxSign=o});
+  rerenderAll();if(!quiet)UX.toast(v?'ใส่ลายเซ็นแล้ว — ใช้ในทุกหน้าที่เปิดไว้ (ย้อนกลับได้)':'ลบลายเซ็นแล้ว — กลับไปใช้ช่องเซ็นสด')}
+function pickSig(who){
+  var i=document.createElement('input');i.type='file';i.accept='image/png,image/jpeg';
+  i.onchange=function(){var f=i.files&&i.files[0];if(!f)return;
+    if(f.size>8e6){UX.toast('รูปใหญ่เกินไป (เกิน 8 MB)');return}
+    var r=new FileReader();r.onload=function(){var src=String(r.result);if(!/^data:image\/(png|jpeg);base64,/.test(src)){UX.toast('ใช้ได้เฉพาะ PNG หรือ JPG');return}
+      var img=new Image();img.onload=function(){var v=inkOnly(img);if(!v){UX.toast('ไม่พบเส้นลายเซ็นในรูป — ลองรูปที่ชัดขึ้น');return}setSig(who,v)};
+      img.onerror=function(){UX.toast('เปิดรูปนี้ไม่ได้')};img.src=src};
+    r.readAsDataURL(f)};
+  i.click()}
+/* white → transparent (soft edge), trimmed to the ink, at most 900 px wide; 3.5 cm wide, at most 1.8 cm high */
+function inkOnly(img){
+  var nw=img.naturalWidth,nh=img.naturalHeight;if(!nw||!nh)return null;
+  var k=Math.min(1,900/nw),W=Math.max(1,Math.round(nw*k)),H=Math.max(1,Math.round(nh*k));
+  var c=document.createElement('canvas');c.width=W;c.height=H;var g=c.getContext('2d');g.drawImage(img,0,0,W,H);
+  var d=g.getImageData(0,0,W,H),px=d.data,x0=W,y0=H,x1=-1,y1=-1;
+  for(var y=0;y<H;y++)for(var x=0;x<W;x++){var o=(y*W+x)*4,l=(px[o]+px[o+1]+px[o+2])/3,a=px[o+3];
+    if(l>=225)a=0;else if(l>170)a=Math.round(a*(225-l)/55);px[o+3]=a;
+    if(a>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
+  if(x1<0)return null;
+  g.putImageData(d,0,0);var pad=4;x0=Math.max(0,x0-pad);y0=Math.max(0,y0-pad);x1=Math.min(W-1,x1+pad);y1=Math.min(H-1,y1+pad);
+  var cw=x1-x0+1,ch=y1-y0+1,o2=document.createElement('canvas');o2.width=cw;o2.height=ch;o2.getContext('2d').drawImage(c,x0,y0,cw,ch,0,0,cw,ch);
+  var w=3.5,h=w*ch/cw;if(h>1.8){h=1.8;w=h*cw/ch}
+  return {src:o2.toDataURL('image/png'),width:Math.round(w*100)/100,height:Math.round(h*100)/100}}
+
 /* ---- ตราครุฑ (V24.14) ------------------------------------------------------------------------------------------------
    ระเบียบงานสารบรรณ: คำสั่งใช้ตราครุฑสูง 3 ซม. กึ่งกลางด้านบน เหนือ "คำสั่งโรงเรียน…" · รูปถูกย่อให้สูงไม่เกิน 354 px (= 3 ซม. ที่ 300 dpi)
    เพื่อให้ไฟล์แผน/สำรองไม่บวม — ยังคมพอสำหรับพิมพ์ · เก็บในแผน (db.docSettings.uxOrder.emblem) ย้อนกลับได้ */
@@ -19300,7 +19505,7 @@ function workspace(){
   var sub=el('p','ux-od-sub');sub.id='uxOrderSub';t.appendChild(sub);head.appendChild(t);
   var acts=el('div','ux-od-acts');
   var pr=el('select','ux-od-printsel');pr.id='uxOrderPrintWhich';pr.setAttribute('aria-label','พิมพ์ส่วนไหน');
-  [['all','ทั้งชุด'],['portrait','คำสั่ง + บัญชี (แนวตั้ง)'],['sheets','ตารางสอนรายครู (แนวนอน)']].forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];pr.appendChild(op)});
+  [['all','ทั้งชุด'],['portrait','หน้าแนวตั้ง (คำสั่ง สรุป รายวิชา)'],['sheets','หน้าแนวนอน (ชุดรายคน / ตารางสอน)']].forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];pr.appendChild(op)});
   var pb=el('button','ux-btn','พิมพ์ / PDF');pb.type='button';pb.id='uxOrderPrintBtn';pb.onclick=function(){printDoc(pr.value)};
   var wb=el('button','ux-btn ux-primary','ส่งออก Word (.docx)');wb.type='button';wb.id='uxOrderWord';wb.onclick=exportWord;
   var cb=el('button','ux-btn','ปิด');cb.type='button';cb.onclick=function(){d.close()};
@@ -19338,14 +19543,14 @@ function card(){
   var sec=$('documents');if(!sec||$('uxOrderCard'))return;
   var c=el('section','ux-od-card no-print');c.id='uxOrderCard';c.setAttribute('aria-labelledby','uxOrderCardH');
   var tx=el('div','ux-od-ctext');tx.appendChild(el('h2',null,'ชุดคำสั่งมอบหมายให้ปฏิบัติการสอน (ทั้งโรงเรียน)')).id='uxOrderCardH';
-  tx.appendChild(el('p',null,'หน้าคำสั่ง + บัญชีรายวิชาแนบท้ายคำสั่ง + ตารางสอนรายครู จากข้อมูลแผนนี้ · แก้ข้อความบนกระดาษได้ · ส่งออก Word หรือพิมพ์ / PDF'));
+  tx.appendChild(el('p',null,'หน้าคำสั่ง + หน้าสรุปสำหรับผู้บริหาร + ชุดรายคน (รายวิชาและตารางสอนของแต่ละคน) · ลายเซ็นสแกนได้ · แก้ข้อความบนกระดาษได้ · ส่งออก Word (รวมเล่ม / แยกรายคน) หรือพิมพ์ / PDF'));
   c.appendChild(tx);
   var a=el('div','ux-od-cacts');
   var o=el('button','ux-btn ux-primary','เปิดและแก้ไข');o.type='button';o.id='uxOrderOpen';o.onclick=open;
   var w=el('button','ux-btn','ส่งออก Word');w.type='button';w.onclick=exportWord;
   a.appendChild(o);a.appendChild(w);c.appendChild(a);
   sec.insertBefore(c,sec.firstChild)}
-UX.order={pickEmblem:pickEmblem,clearEmblem:clearEmblem,emblemOnPaper:emblemOnPaper,open:open,model:model,settings:settings,exportWord:exportWord,print:printDoc,teacherList:teacherList,sheets:function(){return sheets(teacherList())},state:S};
+UX.order={exportEach:exportEach,sigGroup:sigGroup,pickSig:pickSig,setSig:setSig,inkOnly:inkOnly,pickEmblem:pickEmblem,clearEmblem:clearEmblem,emblemOnPaper:emblemOnPaper,open:open,model:model,settings:settings,exportWord:exportWord,print:printDoc,teacherList:teacherList,sheets:function(){return sheets(teacherList())},state:S};
 UX.onInit(card);
 UX.onSync(card);
 })(window.UX);
@@ -20082,7 +20287,7 @@ var $=UX.$;
 if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
 var C=window.ASPCore,KEY='ux_docs_view_v1',SEL='ux_docs_sel_v1';
 var DOCS=[
-  {k:'order',t:'ชุดคำสั่งมอบหมายให้ปฏิบัติการสอน',d:'คำสั่ง + บัญชีรายวิชาแนบท้าย + ตารางสอนรายครู'},
+  {k:'order',t:'ชุดคำสั่งมอบหมายให้ปฏิบัติการสอน',d:'คำสั่ง + สรุปสำหรับผู้บริหาร + ชุดรายคน'},
   {k:'teacher',t:'ตารางสอนรายครู',d:'A4 แนวนอน คนละ 1 แผ่น',sheet:true},
   {k:'grade',t:'ตารางเรียนรายชั้น',d:'A4 แนวนอน ชั้นละ 1 แผ่น',sheet:true},
   {k:'room',t:'ตารางการใช้ห้อง',d:'ห้องที่กำหนดไว้ในตารางสอน',sheet:true},
@@ -20361,7 +20566,9 @@ function panel(d,m){
     var ep=btn('ux-btn'+(es.emblem?'':' ux-primary'),es.emblem?'เปลี่ยนรูปตรา':'เลือกรูปตราครุฑ (PNG / JPG)',function(){UX.order.pickEmblem()});ep.id='uxDocsEmblem';ep.dataset.k='emblem';eb.appendChild(ep);
     if(es.emblem){var er=btn('ux-btn','เอาตราออก',function(){UX.order.clearEmblem()});er.dataset.k='emblem-remove';eb.appendChild(er)}
     eg.appendChild(eb);p.appendChild(eg);
-    p.appendChild(el('p','ux-tt-hint','ข้อความคำสั่ง ส่วนที่รวม เวลาคาบ และคอลัมน์ของบัญชีแนบท้าย แก้ได้ใน "เปิดและแก้ไขชุดคำสั่ง"'))}
+    var eo=btn('ux-btn','ส่งออกแยกไฟล์รายคน (Word · .zip)',function(){UX.order.exportEach()});eo.dataset.k='order-each';eg.appendChild(eo);
+    p.appendChild(UX.order.sigGroup(['cover','list','personal','reports']));                    /* V24.47 */
+    p.appendChild(el('p','ux-tt-hint','ข้อความคำสั่ง ส่วนที่รวม รูปแบบชุดรายคน (รวม / แยก) ครูที่เลือก เวลาคาบ แก้ได้ใน "เปิดและแก้ไขชุดคำสั่ง"'))}
   else{
     var s=shared(),sg=group('ข้อมูลโรงเรียนและผู้ลงนาม');
     sg.appendChild(el('p','ux-tt-hint','ใช้ร่วมกับชุดคำสั่ง — แก้ที่นี่ เปลี่ยนในทุกเอกสาร'));
@@ -20374,7 +20581,8 @@ function panel(d,m){
       sg.appendChild(field('พักกลางวันหลังคาบที่','s.lunchAfter',String(lunch),'select',[['0','ไม่มีช่องพัก']].concat(Array.from({length:Math.max(0,P-1)},function(_,i){return [String(i+1),String(i+1)]}))))}
     sg.appendChild(field('ฟอนต์','s.font',s.font||C.ORDER_DEFAULTS.font,'select',[['TH SarabunIT๙','TH SarabunIT๙'],['TH Sarabun New','TH Sarabun New']]));
     sg.appendChild(field('ใช้เลขไทย (๑ ๒ ๓)','s.thaiDigits',!!s.thaiDigits,'checkbox'));
-    p.appendChild(sg)}
+    p.appendChild(sg);
+    if(UX.order&&UX.order.sigGroup)p.appendChild(UX.order.sigGroup(['reports']))}                /* V24.47 ลายเซ็นสแกนในเอกสารนี้ */
   host.appendChild(more);p=host;
   p.addEventListener('change',function(ev){
     var t=ev.target,k=t.dataset&&t.dataset.key;if(!k)return;
@@ -22122,7 +22330,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="a5de8454604c";window.__UX_WEBAPP_LABEL="24.46";
+(function(){window.__UX_WEBAPP="f19abc9b15a4";window.__UX_WEBAPP_LABEL="24.47";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
