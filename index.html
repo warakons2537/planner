@@ -2855,6 +2855,10 @@ body.ux-docs-on #documents.active>:not(#uxDocs){display:none!important}
   .ux-docs-side{position:static;flex:none;max-height:none;order:-1;padding:12px 14px}
   .ux-docs-paper{max-height:75vh}
 }
+/* V24.50 คำสั่งเปลี่ยนครูผู้สอน: รายการที่เปลี่ยนครู */
+.ux-ho-list{display:flex;flex-direction:column;gap:2px;max-height:320px;overflow:auto;margin-top:6px}
+.ux-ho-item{display:flex;gap:8px;align-items:flex-start;font-size:var(--ux-fs-sm);line-height:1.45;padding:5px 2px;cursor:pointer}
+.ux-ho-item input{width:18px;height:18px;flex:none;margin-top:2px}
 
 /* >>> 64-ttsetup.css */
 /* 64-ttsetup.css — "เงื่อนไขการจัด" tab of the timetable page (V24.27) */
@@ -3364,6 +3368,28 @@ body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-a
 .ux-plan-advice .ux-plan-relaxes{margin-top:8px}
 .ux-plan-advice .ux-plan-relax{min-height:32px;padding:3px 10px;font-size:var(--ux-fs-sm);text-align:left}
 .ux-sv-m li.best b{color:var(--ux-brand-dark)}.ux-sv-best{color:var(--ux-saffron-ink);font-weight:700;font-size:var(--ux-fs-xs)}
+
+/* >>> 75-jointedit.css */
+/* 75-jointedit.css — แก้ไขกลุ่มเรียนรวม (V24.49) */
+.ux-je{width:min(820px,calc(100vw - 24px))}
+.ux-je-row{display:flex;gap:12px;flex-wrap:wrap}
+.ux-je-row>.ux-je-f{flex:1 1 220px}
+.ux-je-f{display:flex;flex-direction:column;gap:4px;font-size:var(--ux-fs-sm);color:var(--ux-ink-soft);margin-bottom:8px}
+.ux-je-f input,.ux-je-f select,.ux-je-m select,.ux-je-ci input[type=number]{font:inherit;font-size:var(--ux-fs-md);min-height:40px;color:var(--ux-ink)}
+.ux-je-g{border:1px solid var(--ux-line);border-radius:10px;padding:10px 12px;margin:10px 0}
+.ux-je-g legend{font-weight:700;padding:0 4px}
+.ux-je-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.ux-je-m{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:6px}
+.ux-je-m select{width:100%;min-width:0}
+.ux-je-co{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px 12px;margin-top:6px}
+.ux-je-ci{display:flex;align-items:center;gap:8px;min-height:40px}
+.ux-je-ci label{display:flex;align-items:center;gap:6px;flex:1;cursor:pointer}
+.ux-je-ci input[type=checkbox]{width:20px;height:20px}
+.ux-je-ci input[type=number]{width:86px}
+.ux-je-msg{font-size:var(--ux-fs-sm);color:var(--ux-ink-soft);min-height:1.4em}
+.ux-je-msg.bad{color:var(--ux-warn)}
+.ux-je-msg ul{margin:4px 0 0;padding-left:20px}
+.ux-je-open{margin:0 4px 4px 0}
 
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0a5a9c"></head>
 <body class=""><noscript id="ux-noscript"><style>body>*:not(noscript){display:none!important}</style><div style="max-width:560px;margin:40px auto;padding:24px;font:17px/1.6 -apple-system,Sukhumvit Set,Tahoma,sans-serif;color:#152a3c"><h1 style="font-size:22px;margin:0 0 12px">WL Scheduler ต้องเปิดในเบราว์เซอร์</h1><p>ไฟล์นี้เป็นโปรแกรม ตัวดูไฟล์ (แอปไฟล์ของ iPhone/iPad, LINE, Messenger, อีเมล) แสดงได้เพียงภาพนิ่งของหน้าจอ จึงกดใช้งานไม่ได้ และไม่บันทึกอะไร</p><p style="margin:16px 0 6px"><b>วิธีเปิด</b></p><ul style="margin:0;padding-left:22px"><li><b>Mac / คอมพิวเตอร์:</b> ดับเบิลคลิกไฟล์ (Safari หรือ Chrome)</li><li><b>iPad / iPhone:</b> ใช้ WL Scheduler แบบเว็บแอปที่ติดตั้งบนหน้าจอโฮม (ดู WEBAPP.md) แล้วนำเข้าไฟล์สำรอง .json หรือเปิดไฟล์ในแอปที่มีเบราว์เซอร์ในตัว</li></ul></div></noscript><header><div><div class="eyebrow">TEACHING PLANNER V12.4 · DOCUMENT WORKSPACE</div><h1>ระบบวางแผนรายวิชาและอัตรากำลังครู</h1><p>จัดสรรวิชา · จัดการเรียนรวม · ตรวจสอบภาระงาน · เปรียบเทียบแผน</p></div><div class="header-actions"><button class="btn dark" disabled="" id="undoBtn" title="ย้อนกลับการแก้ไขล่าสุด (Ctrl+Z เมื่อไม่ได้พิมพ์ข้อความ)">↶ ย้อนกลับ</button><button class="btn dark" disabled="" id="redoBtn" title="ทำซ้ำการแก้ไขที่ย้อนกลับไป (Ctrl+Y)">↷ ทำซ้ำ</button><button class="btn dark" id="v11HelpQuick" title="เปิดคำแนะนำการใช้งานสำหรับผู้ใช้ใหม่" type="button">? วิธีใช้</button><span class="undo-info" id="undoInfo">ย้อนกลับได้ 100 ขั้นในครั้งที่เปิดใช้งาน</span><button class="btn dark" id="exportHtml" title="บันทึกข้อมูลลงในโปรแกรม HTML เพื่อเปิดต่อได้แม้เปลี่ยนเครื่อง">💾 บันทึกแผนพร้อมโปรแกรม .html</button><button class="btn dark" id="connectFile" title="เลือกไฟล์ JSON ที่ให้โปรแกรมเขียนทุกครั้งเมื่อแก้ไข (รองรับใน Chrome / Edge บางสภาพแวดล้อม)">เชื่อมไฟล์บันทึกอัตโนมัติ</button><button class="btn dark" id="exportJson">สำรองข้อมูล .json</button><button class="btn dark" id="exportCsv">ส่งออก Excel (.csv)</button><button class="btn dark" id="importBtn">นำเข้าข้อมูล</button><input accept=".json,application/json" hidden="" id="importFile" type="file"><details class="v11-save-details no-print" id="v11SaveDetails"><summary>บันทึก / นำเข้า ▾</summary><div class="v11-save-buttons" id="v11SaveButtons"></div></details></div></header>
@@ -11094,6 +11120,7 @@ var ASPCore = (() => {
     FOCUS_LABEL: () => FOCUS_LABEL,
     FREE_SPLIT: () => FREE_SPLIT,
     HALF_DAY_MISS: () => HALF_DAY_MISS,
+    HANDOVER_DEFAULTS: () => HANDOVER_DEFAULTS,
     HARD_RULES: () => HARD_RULES,
     HOMEROOM_HARD: () => HOMEROOM_HARD,
     HOMEROOM_SHORT: () => HOMEROOM_SHORT,
@@ -11145,6 +11172,7 @@ var ASPCore = (() => {
     buildChecklist: () => buildChecklist,
     buildCourseDoc: () => buildCourseDoc,
     buildDocx: () => buildDocx,
+    buildHandoverDoc: () => buildHandoverDoc,
     buildMatrix: () => buildMatrix,
     buildOrderDoc: () => buildOrderDoc,
     buildReportDoc: () => buildReportDoc,
@@ -11154,6 +11182,7 @@ var ASPCore = (() => {
     canUseApp: () => canUseApp,
     cellKey: () => cellKey,
     cellsOf: () => cellsOf,
+    checkJointGroup: () => checkJointGroup,
     checkTimetable: () => checkTimetable,
     classSubject: () => classSubject,
     cleanHours: () => cleanHours,
@@ -11163,6 +11192,7 @@ var ASPCore = (() => {
     compact: () => compact,
     courseSortOf: () => courseSortOf,
     coverConfig: () => coverConfig,
+    coverSign: () => coverSign,
     crc32: () => crc32,
     curriculumRows: () => curriculumRows,
     dayCapacity: () => dayCapacity,
@@ -11251,6 +11281,7 @@ var ASPCore = (() => {
     readBackupText: () => readBackupText,
     readRecoveryHash: () => readRecoveryHash,
     relaxOptions: () => relaxOptions,
+    renameJointKeys: () => renameJointKeys,
     renderHtml: () => renderHtml,
     repeatAdded: () => repeatAdded,
     repeatConfig: () => repeatConfig,
@@ -11297,6 +11328,7 @@ var ASPCore = (() => {
     summarize: () => summarize,
     summaryText: () => summaryText,
     teacherBalance: () => teacherBalance,
+    teacherChanges: () => teacherChanges,
     teacherClassCost: () => teacherClassCost,
     teacherDayPolicy: () => teacherDayPolicy,
     teacherWeek: () => teacherWeek,
@@ -11333,8 +11365,8 @@ var ASPCore = (() => {
   function cellsOf(duration, slot) {
     return duration === 1 ? [slot, slot + 1] : [slot];
   }
-  function periodIndex(cell4) {
-    return Math.floor(cell4 / 2);
+  function periodIndex(cell5) {
+    return Math.floor(cell5 / 2);
   }
   function halfSlotCount(days, periods) {
     return days * periods * 2;
@@ -11344,8 +11376,8 @@ var ASPCore = (() => {
     if (!Number.isInteger(slot) || slot < 0 || slot >= total) return "อยู่นอกตาราง";
     const start = slotPosition(slot, periods);
     if (duration === 1 && start.half !== 0) return "คาบ 1 ชั่วโมงต้องเริ่มต้นคาบ";
-    for (const cell4 of cellsOf(duration, slot)) {
-      if (cell4 >= total || slotPosition(cell4, periods).day !== start.day) return "ข้ามวัน";
+    for (const cell5 of cellsOf(duration, slot)) {
+      if (cell5 >= total || slotPosition(cell5, periods).day !== start.day) return "ข้ามวัน";
     }
     return null;
   }
@@ -11362,7 +11394,7 @@ var ASPCore = (() => {
     if (!keys.length && !grades.length) return false;
     const names = [e.origin, ...e.subjects].map((x) => String(x).toLowerCase());
     const exact = [e.origin, ...e.subjects].map(plainSubject);
-    if (keys.length && !keys.some((k) => k.startsWith("=") ? exact.includes(k.slice(1).trim()) : names.some((n3) => n3.includes(k)))) return false;
+    if (keys.length && !keys.some((k) => k.startsWith("=") ? exact.includes(k.slice(1).trim()) : names.some((n4) => n4.includes(k)))) return false;
     if (grades.length && !e.grades.some((g) => grades.includes(g))) return false;
     return true;
   }
@@ -11398,9 +11430,9 @@ var ASPCore = (() => {
     return rules.every((r) => !slotRuleBroken(e, slot, periods, r));
   }
   function softSlotBreaks(e, slot, periods, rules) {
-    let n3 = 0;
-    for (const r of rules) if (slotRuleBroken(e, slot, periods, r)) n3++;
-    return n3;
+    let n4 = 0;
+    for (const r of rules) if (slotRuleBroken(e, slot, periods, r)) n4++;
+    return n4;
   }
   var HARD_RULES = [
     "notPlaced",
@@ -11433,7 +11465,7 @@ var ASPCore = (() => {
     const names = [event.origin, ...event.subjects].map((x) => String(x).toLowerCase());
     for (const rule of dayRules) {
       const key2 = String(rule.keyword ?? "").trim().toLowerCase();
-      if (key2 && names.some((n3) => n3.includes(key2))) allowed = new Set([...allowed].filter((d) => d === rule.day));
+      if (key2 && names.some((n4) => n4.includes(key2))) allowed = new Set([...allowed].filter((d) => d === rule.day));
     }
     return allowed;
   }
@@ -11456,7 +11488,7 @@ var ASPCore = (() => {
     const teachers = new Map(input.teachers.map((t) => [t.id, t]));
     const teacherName = (id) => teachers.get(id)?.name ?? id;
     const dayName2 = (d) => setup.days[d] ?? `วัน ${d + 1}`;
-    const where = (cell4) => `${dayName2(slotPosition(cell4, periods).day)} คาบ ${slotPosition(cell4, periods).period + 1}`;
+    const where = (cell5) => `${dayName2(slotPosition(cell5, periods).day)} คาบ ${slotPosition(cell5, periods).period + 1}`;
     const blocks = new Set(setup.teacherBlocks);
     const out = [];
     const add = (v) => out.push(v);
@@ -11489,27 +11521,27 @@ var ASPCore = (() => {
         add({ rule: "slotRule", message: `${e.subjects.join(" / ")} ลง${where(slot)} ซึ่งกฎคาบเรียน “${slotRuleLabel(r)}” ${r.mode === "avoid" ? "ห้ามลง" : "ไม่อนุญาต"}`, taskIds: [id], day, slot });
         break;
       }
-      for (const cell4 of cellsOf(e.duration, slot)) {
-        (occupancy.get(cell4) ?? occupancy.set(cell4, []).get(cell4)).push(id);
+      for (const cell5 of cellsOf(e.duration, slot)) {
+        (occupancy.get(cell5) ?? occupancy.set(cell5, []).get(cell5)).push(id);
         for (const t of e.teachers) {
-          if (blocks.has(`${t}|${periodIndex(cell4)}`)) {
-            add({ rule: "teacherBlock", message: `${teacherName(t)} ไม่ว่าง ${where(cell4)} แต่มี ${e.subjects[0]}`, taskIds: [id], teacher: t, day, slot: cell4 });
+          if (blocks.has(`${t}|${periodIndex(cell5)}`)) {
+            add({ rule: "teacherBlock", message: `${teacherName(t)} ไม่ว่าง ${where(cell5)} แต่มี ${e.subjects[0]}`, taskIds: [id], teacher: t, day, slot: cell5 });
           }
         }
       }
     }
-    for (const [cell4, ids] of occupancy) {
+    for (const [cell5, ids] of occupancy) {
       for (let i = 0; i < ids.length; i++) {
         for (let j = i + 1; j < ids.length; j++) {
           const a = events.get(ids[i]), b = events.get(ids[j]), pair = [ids[i], ids[j]];
-          const day = slotPosition(cell4, periods).day;
+          const day = slotPosition(cell5, periods).day;
           const grades = a.grades.filter((g) => b.grades.includes(g));
-          if (grades.length) add({ rule: "classDouble", message: `${grades.join(", ")} ซ้อนคาบ ${where(cell4)}: ${a.subjects[0]} / ${b.subjects[0]}`, taskIds: pair, day, slot: cell4 });
+          if (grades.length) add({ rule: "classDouble", message: `${grades.join(", ")} ซ้อนคาบ ${where(cell5)}: ${a.subjects[0]} / ${b.subjects[0]}`, taskIds: pair, day, slot: cell5 });
           for (const t of a.teachers.filter((x) => b.teachers.includes(x))) {
-            add({ rule: "teacherDouble", message: `${teacherName(t)} ซ้อนคาบ ${where(cell4)}`, taskIds: pair, teacher: t, day, slot: cell4 });
+            add({ rule: "teacherDouble", message: `${teacherName(t)} ซ้อนคาบ ${where(cell5)}`, taskIds: pair, teacher: t, day, slot: cell5 });
           }
           const ra = roomOf(a, placements[ids[i]], setup.taskRooms), rb = roomOf(b, placements[ids[j]], setup.taskRooms);
-          if (ra && ra === rb) add({ rule: "roomDouble", message: `ห้อง ${ra} ซ้อนคาบ ${where(cell4)}`, taskIds: pair, day, slot: cell4 });
+          if (ra && ra === rb) add({ rule: "roomDouble", message: `ห้อง ${ra} ซ้อนคาบ ${where(cell5)}`, taskIds: pair, day, slot: cell5 });
         }
       }
     }
@@ -11518,8 +11550,8 @@ var ASPCore = (() => {
       const used = /* @__PURE__ */ new Map();
       for (const [id, slot] of placed) {
         const e = events.get(id);
-        for (const cell4 of cellsOf(e.duration, slot)) {
-          const pos = slotPosition(cell4, periods);
+        for (const cell5 of cellsOf(e.duration, slot)) {
+          const pos = slotPosition(cell5, periods);
           for (const t of e.teachers) {
             const key2 = `${t}|${pos.day}`;
             if (!used.has(key2)) used.set(key2, { teacher: t, day: pos.day, periods: /* @__PURE__ */ new Set() });
@@ -11547,8 +11579,8 @@ var ASPCore = (() => {
       counts,
       placed: placed.size,
       total: events.size,
-      hardCount: HARD_RULES.reduce((n3, r) => n3 + counts[r], 0),
-      policyCount: POLICY_RULES.reduce((n3, r) => n3 + counts[r], 0)
+      hardCount: HARD_RULES.reduce((n4, r) => n4 + counts[r], 0),
+      policyCount: POLICY_RULES.reduce((n4, r) => n4 + counts[r], 0)
     };
   }
 
@@ -11605,7 +11637,7 @@ var ASPCore = (() => {
       activeTeachers: data.teachers.filter((t) => t.status === "active" && !t.team).length,
       jointGroups: data.jointGroups.length,
       placements: Object.keys(data.timetable?.placements ?? {}).length,
-      hours: data.rows.reduce((n3, r) => n3 + (Number(r.hours) || 0), 0)
+      hours: data.rows.reduce((n4, r) => n4 + (Number(r.hours) || 0), 0)
     };
   }
 
@@ -11704,13 +11736,13 @@ var ASPCore = (() => {
   var cleanSubject = (s) => String(s ?? "").replace(/^(?:ป|ม)\.\d+\s*/, "").trim();
   function isHeavyForPolicy(e, heavy) {
     const names = e.subjects.map(cleanSubject);
-    return heavy.some((k) => names.some((n3) => n3.includes(k) || String(k).includes(n3)));
+    return heavy.some((k) => names.some((n4) => n4.includes(k) || String(k).includes(n4)));
   }
   function isHeavyForMobility(e, heavy) {
     const names = e.subjects.map(cleanSubject);
     return heavy.some((raw) => {
       const k = String(raw ?? "").trim();
-      return !!k && names.some((n3) => n3.includes(k) || k.includes(n3));
+      return !!k && names.some((n4) => n4.includes(k) || k.includes(n4));
     });
   }
   function buildingDistance(cfg, a, b) {
@@ -11725,7 +11757,7 @@ var ASPCore = (() => {
     if (override) return override;
     if (cfg.subjectPlaces?.length) {
       const names = e.subjects.map(cleanSubject);
-      for (const sp of cfg.subjectPlaces) if (sp.keys.some((k) => names.some((n3) => n3.includes(k)))) return sp.place;
+      for (const sp of cfg.subjectPlaces) if (sp.keys.some((k) => names.some((n4) => n4.includes(k)))) return sp.place;
     }
     const lead = e.teachers[0] ?? "", mode = cfg.teacherMoveMode[lead] || "teacher_to_class";
     const tb = cfg.teacherBuildings[lead] || "", gb = e.grades.map((g) => cfg.gradeBuildings[g] || "").find(Boolean) || "";
@@ -11884,7 +11916,7 @@ var ASPCore = (() => {
   function routeCost(list2, kind, home, cfg, buildingOf, who, periods) {
     const r = cfg.route, w2 = cfg.weights, s = [...list2].sort((a, b) => a.slot - b.slot);
     const base = kind === "student" ? w2.studentMove : w2.teacherMove, scale = base / (kind === "student" ? MOBILITY_WEIGHTS.studentMove : MOBILITY_WEIGHTS.teacherMove);
-    const periodOf = (cell4) => slotPosition(cell4, periods).period;
+    const periodOf = (cell5) => slotPosition(cell5, periods).period;
     let cost = 0, moves = 0, jumps = 0;
     const segs = [];
     s.forEach((p, i) => {
@@ -11994,9 +12026,9 @@ var ASPCore = (() => {
     return pol.minDoubleFreeDays > 0 ? Math.max(0, Math.min(pol.minDoubleFreeDays, target) - daysWith) * DOUBLE_FREE_SHORT * (pol.enforceDoubleFree ? 4 : 1) : 0;
   }
   function doubleFreeTarget(blocked, teacher, days, periods, pol) {
-    let n3 = 0;
-    for (let d = 0; d < days; d++) if (hasDoubleFree([], blocked.get(`${teacher}|${d}`) ?? [], periods, pol.breakAfter)) n3++;
-    return Math.min(pol.minDoubleFreeDays, n3);
+    let n4 = 0;
+    for (let d = 0; d < days; d++) if (hasDoubleFree([], blocked.get(`${teacher}|${d}`) ?? [], periods, pol.breakAfter)) n4++;
+    return Math.min(pol.minDoubleFreeDays, n4);
   }
   function blockedByDay(blocks, periods) {
     const out = /* @__PURE__ */ new Map();
@@ -12118,7 +12150,7 @@ var ASPCore = (() => {
         return p && Number.isInteger(p.slot) ? [{ e, slot: p.slot }] : [];
       });
       const days = [...homeroomDays(placed, grade, periods, ids)].sort((a, b) => a - b);
-      const possible = mine.reduce((n3, e) => n3 + (e.duration === 1 ? 1 : 0.5), 0);
+      const possible = mine.reduce((n4, e) => n4 + (e.duration === 1 ? 1 : 0.5), 0);
       const min = homeroomMin(cfg, grade);
       rows.push({ grade, teachers: [...ids], days, met: days.length, min, ok: days.length >= min, possible });
     }
@@ -12175,7 +12207,7 @@ var ASPCore = (() => {
     let cost = 0;
     for (const g of e.grades) {
       const sub = classSubject(e, g);
-      let weekly = 0, n3 = 0, dbl = !!doubles?.has(`${e.kind}:${e.origin}`);
+      let weekly = 0, n4 = 0, dbl = !!doubles?.has(`${e.kind}:${e.origin}`);
       const tps = new Map(e.teachers.map((t) => [t, []])), sp = [];
       for (const o of events) {
         if (!o.grades.includes(g)) continue;
@@ -12184,14 +12216,14 @@ var ASPCore = (() => {
         const p = o.id === e.id ? void 0 : placements[o.id];
         if (!p || !Number.isInteger(p.slot) || slotPosition(p.slot, periods).day !== d) continue;
         if (same) {
-          n3 += lessonPeriods(o);
+          n4 += lessonPeriods(o);
           if (doubles?.has(`${o.kind}:${o.origin}`)) dbl = true;
           sp.push(...cellsOf(o.duration, p.slot).map((c) => slotPosition(c, periods).period));
         }
         for (const t of o.teachers) tps.get(t)?.push(...cellsOf(o.duration, p.slot).map((c) => slotPosition(c, periods).period));
       }
       const lim = sameAllowed(weekly, days, cfg, dbl, `${g}|${sub}`);
-      cost += sameCost(n3 + lessonPeriods(e), lim, cfg, runOf([...sp, ...mine], cfg.breakAfter), dbl) - sameCost(n3, lim, cfg, runOf(sp, cfg.breakAfter), dbl);
+      cost += sameCost(n4 + lessonPeriods(e), lim, cfg, runOf([...sp, ...mine], cfg.breakAfter), dbl) - sameCost(n4, lim, cfg, runOf(sp, cfg.breakAfter), dbl);
       for (const [t, ps] of tps) cost += teacherClassCost([...ps, ...mine], g, cfg, t) - teacherClassCost(ps, g, cfg, t);
     }
     return cost;
@@ -12359,13 +12391,13 @@ var ASPCore = (() => {
     const dfTarget = /* @__PURE__ */ new Map();
     const target = (t) => dfTarget.get(t) ?? dfTarget.set(t, doubleFreeTarget(fixedDay, t, days, periods, pol)).get(t);
     function dfDays(t) {
-      let n3 = 0;
+      let n4 = 0;
       for (let d = 0; d < days; d++) {
         const used = [];
         for (const id of index.get(`T|${t}|${d}`) ?? []) for (const c of cellsOf(events.get(id).duration, slot.get(id))) used.push(slotPosition(c, periods).period);
-        if (hasDoubleFree(used, blockedDay.get(`${t}|${d}`) ?? [], periods, pol.breakAfter)) n3++;
+        if (hasDoubleFree(used, blockedDay.get(`${t}|${d}`) ?? [], periods, pol.breakAfter)) n4++;
       }
-      return n3;
+      return n4;
     }
     const tdPolicy = (t, d) => teacherDayPolicy(placedIn(`T|${t}|${d}`), periods, pol, `${t}|${d}`);
     function unitCost(key2) {
@@ -12379,15 +12411,15 @@ var ASPCore = (() => {
           return subjectDayCost(placedIn(`S|${a}|${b}|${c}`), periods, pol);
         case "RS": {
           const ids = [...index.get(`Q|${a}|${b}|${c}`) ?? []];
-          let n3 = 0, dbl = false;
+          let n4 = 0, dbl = false;
           const ps = [];
           for (const x of ids) {
             const o = events.get(x);
-            n3 += lessonPeriods(o);
+            n4 += lessonPeriods(o);
             if (pol.doubles.has(`${o.kind}:${o.origin}`)) dbl = true;
             for (const cc of cellsOf(o.duration, slot.get(x))) ps.push(slotPosition(cc, periods).period);
           }
-          return sameCost(n3, sameAllowed(weekly.get(`${a}|${b}`) ?? 0, days, rep, dbl, `${a}|${b}`), rep, runOf(ps, rep.breakAfter), dbl);
+          return sameCost(n4, sameAllowed(weekly.get(`${a}|${b}`) ?? 0, days, rep, dbl, `${a}|${b}`), rep, runOf(ps, rep.breakAfter), dbl);
         }
         case "RT": {
           const ps = [];
@@ -12444,10 +12476,10 @@ var ASPCore = (() => {
           const [, a, b, d] = key2.split("|"), k2 = `${a}|${b}`;
           const ps = [];
           for (const x of index.get(`TG|${a}|${b}|${d}`) ?? []) for (const cc of cellsOf(events.get(x).duration, slot.get(x))) ps.push(slotPosition(cc, periods).period);
-          let n3 = 0;
-          if (rep.runHard && rep.run > 0 && !rep.runFree.has(k2) && runOf(ps, rep.breakAfter) > rep.run) n3++;
-          if (rep.dayHard && rep.day > 0 && !rep.dayFree.has(k2) && new Set(ps).size > rep.day) n3++;
-          return c + n3 * TIER.repeat;
+          let n4 = 0;
+          if (rep.runHard && rep.run > 0 && !rep.runFree.has(k2) && runOf(ps, rep.breakAfter) > rep.run) n4++;
+          if (rep.dayHard && rep.day > 0 && !rep.dayFree.has(k2) && new Set(ps).size > rep.day) n4++;
+          return c + n4 * TIER.repeat;
         }
         case "HR": {
           if (!hr || !tiered) return c;
@@ -12471,14 +12503,14 @@ var ASPCore = (() => {
     function hrMet(g) {
       const ids = hr?.teachers.get(g);
       if (!ids) return 0;
-      let n3 = 0;
+      let n4 = 0;
       for (let d = 0; d < days; d++) {
         for (const id of index.get(`G|${g}|${d}`) ?? []) if (homeroomMeets(events.get(id), slot.get(id), g, periods, ids)) {
-          n3++;
+          n4++;
           break;
         }
       }
-      return n3;
+      return n4;
     }
     function coverAt(c, shortIds) {
       let cost = 0;
@@ -12630,19 +12662,19 @@ var ASPCore = (() => {
     function attempt(ids, targets, temperature, dry = false) {
       const from = ids.map((id) => slot.get(id));
       const keys = /* @__PURE__ */ new Set();
-      ids.forEach((id, n3) => {
-        unitsOf(id, from[n3], keys);
-        unitsOf(id, targets[n3], keys);
+      ids.forEach((id, n4) => {
+        unitsOf(id, from[n4], keys);
+        unitsOf(id, targets[n4], keys);
       });
       const before = sum(keys);
-      ids.forEach((id, n3) => touch(id, from[n3], -1));
+      ids.forEach((id, n4) => touch(id, from[n4], -1));
       const placed = [];
       let ok = true, delta = NaN;
-      for (let n3 = 0; n3 < ids.length && ok; n3++) {
-        if (legal(events.get(ids[n3]), targets[n3])) {
-          slot.set(ids[n3], targets[n3]);
-          touch(ids[n3], targets[n3], 1);
-          placed.push(n3);
+      for (let n4 = 0; n4 < ids.length && ok; n4++) {
+        if (legal(events.get(ids[n4]), targets[n4])) {
+          slot.set(ids[n4], targets[n4]);
+          touch(ids[n4], targets[n4], 1);
+          placed.push(n4);
         } else ok = false;
       }
       if (ok) {
@@ -12652,10 +12684,10 @@ var ASPCore = (() => {
           return true;
         }
       }
-      for (const n3 of placed) touch(ids[n3], targets[n3], -1);
-      ids.forEach((id, n3) => {
-        slot.set(id, from[n3]);
-        touch(id, from[n3], 1);
+      for (const n4 of placed) touch(ids[n4], targets[n4], -1);
+      ids.forEach((id, n4) => {
+        slot.set(id, from[n4]);
+        touch(id, from[n4], 1);
       });
       return dry ? delta : false;
     }
@@ -12714,7 +12746,7 @@ var ASPCore = (() => {
       if (moving.length > 2 || moving.some((y) => original[y]?.locked)) return true;
       let bestT = null, bestD = Infinity;
       for (let k = 0; k < 8; k++) {
-        const targets = moving.map((y, n3) => k === 0 && n3 === 0 && events.get(y).duration === ex.duration ? from : pick(candidates(events.get(y))));
+        const targets = moving.map((y, n4) => k === 0 && n4 === 0 && events.get(y).duration === ex.duration ? from : pick(candidates(events.get(y))));
         const dl = attempt([x, ...moving], [target2, ...targets], 0, true);
         if (Number.isFinite(dl) && dl < bestD) {
           bestD = dl;
@@ -12826,8 +12858,8 @@ var ASPCore = (() => {
           setState(bestSlots);
           current = bestRank;
           kicked++;
-          const n3 = 3 + Math.floor(random() * 6);
-          for (let k = 0; k < n3; k++) {
+          const n4 = 3 + Math.floor(random() * 6);
+          for (let k = 0; k < n4; k++) {
             const id2 = pick(movable);
             chainMove(id2, pick(candidates(events.get(id2))), Infinity);
           }
@@ -12967,18 +12999,18 @@ var ASPCore = (() => {
   }
   function findGrades(text, grades) {
     const t = compact(text), out = [];
-    const P3 = grades.filter((g) => /^ป\./.test(g)), M = grades.filter((g) => /^ม\./.test(g));
-    const num4 = (g) => +g.replace(/\D/g, "");
+    const P4 = grades.filter((g) => /^ป\./.test(g)), M = grades.filter((g) => /^ม\./.test(g));
+    const num5 = (g) => +g.replace(/\D/g, "");
     const range = (a, b) => {
       const ia = grades.indexOf(a), ib = grades.indexOf(b);
       return ia < 0 || ib < 0 ? void 0 : grades.slice(Math.min(ia, ib), Math.max(ia, ib) + 1);
     };
     const rules = [
       { re: /ทุกระดับชั้น|ทุกชั้น|ทุกระดับ|ทั้งโรงเรียน/y, grades: () => null },
-      { re: /ประถมศึกษาตอนต้น|ประถมต้น|ป\.?ต้น/y, grades: () => P3.filter((g) => num4(g) <= 3) },
-      { re: /ประถมศึกษาตอนปลาย|ประถมปลาย|ป\.?ปลาย/y, grades: () => P3.filter((g) => num4(g) >= 4) },
-      { re: /มัธยมศึกษาตอนต้น|มัธยมต้น|ม\.?ต้น/y, grades: () => M.filter((g) => num4(g) <= 3) },
-      { re: /ประถมศึกษา|ประถม/y, grades: () => P3.slice() },
+      { re: /ประถมศึกษาตอนต้น|ประถมต้น|ป\.?ต้น/y, grades: () => P4.filter((g) => num5(g) <= 3) },
+      { re: /ประถมศึกษาตอนปลาย|ประถมปลาย|ป\.?ปลาย/y, grades: () => P4.filter((g) => num5(g) >= 4) },
+      { re: /มัธยมศึกษาตอนต้น|มัธยมต้น|ม\.?ต้น/y, grades: () => M.filter((g) => num5(g) <= 3) },
+      { re: /ประถมศึกษา|ประถม/y, grades: () => P4.slice() },
       { re: /มัธยมศึกษา|มัธยม/y, grades: () => M.slice() },
       // ป.4-6, ป.4–ม.3, ป4ถึงป6
       { re: /(ป|ม|อ)\.?([1-6])(?:[-–]|ถึง|จนถึง)(?:(ป|ม|อ)\.?)?([1-6])(?![0-9])/y, grades: (m) => range(`${m[1]}.${m[2]}`, `${m[3] ?? m[1]}.${m[4]}`) },
@@ -13099,7 +13131,7 @@ var ASPCore = (() => {
     }
     return out.sort((a, b) => b.score - a.score || a.loadAfter - b.loadAfter || a.name.localeCompare(b.name, "th"));
   }
-  var fmt = (n3) => (Math.round(n3 * 10) / 10).toString();
+  var fmt = (n4) => (Math.round(n4 * 10) / 10).toString();
   function assignmentProblems(input) {
     const out = [];
     const byId = new Map(input.teachers.map((t) => [t.id, t]));
@@ -13116,7 +13148,7 @@ var ASPCore = (() => {
     }
     for (const g of input.grades) {
       const rows = input.rows.filter((r) => r.grade === g);
-      const sum = rows.reduce((n3, r) => n3 + (Number(r.hours) || 0), 0), target = Number(input.gradeTargets[g]);
+      const sum = rows.reduce((n4, r) => n4 + (Number(r.hours) || 0), 0), target = Number(input.gradeTargets[g]);
       if (Number.isFinite(target) && Math.abs(sum - target) > 1e-9)
         out.push({ kind: "gradeHours", message: `${g} มี ${fmt(sum)} ชม. เป้าหมาย ${fmt(target)} ชม.`, rowIds: rows.map((r) => r.id), grade: g });
     }
@@ -13234,20 +13266,20 @@ var ASPCore = (() => {
       return false;
     }
     function hrMet(g, ids) {
-      let n3 = 0;
-      for (let d = 0; d < days; d++) if (hrMetOn(g, ids, d)) n3++;
-      return n3;
+      let n4 = 0;
+      for (let d = 0; d < days; d++) if (hrMetOn(g, ids, d)) n4++;
+      return n4;
     }
     const blockedDay = blockedByDay(setup.teacherBlocks, periods), fixedDay = fixedByDay(setup.teacherBlocks, input.events, input.placements, periods);
     function dfDays(t, extra) {
-      let n3 = 0;
+      let n4 = 0;
       for (let d = 0; d < days; d++) {
         const used = [];
         for (const x of byDay.get(`T|${t}|${d}`) ?? []) for (const c of cellsOf(events.get(x).duration, slot.get(x))) used.push(slotPosition(c, periods).period);
         if (extra && slotPosition(extra.s, periods).day === d) for (const c of cellsOf(extra.e.duration, extra.s)) used.push(slotPosition(c, periods).period);
-        if (hasDoubleFree(used, blockedDay.get(`${t}|${d}`) ?? [], periods, pol.breakAfter)) n3++;
+        if (hasDoubleFree(used, blockedDay.get(`${t}|${d}`) ?? [], periods, pol.breakAfter)) n4++;
       }
-      return n3;
+      return n4;
     }
     function slotCost(e, s) {
       const d = slotPosition(s, periods).day;
@@ -13336,9 +13368,9 @@ var ASPCore = (() => {
         }
       }
       if (best < 0) {
-        const n3 = (bumped.get(id) ?? 0) + 1;
-        bumped.set(id, n3);
-        if (n3 < 40) queue.push(id);
+        const n4 = (bumped.get(id) ?? 0) + 1;
+        bumped.set(id, n4);
+        if (n4 < 40) queue.push(id);
         continue;
       }
       for (const x of who) {
@@ -13504,10 +13536,10 @@ var ASPCore = (() => {
   function crc32(data) {
     if (!CRC) {
       CRC = new Uint32Array(256);
-      for (let n3 = 0; n3 < 256; n3++) {
-        let c2 = n3;
+      for (let n4 = 0; n4 < 256; n4++) {
+        let c2 = n4;
         for (let k = 0; k < 8; k++) c2 = c2 & 1 ? 3988292384 ^ c2 >>> 1 : c2 >>> 1;
-        CRC[n3] = c2 >>> 0;
+        CRC[n4] = c2 >>> 0;
       }
     }
     let c = 4294967295;
@@ -13556,7 +13588,7 @@ var ASPCore = (() => {
       central.push(c.b, name);
       offset += 30 + name.length + data.length;
     }
-    const cdSize = central.reduce((n3, b) => n3 + b.length, 0);
+    const cdSize = central.reduce((n4, b) => n4 + b.length, 0);
     const e = head(22);
     const ev = e.v;
     ev.setUint32(0, 101010256, true);
@@ -13564,7 +13596,7 @@ var ASPCore = (() => {
     ev.setUint16(10, files.length, true);
     ev.setUint32(12, cdSize, true);
     ev.setUint32(16, offset, true);
-    const all = [...parts, ...central, e.b], out = new Uint8Array(all.reduce((n3, b) => n3 + b.length, 0));
+    const all = [...parts, ...central, e.b], out = new Uint8Array(all.reduce((n4, b) => n4 + b.length, 0));
     let p = 0;
     for (const b of all) {
       out.set(b, p);
@@ -13591,9 +13623,9 @@ var ASPCore = (() => {
     return `<w:p><w:pPr><w:spacing w:before="0" w:after="0"/><w:jc w:val="${JC[align]}"/></w:pPr>${inlineImage(im, ctx)}</w:p>`;
   }
   function inlineImage(im, ctx) {
-    const n3 = ctx.images.length + 1, id = `rIdImg${n3}`, cx = emu(im.width), cy = emu(im.height);
-    ctx.images.push({ id, name: `media/image${n3}.${im.type === "png" ? "png" : "jpeg"}`, bytes: im.bytes, type: im.type });
-    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${n3}" name="image${n3}"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="${n3}" name="image${n3}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${id}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
+    const n4 = ctx.images.length + 1, id = `rIdImg${n4}`, cx = emu(im.width), cy = emu(im.height);
+    ctx.images.push({ id, name: `media/image${n4}.${im.type === "png" ? "png" : "jpeg"}`, bytes: im.bytes, type: im.type });
+    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${n4}" name="image${n4}"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="${n4}" name="image${n4}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${id}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
   }
   function tableXml(t, size, ctx) {
     const s = t.size ?? size, b = t.borders !== false;
@@ -13676,13 +13708,13 @@ var ASPCore = (() => {
     });
     const span = (ri, ci) => {
       const col = colOf[ri][ci];
-      let n3 = 1;
+      let n4 = 1;
       for (let k = ri + 1; k < t.rows.length; k++) {
         const j = colOf[k].indexOf(col);
-        if (j >= 0 && t.rows[k].cells[j].merge === "cont") n3++;
+        if (j >= 0 && t.rows[k].cells[j].merge === "cont") n4++;
         else break;
       }
-      return n3;
+      return n4;
     };
     let head = t.rows.filter((r) => r.header).length;
     if (head && t.rows[head]?.cells.some((c) => c.merge === "cont")) head = 0;
@@ -14183,8 +14215,8 @@ var ASPCore = (() => {
   var STAFF_STATUS = { active: "ปฏิบัติงาน", transfer: "มีแผนย้าย", retire: "เกษียณ", vacant: "ไม่พร้อมในแผน" };
   var label = (subjects, origin) => String(subjects[0] ?? origin).replace(/^\S+\s+/, "");
   function teacherWeek(input, teacherId) {
-    const { days, periods, teacherBlocks } = input.setup, n3 = days.length * periods;
-    const cells = Array.from({ length: n3 }, (_, i) => ({ day: Math.floor(i / periods), period: i % periods, index: i, lessons: [], blocked: false, clash: false }));
+    const { days, periods, teacherBlocks } = input.setup, n4 = days.length * periods;
+    const cells = Array.from({ length: n4 }, (_, i) => ({ day: Math.floor(i / periods), period: i % periods, index: i, lessons: [], blocked: false, clash: false }));
     let taught = 0, unplaced = 0;
     for (const e of input.events) {
       if (!e.teachers.includes(teacherId)) continue;
@@ -14197,7 +14229,7 @@ var ASPCore = (() => {
       const seen = /* @__PURE__ */ new Set();
       for (const c of cellsOf(e.duration, p.slot)) {
         const i = periodIndex(c);
-        if (i >= n3 || seen.has(i)) continue;
+        if (i >= n4 || seen.has(i)) continue;
         seen.add(i);
         cells[i].lessons.push({ id: e.id, label: label(e.subjects, e.origin), grades: e.grades.slice(), half: e.duration === 1 ? null : c % 2 });
       }
@@ -14205,7 +14237,7 @@ var ASPCore = (() => {
     const prefix = teacherId + "|";
     for (const b of teacherBlocks) if (b.startsWith(prefix)) {
       const i = +b.slice(prefix.length);
-      if (Number.isInteger(i) && i >= 0 && i < n3) cells[i].blocked = true;
+      if (Number.isInteger(i) && i >= 0 && i < n4) cells[i].blocked = true;
     }
     let blocked = 0, free = 0;
     for (const c of cells) {
@@ -14214,14 +14246,14 @@ var ASPCore = (() => {
       const ls = c.lessons;
       c.clash = ls.some((a, i) => ls.some((b, j) => j > i && (a.half === null || b.half === null || a.half === b.half)));
     }
-    return { cells, taught, unplaced, blocked, free, capacity: n3 - blocked };
+    return { cells, taught, unplaced, blocked, free, capacity: n4 - blocked };
   }
   function toggleTeacherBlock(blocks, teacherId, index, week) {
-    const key2 = `${teacherId}|${index}`, cell4 = week.cells[index];
-    if (!cell4) return { blocks, changed: false, blocked: false, reason: "ไม่มีคาบนี้" };
+    const key2 = `${teacherId}|${index}`, cell5 = week.cells[index];
+    if (!cell5) return { blocks, changed: false, blocked: false, reason: "ไม่มีคาบนี้" };
     if (blocks.includes(key2)) return { blocks: blocks.filter((b) => b !== key2), changed: true, blocked: false, reason: "" };
-    if (cell4.lessons.length) {
-      const l = cell4.lessons[0];
+    if (cell5.lessons.length) {
+      const l = cell5.lessons[0];
       return { blocks, changed: false, blocked: false, reason: `คาบนี้มีสอน${l.label} ${l.grades.join(", ")} อยู่ — ย้ายคาบนี้ก่อนแล้วจึงตั้งว่าไม่ว่าง` };
     }
     return { blocks: [...blocks, key2], changed: true, blocked: true, reason: "" };
@@ -14491,10 +14523,10 @@ var ASPCore = (() => {
       for (const id of cands.sort()) {
         const next = { ...cur };
         delete next[id];
-        const n3 = policyOf(check(input, next).violations).length;
-        if (n3 < bestN || n3 === bestN && cur[id].slot > bestSlot) {
+        const n4 = policyOf(check(input, next).violations).length;
+        if (n4 < bestN || n4 === bestN && cur[id].slot > bestSlot) {
           best = id;
-          bestN = n3;
+          bestN = n4;
           bestSlot = cur[id].slot;
         }
       }
@@ -14635,8 +14667,8 @@ var ASPCore = (() => {
   var num2 = (v) => Number.isFinite(+v) ? +v : 0;
   function diffProjects(a, b, limit = 12) {
     const lines = [], counts = {};
-    const bump = (k, n3 = 1) => {
-      counts[k] = (counts[k] ?? 0) + n3;
+    const bump = (k, n4 = 1) => {
+      counts[k] = (counts[k] ?? 0) + n4;
     };
     if (sameJson(a, b)) return { same: true, lines: [], counts };
     const ia = new Map(a.scenarios.map((s) => [s.id, s])), ib = new Map(b.scenarios.map((s) => [s.id, s]));
@@ -14721,8 +14753,8 @@ var ASPCore = (() => {
   var CATS = ["support", "development", "policy"];
   var r1 = (x) => Math.round(x * 10) / 10;
   function cleanHours(x) {
-    const n3 = Number(x);
-    return Number.isFinite(n3) ? Math.min(40, Math.max(0, Math.round(n3 * 2) / 2)) : 0;
+    const n4 = Number(x);
+    return Number.isFinite(n4) ? Math.min(40, Math.max(0, Math.round(n4 * 2) / 2)) : 0;
   }
   function cleanItems(items) {
     if (!Array.isArray(items)) return [];
@@ -14856,10 +14888,10 @@ var ASPCore = (() => {
     {
       const m = /ว่าง(?:ติดกัน)?(?:2|สอง)คาบ(?:ติด(?:กัน)?)?(?:อย่างน้อย)?(?:สัปดาห์ละ|(\d+)ครั้ง(?:ต่อ|ใน1?)สัปดาห์|(\d+)วัน(?:ต่อ|ใน1?)สัปดาห์)?/.exec(t);
       if (m && /คาบว่าง|ว่าง(?:ติดกัน)?(?:2|สอง)คาบ/.test(t) && !/ไม่ว่าง/.test(t)) {
-        const n3 = Math.max(1, Number(m[1] || m[2] || (/(\d+)\s*(?:ครั้ง|วัน)/.exec(t)?.[1] ?? 1)));
+        const n4 = Math.max(1, Number(m[1] || m[2] || (/(\d+)\s*(?:ครั้ง|วัน)/.exec(t)?.[1] ?? 1)));
         return R(
-          [{ kind: "policy", set: { minDoubleFreeDays: n3, enforceDoubleFree: /ต้อง|บังคับ/.test(t) } }],
-          `กฎการจัดตารางของครูทุกคน: มีคาบว่าง 2 คาบติดกันอย่างน้อย ${n3} วันต่อสัปดาห์` + (/ต้อง|บังคับ/.test(t) ? " (บังคับ)" : " (พยายาม)")
+          [{ kind: "policy", set: { minDoubleFreeDays: n4, enforceDoubleFree: /ต้อง|บังคับ/.test(t) } }],
+          `กฎการจัดตารางของครูทุกคน: มีคาบว่าง 2 คาบติดกันอย่างน้อย ${n4} วันต่อสัปดาห์` + (/ต้อง|บังคับ/.test(t) ? " (บังคับ)" : " (พยายาม)")
         );
       }
     }
@@ -14911,20 +14943,20 @@ var ASPCore = (() => {
       }).map(([, d]) => d).filter((d) => d < ctx.days.length);
       if (/ทุกวัน/.test(t)) days = ctx.days.map((_, i) => i);
       if (!days.length) return fail("ไม่พบวัน — เช่น “ครู…ไม่ว่างวันศุกร์บ่าย” หรือ “…ไม่ว่างวันพุธคาบ 1-2”");
-      const P3 = ctx.periods, L = ctx.lunchAfter > 0 && ctx.lunchAfter < P3 ? ctx.lunchAfter : Math.ceil(P3 / 2);
+      const P4 = ctx.periods, L = ctx.lunchAfter > 0 && ctx.lunchAfter < P4 ? ctx.lunchAfter : Math.ceil(P4 / 2);
       let periods = [], label2 = "ทั้งวัน";
       const pm = /คาบ(?:ที่)?(\d+)(?:(?:-|–|ถึง)(\d+))?/.exec(t);
       if (pm) {
         const a = num3(pm[1]), b = pm[2] ? num3(pm[2]) : a;
-        for (let p = Math.min(a, b); p <= Math.max(a, b); p++) if (p >= 1 && p <= P3) periods.push(p - 1);
+        for (let p = Math.min(a, b); p <= Math.max(a, b); p++) if (p >= 1 && p <= P4) periods.push(p - 1);
         label2 = `คาบ ${a}${b !== a ? "–" + b : ""}`;
       } else if (/บ่าย/.test(t)) {
-        periods = Array.from({ length: P3 - L }, (_, i) => L + i);
+        periods = Array.from({ length: P4 - L }, (_, i) => L + i);
         label2 = "ช่วงบ่าย";
       } else if (/เช้า/.test(t)) {
         periods = Array.from({ length: L }, (_, i) => i);
         label2 = "ช่วงเช้า";
-      } else periods = Array.from({ length: P3 }, (_, i) => i);
+      } else periods = Array.from({ length: P4 }, (_, i) => i);
       const who = /ครูทุกคน|ทุกคน|ครูทั้งหมด|ทั้งโรงเรียน/.test(t) ? `ครูทุกคน (${ids.length} คน)` : names;
       return R([{ kind: "block", teachers: ids, days, periods, label: label2 }], `${who} ไม่ว่าง วัน${days.map((d) => ctx.days[d]).join(", ")} ${label2}`);
     }
@@ -15231,11 +15263,11 @@ var ASPCore = (() => {
           note("กด ✦ Generate หรือ ⚖ ปรับตามนโยบาย หลังทำ เพื่อจัดตารางตามกฎใหม่");
         }
         if (it.kind === "block") {
-          const P3 = ctx.periods, busy = new Set(ctx.teaching ?? []);
+          const P4 = ctx.periods, busy = new Set(ctx.teaching ?? []);
           for (const t of it.teachers) {
             const cells = [], clash = [];
             for (const d of it.days) for (const p of it.periods) {
-              const c = d * P3 + p;
+              const c = d * P4 + p;
               (busy.has(`${t}|${c}`) ? clash : cells).push(c);
             }
             if (cells.length) push({ kind: "block", key: `b:${t}:${si}`, label: `${nm(t)} ไม่ว่าง ${cells.length} คาบ (${it.label} วัน${it.days.map((d) => ctx.days[d]).join(", ")})`, checked: true, teacher: t, cells });
@@ -15336,8 +15368,8 @@ var ASPCore = (() => {
     const out = changes.filter((c) => last.get(c.key) === c);
     const loads2 = {};
     for (const id of /* @__PURE__ */ new Set([...Object.keys(start), ...Object.keys(load)])) if (round(start[id] ?? 0) !== round(load[id] ?? 0)) loads2[id] = [round(start[id] ?? 0), round(load[id] ?? 0)];
-    const seen = /* @__PURE__ */ new Set(), uniq = notes.filter((n3) => {
-      const k = n3.sentence + "|" + n3.text;
+    const seen = /* @__PURE__ */ new Set(), uniq = notes.filter((n4) => {
+      const k = n4.sentence + "|" + n4.text;
       if (seen.has(k)) return false;
       seen.add(k);
       return true;
@@ -15484,13 +15516,13 @@ var ASPCore = (() => {
     return [];
   }
   function score(subject, e) {
-    const r = compact(subject).replace(/\(.*?\)|[0-9]+$/g, ""), n3 = compact(e.name), additional = e.code[3] === "2";
+    const r = compact(subject).replace(/\(.*?\)|[0-9]+$/g, ""), n4 = compact(e.name), additional = e.code[3] === "2";
     let s = 0;
-    if (r === n3) s = 100;
-    else if (r.length >= 3 && (n3.includes(r) || r.includes(n3))) s = additional !== extraRow(subject) && r.includes(n3) && !n3.includes(r) ? 35 : 80;
+    if (r === n4) s = 100;
+    else if (r.length >= 3 && (n4.includes(r) || r.includes(n4))) s = additional !== extraRow(subject) && r.includes(n4) && !n4.includes(r) ? 35 : 80;
     else {
       const st = stemsOf(subject);
-      const hit = st.filter((x) => n3.includes(compact(x))).length;
+      const hit = st.filter((x) => n4.includes(compact(x))).length;
       if (hit) s = hit === st.length ? 60 : 55;
     }
     if (s && s < 80 && additional !== extraRow(subject)) s -= 25;
@@ -15591,6 +15623,223 @@ var ASPCore = (() => {
     return rows.map((r) => ({ r, k: key2(r) })).sort((a, b) => cmp(a.k, b.k)).map((o) => o.r.x);
   }
 
+  // core/src/jointedit.ts
+  var n3 = (x) => {
+    const v = Number(x);
+    return Number.isFinite(v) ? v : 0;
+  };
+  function checkJointGroup(d, c) {
+    const out = [], id = String(d.id ?? "").trim(), h2 = n3(d.hours);
+    if (!id) out.push("ใส่ชื่อกลุ่ม / ช่วงสอน");
+    else if (c.groups.some((g) => g.id === id && g.id !== c.original)) out.push("ชื่อกลุ่มซ้ำกับกลุ่มอื่น");
+    const rows = d.members.map((m) => c.rows.find((r) => r.id === m)).filter(Boolean);
+    if (rows.length < 2) out.push("ต้องเลือกอย่างน้อย 2 รายวิชาจากคนละชั้น");
+    if (new Set(rows.map((r) => r.grade)).size !== rows.length) out.push("หนึ่งช่วงสอนเลือกได้หนึ่งวิชาต่อหนึ่งชั้น");
+    if (!(h2 > 0)) out.push("ชั่วโมงร่วมต้องมากกว่า 0");
+    for (const r of rows) {
+      const other = c.groups.filter((g) => g.id !== c.original && g.members.includes(r.id)).reduce((a, g) => a + n3(g.hours), 0);
+      if (h2 + other > n3(r.hours) + 1e-9) out.push(`${r.grade} ${r.subject}: ชั่วโมงร่วม ${h2}${other ? ` + กลุ่มอื่น ${other}` : ""} เกินชั่วโมงของวิชา ${n3(r.hours)}`);
+    }
+    if (!c.people.includes(d.leader)) out.push("เลือกครูผู้สอนหลักรายบุคคล");
+    if (d.coTeachers.includes(d.leader)) out.push("ครูร่วมต้องไม่ซ้ำกับครูหลัก");
+    if (d.coTeachers.some((t) => !c.people.includes(t))) out.push("ครูร่วมต้องเป็นครูรายบุคคล");
+    for (const [t, v] of Object.entries(d.teacherHours ?? {})) {
+      if (t !== d.leader && !d.coTeachers.includes(t)) continue;
+      if (!(n3(v) > 0) || n3(v) > h2) out.push(`ชั่วโมงรายคนต้องมากกว่า 0 และไม่เกิน ${h2}`);
+    }
+    return [...new Set(out)];
+  }
+  function renameJointKeys(tt, from, to) {
+    if (!tt || typeof tt !== "object" || from === to) return 0;
+    const pa = `G~${encodeURIComponent(from)}~`, pb = `G~${encodeURIComponent(to)}~`, ka = `G:${from}`, kb = `G:${to}`;
+    let count = 0;
+    const str = (s) => {
+      if (s === ka) {
+        count++;
+        return kb;
+      }
+      if (s.startsWith(pa)) {
+        count++;
+        return pb + s.slice(pa.length);
+      }
+      return s;
+    };
+    const walk = (o, depth, rules) => {
+      if (depth > 12) return o;
+      if (typeof o === "string") {
+        if (rules && (o === from || o === "=" + from)) {
+          count++;
+          return o.replace(from, to);
+        }
+        return str(o);
+      }
+      if (Array.isArray(o)) {
+        for (let i = 0; i < o.length; i++) o[i] = walk(o[i], depth + 1, rules);
+        return o;
+      }
+      if (o && typeof o === "object") {
+        const rec = o;
+        for (const k of Object.keys(rec)) {
+          if (k === "signature" || k === "sourceKey") continue;
+          const v = walk(rec[k], depth + 1, rules || k === "dayRules" || k === "slotRules");
+          const nk = str(k);
+          if (nk !== k) {
+            delete rec[k];
+            rec[nk] = v;
+          } else rec[k] = v;
+        }
+      }
+      return o;
+    };
+    walk(tt, 0, false);
+    return count;
+  }
+
+  // core/src/handover.ts
+  var num4 = (x) => {
+    const v = Number(x);
+    return Number.isFinite(v) ? v : 0;
+  };
+  var isBasic = (code, grade) => /^ป\./.test(grade) && /^[ก-ฮ]\d{5}/.test(code) && code[3] === "1";
+  function teacherChanges(a, b) {
+    const nameA = (id) => a.teachers.find((t) => t.id === id)?.name ?? "", nameB = (id) => b.teachers.find((t) => t.id === id)?.name ?? "";
+    const ca = a.codes ?? {}, cb = b.codes ?? {}, out = [], used = /* @__PURE__ */ new Set();
+    const diff = (oldIds, newIds, fa, fb) => {
+      const on = oldIds.map(fa).filter(Boolean), nn = newIds.map(fb).filter(Boolean);
+      const rem = on.filter((x) => !nn.includes(x)), add = nn.filter((x) => !on.includes(x));
+      return { rem, add, remIds: oldIds.filter((x) => rem.includes(fa(x))), addIds: newIds.filter((x) => add.includes(fb(x))) };
+    };
+    for (const r of b.rows) {
+      let o = a.rows.find((x) => x.id === r.id && !used.has(x.id));
+      if (!o) {
+        const c = a.rows.filter((x) => !used.has(x.id) && x.grade === r.grade && x.subject.trim() === r.subject.trim());
+        if (c.length === 1) o = c[0];
+      }
+      if (!o) continue;
+      used.add(o.id);
+      const code = cb[r.id] || ca[o.id] || "", base = { subject: r.subject, code, grades: [r.grade], hours: num4(r.hours), basic: isBasic(code, r.grade) };
+      if (nameA(o.teacher) !== nameB(r.teacher) && (o.teacher || r.teacher))
+        out.push({
+          key: "R:" + r.id,
+          kind: "main",
+          ...base,
+          from: [nameA(o.teacher)].filter(Boolean),
+          to: [nameB(r.teacher)].filter(Boolean),
+          fromIds: [o.teacher ?? ""].filter(Boolean),
+          toIds: [r.teacher ?? ""].filter(Boolean)
+        });
+      const d = diff(o.coTeachers ?? [], r.coTeachers ?? [], nameA, nameB);
+      if (d.rem.length || d.add.length) out.push({ key: "RC:" + r.id, kind: "co", ...base, from: d.rem, to: d.add, fromIds: d.remIds, toIds: d.addIds });
+    }
+    const set = (m) => [...m ?? []].sort().join("|");
+    for (const g of b.jointGroups ?? []) {
+      const o = (a.jointGroups ?? []).find((x) => x.id === g.id) ?? (a.jointGroups ?? []).find((x) => set(x.members) === set(g.members));
+      if (!o) continue;
+      const rows = (g.members ?? []).map((id) => b.rows.find((r) => r.id === id)).filter(Boolean);
+      const codes = [...new Set(rows.map((r) => cb[r.id]).filter(Boolean))];
+      const base = { subject: g.id, code: codes.join(" / "), grades: rows.map((r) => r.grade), hours: num4(g.hours), basic: rows.some((r) => isBasic(cb[r.id] ?? "", r.grade)) };
+      if (nameA(o.leader) !== nameB(g.leader))
+        out.push({
+          key: "G:" + g.id,
+          kind: "joint",
+          ...base,
+          from: [nameA(o.leader)].filter(Boolean),
+          to: [nameB(g.leader)].filter(Boolean),
+          fromIds: [o.leader ?? ""].filter(Boolean),
+          toIds: [g.leader ?? ""].filter(Boolean)
+        });
+      const d = diff(o.coTeachers ?? [], g.coTeachers ?? [], nameA, nameB);
+      if (d.rem.length || d.add.length) out.push({ key: "GC:" + g.id, kind: "jointCo", ...base, from: d.rem, to: d.add, fromIds: d.remIds, toIds: d.addIds });
+    }
+    return out;
+  }
+  var HANDOVER_DEFAULTS = {
+    orderNo: "………",
+    subjectLine: "มอบหมายการปฏิบัติการสอน (เปลี่ยนแปลงครูผู้สอน) ภาคเรียนที่ {semester} ปีการศึกษา {year}",
+    refOrder: "………/………",
+    reason: "……………………………………………………",
+    para1: "ตามที่โรงเรียน{school} ได้มีคำสั่งที่ {refOrder} มอบหมายให้ข้าราชการครูและบุคลากรทางการศึกษาปฏิบัติการสอนในรายวิชาต่าง ๆ ประจำภาคเรียนที่ {semester} ปีการศึกษา {year} ไปแล้ว นั้น",
+    para2: "เนื่องจาก {reason} เพื่อให้การจัดการเรียนการสอนเป็นไปด้วยความเรียบร้อยและต่อเนื่อง อาศัยอำนาจตามมาตรา 39 แห่งพระราชบัญญัติระเบียบบริหารราชการกระทรวงศึกษาธิการ พ.ศ. 2546 และที่แก้ไขเพิ่มเติม จึงเปลี่ยนแปลงครูผู้สอนในรายวิชาดังบัญชีแนบท้ายคำสั่งนี้ ทั้งนี้ ตั้งแต่วันที่ {effective} เป็นต้นไป",
+    para3: "ให้ครูผู้สอนเดิมส่งมอบแผนการจัดการเรียนรู้ ผลการวัดและประเมินผลระหว่างเรียน และเอกสารหลักฐานของรายวิชาที่ส่งมอบให้ครูผู้รับมอบ และให้ครูผู้รับมอบปฏิบัติการสอน วัดและประเมินผลต่อเนื่องจนสิ้นภาคเรียน/ปีการศึกษา ตามระเบียบการวัดและประเมินผลของสถานศึกษา",
+    effDay: "……",
+    effMonth: "………………",
+    effYear: "",
+    dateDay: "……",
+    dateMonth: "………………",
+    dateYear: "",
+    ack: true,
+    sheets: true,
+    listTitle: "บัญชีแนบท้ายคำสั่ง การเปลี่ยนแปลงครูผู้สอน"
+  };
+  var RUN3 = (text, o = {}) => ({ text, ...o });
+  var P3 = (runs, o = {}) => para(runs, o);
+  var cell3 = (lines, o = {}, align = "center") => ({ paras: lines.map((l) => P3(typeof l === "string" ? [RUN3(l)] : l, { align })), ...o });
+  var KIND = { main: "", co: "ครูร่วม", joint: "เรียนรวม", jointCo: "เรียนรวม · ครูร่วม" };
+  function buildHandoverDoc(input) {
+    const s = orderSettings(input.settings), h2 = { ...HANDOVER_DEFAULTS, ...input.handover };
+    const oy = h2.dateYear || s.year, year = h2.effYear || oy, effective = `${h2.effDay} ${h2.effMonth} พ.ศ. ${year}`;
+    const F = (t) => fill(t, s).replace(/\{refOrder\}/g, h2.refOrder).replace(/\{reason\}/g, h2.reason).replace(/\{effective\}/g, effective);
+    const sections = [], dated = `${h2.dateDay} ${h2.dateMonth} พ.ศ. ${oy}`;
+    const blocks = [];
+    if (input.emblem) blocks.push(input.emblem);
+    blocks.push(
+      P3([RUN3("คำสั่งโรงเรียน", { bold: true }), RUN3(s.school, { bold: true, field: "school" })], { align: "center", before: input.emblem ? 6 : 0 }),
+      P3([RUN3("ที่ ", { bold: true }), RUN3(h2.orderNo, { bold: true, field: "ho:orderNo" }), RUN3("/", { bold: true }), RUN3(oy, { bold: true })], { align: "center" }),
+      P3([RUN3("เรื่อง ", { bold: true }), RUN3(F(h2.subjectLine), { bold: true, field: "ho:subjectLine" })], { align: "center" }),
+      P3("……………………………………..", { align: "center", after: 6 }),
+      ...[h2.para1, h2.para2, h2.para3].flatMap((t, i) => [P3([RUN3(F(t), { field: "ho:para" + (i + 1) })], { align: "thaiDistribute", firstLine: 1.27 }), P3("", {})]),
+      P3([
+        RUN3("สั่ง ณ วันที่ "),
+        RUN3(h2.dateDay, { field: "ho:dateDay" }),
+        RUN3(" เดือน "),
+        RUN3(h2.dateMonth, { field: "ho:dateMonth" }),
+        RUN3(" พ.ศ. "),
+        RUN3(oy, { field: "ho:dateYear" })
+      ], { left: 5.4, after: 30 }),
+      { kind: "table", borders: false, widths: [6.5, 10.75], rows: [{ cells: [{ paras: [] }, coverSign(s)] }] }
+    );
+    sections.push({ name: "หน้าคำสั่ง", margins: { top: 1.75, bottom: 1, left: 2, right: 1.75 }, blocks });
+    const width = 21 - 2 - 1.5, items = input.items;
+    const head = { header: true, cells: ["ที่", "รหัสวิชา", "รายวิชา / กิจกรรม", "ชั้น", "ชม./\nสัปดาห์", "ครูผู้สอนเดิม", "ครูผู้รับมอบ", "หมายเหตุ"].map((x) => cell3(x.split("\n"), { fill: "F2F2F2", vAlign: "center" })) };
+    const rows = [head, ...items.map((x, i) => ({ cells: [
+      cell3([String(i + 1)]),
+      cell3([x.code || "–"]),
+      cell3([x.subject], {}, "left"),
+      cell3([gradeRange(x.grades, input.gradeOrder)]),
+      cell3([hoursText(x.hours)]),
+      cell3(x.from.length ? x.from : ["–"], {}, "left"),
+      cell3(x.to.length ? x.to : ["–"], {}, "left"),
+      cell3([KIND[x.kind]])
+    ] }))];
+    if (!items.length) rows.push({ cells: [cell3(["ยังไม่ได้เลือกรายการ"], { span: 8 })] });
+    const list2 = [
+      P3([RUN3(h2.listTitle, { bold: true, field: "ho:listTitle" })], { align: "center" }),
+      P3(`แนบท้ายคำสั่งโรงเรียน${s.school} ที่ ${h2.orderNo}/${oy} ลงวันที่ ${dated}`, { align: "center" }),
+      P3(`มีผลตั้งแต่วันที่ ${effective}`, { align: "center", after: 8 }),
+      { kind: "table", widths: [0.9, 2.3, 3.2, 1.7, 1.3, 3.1, 3.1, 1.9], rows, size: s.tableSize }
+    ];
+    if (h2.ack && items.length) {
+      const people = [];
+      const add = (n4, role) => {
+        if (n4 && !people.some((p) => p[0] === n4 && p[1] === role)) people.push([n4, role]);
+      };
+      items.forEach((x) => x.from.forEach((n4) => add(n4, "ครูผู้ส่งมอบ")));
+      items.forEach((x) => x.to.forEach((n4) => add(n4, "ครูผู้รับมอบ")));
+      list2.push(
+        P3([RUN3("การรับทราบคำสั่ง", { bold: true })], { before: 12, after: 4, keepNext: true }),
+        { kind: "table", widths: [0.9, 5.2, 3.2, 4.4, 3.8], size: s.tableSize, rows: [
+          { header: true, cells: ["ที่", "ชื่อ – สกุล", "ฐานะ", "ลงชื่อรับทราบ", "วันที่"].map((x) => cell3([x], { fill: "F2F2F2" })) },
+          ...people.map((p, i) => ({ height: 1, cells: [cell3([String(i + 1)]), cell3([p[0]], {}, "left"), cell3([p[1]]), cell3([""]), cell3([""])] }))
+        ] }
+      );
+    }
+    list2.push(P3("", { after: 14 }), signRow(s, "list", width, { academic: "ผู้จัดทำ", director: "ผู้อนุมัติ" }));
+    sections.push({ name: "บัญชีแนบท้ายคำสั่ง", margins: { top: 1.75, bottom: 1.5, left: 2, right: 1.5 }, blocks: list2 });
+    if (h2.sheets) for (const sh of input.sheets) sections.push(sheetSection(sh, s, "personal"));
+    if (s.thaiDigits) for (const sec of sections) for (const b of sec.blocks) digits(b);
+    return { font: s.font, size: s.size, title: `คำสั่งโรงเรียน${s.school} เรื่อง ${F(h2.subjectLine)}`, sections };
+  }
+
   // core/src/versions.ts
   function versionPlacements(input, placements) {
     const ids = new Set(input.events.map((e) => e.id)), out = {};
@@ -15637,16 +15886,16 @@ var ASPCore = (() => {
     return out;
   }
   function entityWeek(input, placements, view, key2) {
-    const P3 = input.setup.periods, D = input.setup.days.length;
-    const cells = Array.from({ length: D }, () => Array.from({ length: P3 }, () => []));
-    const ids = Array.from({ length: D }, () => Array.from({ length: P3 }, () => []));
+    const P4 = input.setup.periods, D = input.setup.days.length;
+    const cells = Array.from({ length: D }, () => Array.from({ length: P4 }, () => []));
+    const ids = Array.from({ length: D }, () => Array.from({ length: P4 }, () => []));
     for (const e of input.events) {
       if (view === "grade" ? !e.grades.includes(key2) : !e.teachers.includes(key2)) continue;
       const p = placements?.[e.id];
       if (!p || !Number.isInteger(p.slot)) continue;
       const seen = /* @__PURE__ */ new Set();
       for (const c of cellsOf(e.duration, p.slot)) {
-        const pos = slotPosition(c, P3), k = pos.day + "|" + pos.period;
+        const pos = slotPosition(c, P4), k = pos.day + "|" + pos.period;
         if (pos.day >= D || seen.has(k)) continue;
         seen.add(k);
         const name = (e.subjects[0] ?? e.id).replace(/^(?:ป|ม|อ)\.\d+\s*/, "");
@@ -15745,7 +15994,7 @@ var ASPCore = (() => {
   }
   function substitutionRows(input, opt) {
     const names = new Map(input.teachers.map((t) => [t.id, t.name]));
-    const P3 = input.setup.periods, days = input.setup.days, seen = /* @__PURE__ */ new Set(), rows = [];
+    const P4 = input.setup.periods, days = input.setup.days, seen = /* @__PURE__ */ new Set(), rows = [];
     let skipped = 0, noTeacher = 0;
     const mob = mobilityConfig(input.setup.mobility);
     for (const e of input.events) {
@@ -15759,8 +16008,8 @@ var ASPCore = (() => {
         continue;
       }
       const periods = /* @__PURE__ */ new Set();
-      for (const c of cellsOf(e.duration, p.slot)) periods.add(slotPosition(c, P3).period);
-      const day = dayName(days[slotPosition(p.slot, P3).day] ?? "");
+      for (const c of cellsOf(e.duration, p.slot)) periods.add(slotPosition(c, P4).period);
+      const day = dayName(days[slotPosition(p.slot, P4).day] ?? "");
       for (const period of periods) for (const g of e.grades.length ? e.grades : [""]) for (const t of e.teachers) {
         const r = {
           academic_year: String(opt.year),
@@ -15790,12 +16039,12 @@ var ASPCore = (() => {
     rows.sort((a, b) => dayIdx(a.weekday) - dayIdx(b.weekday) || a.period - b.period || gKey(a.class_name) - gKey(b.class_name) || a.class_name.localeCompare(b.class_name, "th") || a.teacher.localeCompare(b.teacher, "th"));
     return { rows, skipped, noTeacher };
   }
-  var cell3 = (v) => {
+  var cell4 = (v) => {
     const s = String(v ?? "");
     return /[",\r\n]/.test(s) || /^\s|\s$/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   };
   function substitutionCsv(rows) {
-    return "\uFEFF" + [SUB_COLUMNS.join(","), ...rows.map((r) => SUB_COLUMNS.map((c) => cell3(r[c])).join(","))].join("\r\n") + "\r\n";
+    return "\uFEFF" + [SUB_COLUMNS.join(","), ...rows.map((r) => SUB_COLUMNS.map((c) => cell4(r[c])).join(","))].join("\r\n") + "\r\n";
   }
 
   // core/src/auth.ts
@@ -15928,7 +16177,7 @@ var ASPCore = (() => {
   }
 
   // core/src/feasible.ts
-  var fmt2 = (n3) => String(Math.round(n3 * 10) / 10);
+  var fmt2 = (n4) => String(Math.round(n4 * 10) / 10);
   var emptyExempt = () => ({ minDaily: [], run: [], day: [], same: {}, homeroom: {} });
   var exemptCount = (x) => !x ? 0 : x.minDaily.length + x.run.length + x.day.length + Object.keys(x.same).length + Object.keys(x.homeroom).length;
   function matching(options) {
@@ -15945,19 +16194,19 @@ var ASPCore = (() => {
       }
       return false;
     };
-    let n3 = 0;
-    for (let i = 0; i < options.length; i++) if (tryAt(i, /* @__PURE__ */ new Set())) n3++;
-    return n3;
+    let n4 = 0;
+    for (let i = 0; i < options.length; i++) if (tryAt(i, /* @__PURE__ */ new Set())) n4++;
+    return n4;
   }
   function autoExempt(input, names = {}) {
-    const { setup, events } = input, P3 = setup.periods, D = setup.days.length;
+    const { setup, events } = input, P4 = setup.periods, D = setup.days.length;
     const tn = names.teacher ?? ((id) => input.teachers.find((t) => t.id === id)?.name ?? id);
     const dn = names.day ?? ((d) => setup.days[d] ?? String(d + 1));
     const raw = { ...setup.schedulePolicy ?? {} };
     delete raw.autoExempt;
-    const pol = policyConfig(raw, P3, setup.teacherBlocks);
+    const pol = policyConfig(raw, P4, setup.teacherBlocks);
     const out = { exempt: emptyExempt(), notes: [] };
-    const blocked = blockedByDay(setup.teacherBlocks, P3);
+    const blocked = blockedByDay(setup.teacherBlocks, P4);
     const isBlocked = (t, d, p) => (blocked.get(`${t}|${d}`) ?? []).includes(p);
     const act = new Set(input.teachers.filter((t) => !t.team && (t.status ?? "active") === "active").map((t) => t.id));
     const locked = {};
@@ -15966,12 +16215,12 @@ var ASPCore = (() => {
     const hard = new Map(events.map((e) => [e.id, slotRulesFor(e, setup.slotRules, "hard")]));
     const fits = (e, d, p) => {
       if (!days.get(e.id).has(d)) return false;
-      const s = slotOf(d, p, 0, P3), h2 = hard.get(e.id);
-      if (h2.length && !hardSlotOk(e, s, P3, h2)) return false;
-      return e.teachers.every((t) => cellsOf(e.duration, s).every((c) => !isBlocked(t, d, slotPosition(c, P3).period)));
+      const s = slotOf(d, p, 0, P4), h2 = hard.get(e.id);
+      if (h2.length && !hardSlotOk(e, s, P4, h2)) return false;
+      return e.teachers.every((t) => cellsOf(e.duration, s).every((c) => !isBlocked(t, d, slotPosition(c, P4).period)));
     };
-    const freeList = (t) => Array.from({ length: D }, (_, d) => Array.from({ length: P3 }, (_2, p) => p).filter((p) => !isBlocked(t, d, p)));
-    const freeText = (t) => freeList(t).map((ps, d) => ps.length && ps.length < P3 ? `${dn(d)} ${ps.length === 1 ? "คาบ " + (ps[0] + 1) : "คาบ " + (ps[0] + 1) + "–" + (ps[ps.length - 1] + 1)}` : ps.length ? `${dn(d)} ทั้งวัน` : "").filter(Boolean).join(", ");
+    const freeList = (t) => Array.from({ length: D }, (_, d) => Array.from({ length: P4 }, (_2, p) => p).filter((p) => !isBlocked(t, d, p)));
+    const freeText = (t) => freeList(t).map((ps, d) => ps.length && ps.length < P4 ? `${dn(d)} ${ps.length === 1 ? "คาบ " + (ps[0] + 1) : "คาบ " + (ps[0] + 1) + "–" + (ps[ps.length - 1] + 1)}` : ps.length ? `${dn(d)} ทั้งวัน` : "").filter(Boolean).join(", ");
     const m = pol.minTeacherPeriodsPerDay;
     if (m > 0) {
       const load = /* @__PURE__ */ new Map();
@@ -15981,7 +16230,7 @@ var ASPCore = (() => {
         const caps = freeList(t).map((ps) => {
           let c = ps.length;
           if (raw.enforceMaxTeacherPeriodsPerDay) c = Math.min(c, pol.maxTeacherPeriodsPerDay);
-          if (raw.enforceMinTeacherFree) c = Math.min(c, P3 - pol.minTeacherFreePeriods);
+          if (raw.enforceMinTeacherFree) c = Math.min(c, P4 - pol.minTeacherFreePeriods);
           return c;
         });
         let ok, can;
@@ -16009,7 +16258,7 @@ var ASPCore = (() => {
         });
       }
     }
-    const rc = repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P3);
+    const rc = repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P4);
     if (rc) {
       const ba = rc.breakAfter;
       const pairs = /* @__PURE__ */ new Map();
@@ -16018,9 +16267,9 @@ var ASPCore = (() => {
         (pairs.get(k) ?? pairs.set(k, []).get(k)).push(e);
       }
       for (const [k, list2] of pairs) {
-        const [t, g] = k.split("|"), n3 = list2.reduce((a, e) => a + lessonPeriods(e), 0);
-        const avail = Array.from({ length: D }, (_, d) => Array.from({ length: P3 }, (_2, p) => p).filter((p) => list2.some((e) => fits(e, d, p))));
-        if (rc.run > 0 && n3 > rc.run) {
+        const [t, g] = k.split("|"), n4 = list2.reduce((a, e) => a + lessonPeriods(e), 0);
+        const avail = Array.from({ length: D }, (_, d) => Array.from({ length: P4 }, (_2, p) => p).filter((p) => list2.some((e) => fits(e, d, p))));
+        if (rc.run > 0 && n4 > rc.run) {
           let cap = 0;
           for (const ps of avail) {
             let seg = 0;
@@ -16028,7 +16277,7 @@ var ASPCore = (() => {
               cap += seg - Math.floor(seg / (rc.run + 1));
               seg = 0;
             };
-            for (let p = 0; p < P3; p++) {
+            for (let p = 0; p < P4; p++) {
               if (ba > 0 && p === ba) close();
               if (ps.includes(p)) seg++;
               else close();
@@ -16037,25 +16286,25 @@ var ASPCore = (() => {
           }
           const lockedRun = [];
           for (let d = 0; d < D; d++) {
-            const ps = list2.filter((e) => locked[e.id] && slotPosition(locked[e.id].slot, P3).day === d).flatMap((e) => cellsOf(e.duration, locked[e.id].slot).map((c) => slotPosition(c, P3).period));
+            const ps = list2.filter((e) => locked[e.id] && slotPosition(locked[e.id].slot, P4).day === d).flatMap((e) => cellsOf(e.duration, locked[e.id].slot).map((c) => slotPosition(c, P4).period));
             if (runOf(ps, ba) > rc.run) lockedRun.push(d);
           }
-          if (n3 > cap + 1e-9 || lockedRun.length) {
+          if (n4 > cap + 1e-9 || lockedRun.length) {
             out.exempt.run.push(k);
-            const why = [n3 > cap + 1e-9 ? `ว่างเฉพาะ ${freeText(t)} (วางแบบไม่ติดกันได้แค่ ${fmt2(cap)} คาบ)` : "", lockedRun.length ? `ล็อกไว้ติดกันวัน${lockedRun.map(dn).join(", ")}` : ""].filter(Boolean).join(" และ");
+            const why = [n4 > cap + 1e-9 ? `ว่างเฉพาะ ${freeText(t)} (วางแบบไม่ติดกันได้แค่ ${fmt2(cap)} คาบ)` : "", lockedRun.length ? `ล็อกไว้ติดกันวัน${lockedRun.map(dn).join(", ")}` : ""].filter(Boolean).join(" และ");
             out.notes.push({
               rule: "run",
               teacher: t,
               grade: g,
               need: rc.run,
               can: cap,
-              text: `${tn(t)} สอน ${g} ${fmt2(n3)} คาบ/สัปดาห์ ${why} — ติดกันไม่เกิน ${rc.run} คาบไม่ได้`
+              text: `${tn(t)} สอน ${g} ${fmt2(n4)} คาบ/สัปดาห์ ${why} — ติดกันไม่เกิน ${rc.run} คาบไม่ได้`
             });
           }
         }
-        if (rc.day > 0 && n3 > rc.day) {
+        if (rc.day > 0 && n4 > rc.day) {
           const cap = avail.reduce((a, ps) => a + Math.min(rc.day, ps.length), 0);
-          if (n3 > cap + 1e-9) {
+          if (n4 > cap + 1e-9) {
             out.exempt.day.push(k);
             out.notes.push({
               rule: "day",
@@ -16063,7 +16312,7 @@ var ASPCore = (() => {
               grade: g,
               need: rc.day,
               can: cap,
-              text: `${tn(t)} สอน ${g} ${fmt2(n3)} คาบ/สัปดาห์ แต่ว่างเฉพาะ ${freeText(t)} — วันละไม่เกิน ${rc.day} คาบไม่ได้`
+              text: `${tn(t)} สอน ${g} ${fmt2(n4)} คาบ/สัปดาห์ แต่ว่างเฉพาะ ${freeText(t)} — วันละไม่เกิน ${rc.day} คาบไม่ได้`
             });
           }
         }
@@ -16078,7 +16327,7 @@ var ASPCore = (() => {
           const W2 = list2.reduce((a, e) => a + lessonPeriods(e), 0), dbl = list2.some((e) => pol.doubles.has(`${e.kind}:${e.origin}`));
           const lim = sameAllowed(W2, D, rc, dbl);
           if (W2 <= lim) continue;
-          const A = Array.from({ length: D }, (_, d) => d).filter((d) => Array.from({ length: P3 }, (_, p) => p).some((p) => list2.some((e) => fits(e, d, p)))).length;
+          const A = Array.from({ length: D }, (_, d) => d).filter((d) => Array.from({ length: P4 }, (_, p) => p).some((p) => list2.some((e) => fits(e, d, p)))).length;
           if (!A || W2 <= lim * A + 1e-9) continue;
           const raise = Math.ceil(W2 / A - 1e-9), [g, s] = k.split("|");
           out.exempt.same[k] = raise;
@@ -16097,14 +16346,14 @@ var ASPCore = (() => {
     if (hr) {
       const eventsById = new Map(events.map((e) => [e.id, e]));
       const lockedAt = (d) => Object.entries(locked).filter(([, p]) => {
-        const q = slotPosition(p.slot, P3);
+        const q = slotPosition(p.slot, P4);
         return q.day === d && q.period === 0;
       }).map(([id]) => eventsById.get(id)).filter(Boolean);
       for (const [g, ids] of hr.teachers) {
         const mine = events.filter((e) => e.grades.includes(g) && e.teachers.some((t) => ids.has(t)));
         const options = mine.map((e) => {
           if (locked[e.id]) {
-            const q = slotPosition(locked[e.id].slot, P3);
+            const q = slotPosition(locked[e.id].slot, P4);
             return q.period === 0 ? [q.day] : [];
           }
           return Array.from({ length: D }, (_, d) => d).filter((d) => fits(e, d, 0) && !lockedAt(d).some((o) => o.id !== e.id && (o.grades.some((x) => e.grades.includes(x)) || o.teachers.some((x) => e.teachers.includes(x)))));
@@ -16134,7 +16383,7 @@ var ASPCore = (() => {
 
   // core/src/plancheck.ts
   var PERIODS_OF = (e) => e.duration === 1 ? 1 : 0.5;
-  var fmt3 = (n3) => String(Math.round(n3 * 10) / 10);
+  var fmt3 = (n4) => String(Math.round(n4 * 10) / 10);
   var active = (input) => input.teachers.filter((t) => !t.team && (t.status ?? "active") === "active");
   var worst = (a, b) => a === "bad" || b === "bad" ? "bad" : a === "warn" || b === "warn" ? "warn" : "ok";
   function loads(events) {
@@ -16154,25 +16403,25 @@ var ASPCore = (() => {
     return Math.max(0, cap);
   }
   function planCheck(input, names = {}) {
-    const { setup, events } = input, P3 = setup.periods, D = setup.days.length;
+    const { setup, events } = input, P4 = setup.periods, D = setup.days.length;
     const tn = names.teacher ?? ((id) => input.teachers.find((t) => t.id === id)?.name ?? id);
     const dn = names.day ?? ((d) => setup.days[d] ?? String(d + 1));
     const raw = setup.schedulePolicy ?? {};
-    const pol = policyConfig(setup.schedulePolicy, P3, setup.teacherBlocks);
-    const blocked = blockedByDay(setup.teacherBlocks, P3), people = active(input), load = loads(events);
-    const freeOn = (t, d) => P3 - new Set(blocked.get(`${t}|${d}`) ?? []).size;
+    const pol = policyConfig(setup.schedulePolicy, P4, setup.teacherBlocks);
+    const blocked = blockedByDay(setup.teacherBlocks, P4), people = active(input), load = loads(events);
+    const freeOn = (t, d) => P4 - new Set(blocked.get(`${t}|${d}`) ?? []).size;
     const out = [];
     const proven = autoExempt(input, { teacher: tn, day: dn });
     const rawEx = { ...raw, autoExempt: proven.exempt };
     {
       const det = [], grade = /* @__PURE__ */ new Map();
       for (const e of events) for (const g of e.grades) grade.set(g, (grade.get(g) ?? 0) + PERIODS_OF(e));
-      for (const [g, n3] of grade) if (n3 > P3 * D) det.push(`${g} มีเรียน ${fmt3(n3)} คาบ/สัปดาห์ แต่มีแค่ ${P3 * D} คาบ`);
+      for (const [g, n4] of grade) if (n4 > P4 * D) det.push(`${g} มีเรียน ${fmt3(n4)} คาบ/สัปดาห์ แต่มีแค่ ${P4 * D} คาบ`);
       for (const t of people) {
-        const n3 = load.get(t.id) ?? 0;
+        const n4 = load.get(t.id) ?? 0;
         let cap = 0;
         for (let d = 0; d < D; d++) cap += freeOn(t.id, d);
-        if (n3 > cap) det.push(`${tn(t.id)} สอน ${fmt3(n3)} คาบ แต่ว่างแค่ ${cap} คาบ (ตั้งไม่ว่างไว้ ${P3 * D - cap} คาบ)`);
+        if (n4 > cap) det.push(`${tn(t.id)} สอน ${fmt3(n4)} คาบ แต่ว่างแค่ ${cap} คาบ (ตั้งไม่ว่างไว้ ${P4 * D - cap} คาบ)`);
       }
       out.push({
         key: "base",
@@ -16197,25 +16446,25 @@ var ASPCore = (() => {
           continue;
         }
         const allowed = [];
-        for (let d = 0; d < D; d++) for (let p = 0; p < P3; p++) if (!slotRuleBroken({ ...mine[0], duration: 1 }, (d * P3 + p) * 2, P3, r)) allowed.push(d * P3 + p);
+        for (let d = 0; d < D; d++) for (let p = 0; p < P4; p++) if (!slotRuleBroken({ ...mine[0], duration: 1 }, (d * P4 + p) * 2, P4, r)) allowed.push(d * P4 + p);
         const by = /* @__PURE__ */ new Map();
         for (const e of mine) for (const g of e.grades) by.set(g, (by.get(g) ?? 0) + PERIODS_OF(e));
-        for (const [g, n3] of by) if (n3 > allowed.length) {
+        for (const [g, n4] of by) if (n4 > allowed.length) {
           st = worst(st, hard ? "bad" : "warn");
-          det.push(`“${label2}” ${g} มี ${fmt3(n3)} คาบ แต่กฎให้ลงได้แค่ ${allowed.length} ช่อง${hard ? "" : " (บางคาบจะอยู่นอกกฎ)"}`);
+          det.push(`“${label2}” ${g} มี ${fmt3(n4)} คาบ แต่กฎให้ลงได้แค่ ${allowed.length} ช่อง${hard ? "" : " (บางคาบจะอยู่นอกกฎ)"}`);
         }
         const byT = /* @__PURE__ */ new Map();
         for (const e of mine) for (const t of e.teachers) byT.set(t, (byT.get(t) ?? 0) + PERIODS_OF(e));
-        for (const [t, n3] of byT) {
-          const room = allowed.filter((c) => !(blocked.get(`${t}|${Math.floor(c / P3)}`) ?? []).includes(c % P3)).length;
-          if (n3 > room) {
+        for (const [t, n4] of byT) {
+          const room = allowed.filter((c) => !(blocked.get(`${t}|${Math.floor(c / P4)}`) ?? []).includes(c % P4)).length;
+          if (n4 > room) {
             st = worst(st, hard ? "bad" : "warn");
-            det.push(`“${label2}” ${tn(t)} สอน ${fmt3(n3)} คาบ แต่ว่างในช่องที่กฎให้แค่ ${room} ช่อง`);
+            det.push(`“${label2}” ${tn(t)} สอน ${fmt3(n4)} คาบ แต่ว่างในช่องที่กฎให้แค่ ${room} ช่อง`);
           }
         }
         if (hard) for (const e of mine) {
           const p = input.placements[e.id];
-          if (p?.locked && Number.isInteger(p.slot) && slotRuleBroken(e, p.slot, P3, r)) lockedOut.push(e.id);
+          if (p?.locked && Number.isInteger(p.slot) && slotRuleBroken(e, p.slot, P4, r)) lockedOut.push(e.id);
         }
       }
       if (lockedOut.length) {
@@ -16253,12 +16502,12 @@ var ASPCore = (() => {
         let st = "ok";
         const det = [], count = /* @__PURE__ */ new Map();
         for (const [, ids] of cfg.teachers) for (const t of ids) count.set(t, (count.get(t) ?? 0) + 1);
-        for (const r of homeroomReport(events, {}, P3, cfg)) {
+        for (const r of homeroomReport(events, {}, P4, cfg)) {
           const who = r.teachers.map(tn).join(" + ");
           const firstFree = Math.max(...r.teachers.map((t) => {
-            let n3 = 0;
-            for (let d = 0; d < D; d++) if (!(blocked.get(`${t}|${d}`) ?? []).includes(0)) n3++;
-            return n3;
+            let n4 = 0;
+            for (let d = 0; d < D; d++) if (!(blocked.get(`${t}|${d}`) ?? []).includes(0)) n4++;
+            return n4;
           }));
           if (!r.possible) {
             st = worst(st, "warn");
@@ -16271,9 +16520,9 @@ var ASPCore = (() => {
             det.push(`${r.grade}: ${who} ไม่ว่างคาบ 1 จนเหลือ ${firstFree} วัน`);
           }
         }
-        for (const [t, n3] of count) if (n3 * min > D) {
+        for (const [t, n4] of count) if (n4 * min > D) {
           st = worst(st, "warn");
-          det.push(`${tn(t)} ประจำชั้น ${n3} ชั้น แต่คาบแรกมีวันละครั้ง — ครบทุกชั้นไม่ได้`);
+          det.push(`${tn(t)} ประจำชั้น ${n4} ชั้น แต่คาบแรกมีวันละครั้ง — ครบทุกชั้นไม่ได้`);
         }
         out.push({
           key: "homeroom",
@@ -16292,20 +16541,20 @@ var ASPCore = (() => {
       const det = [];
       let st = "ok";
       for (const t of people) {
-        const n3 = load.get(t.id) ?? 0;
-        if (!n3) continue;
+        const n4 = load.get(t.id) ?? 0;
+        if (!n4) continue;
         let capHard = 0, capAll = 0;
         for (let d = 0; d < D; d++) {
           const f = freeOn(t.id, d);
-          capHard += dayCapacity(f, pol, raw, P3, true);
-          capAll += dayCapacity(f, pol, raw, P3, false);
+          capHard += dayCapacity(f, pol, raw, P4, true);
+          capAll += dayCapacity(f, pol, raw, P4, false);
         }
-        if (hardOn && n3 > capHard) {
+        if (hardOn && n4 > capHard) {
           st = "bad";
-          det.push(`${tn(t.id)} สอน ${fmt3(n3)} คาบ แต่นโยบายบังคับให้สอนได้ไม่เกิน ${capHard} คาบ/สัปดาห์ — จะเว้นไว้ ${fmt3(n3 - capHard)} คาบ`);
-        } else if (n3 > capAll) {
+          det.push(`${tn(t.id)} สอน ${fmt3(n4)} คาบ แต่นโยบายบังคับให้สอนได้ไม่เกิน ${capHard} คาบ/สัปดาห์ — จะเว้นไว้ ${fmt3(n4 - capHard)} คาบ`);
+        } else if (n4 > capAll) {
           st = worst(st, "warn");
-          det.push(`${tn(t.id)} สอน ${fmt3(n3)} คาบ ตามนโยบายสอนได้ ${capAll} คาบ — บางวันต้องผิดนโยบาย`);
+          det.push(`${tn(t.id)} สอน ${fmt3(n4)} คาบ ตามนโยบายสอนได้ ${capAll} คาบ — บางวันต้องผิดนโยบาย`);
         }
       }
       out.push({
@@ -16323,9 +16572,9 @@ var ASPCore = (() => {
     if (pol.minTeacherPeriodsPerDay > 0) {
       const det = [];
       if (pol.minTeacherPeriodsEveryDay) for (const t of people) {
-        const n3 = load.get(t.id) ?? 0;
-        if (!n3) continue;
-        if (n3 < pol.minTeacherPeriodsPerDay * D) det.push(`${tn(t.id)} สอน ${fmt3(n3)} คาบ/สัปดาห์ ไม่พอวันละ ${pol.minTeacherPeriodsPerDay} คาบทุกวัน`);
+        const n4 = load.get(t.id) ?? 0;
+        if (!n4) continue;
+        if (n4 < pol.minTeacherPeriodsPerDay * D) det.push(`${tn(t.id)} สอน ${fmt3(n4)} คาบ/สัปดาห์ ไม่พอวันละ ${pol.minTeacherPeriodsPerDay} คาบทุกวัน`);
       }
       out.push({
         key: "minDaily",
@@ -16353,7 +16602,7 @@ var ASPCore = (() => {
       });
     }
     if (pol.teacherBothHalves) {
-      const split = afternoonFrom(pol, P3), off = halfOffSet(setup.teacherBlocks, P3, split).size;
+      const split = afternoonFrom(pol, P4), off = halfOffSet(setup.teacherBlocks, P4, split).size;
       out.push({
         key: "halves",
         section: "policy",
@@ -16366,7 +16615,7 @@ var ASPCore = (() => {
       });
     }
     if (pol.minDoubleFreeDays > 0) {
-      const fixed = fixedByDay(setup.teacherBlocks, events, input.placements, P3), det = [];
+      const fixed = fixedByDay(setup.teacherBlocks, events, input.placements, P4), det = [];
       let st = "ok";
       for (const t of people) {
         let can = 0;
@@ -16374,14 +16623,14 @@ var ASPCore = (() => {
         for (let d = 0; d < D; d++) {
           const f = freeOn(t.id, d);
           caps.push(f);
-          if (hasDoubleFree([], fixed.get(`${t.id}|${d}`) ?? [], P3, pol.breakAfter)) can++;
+          if (hasDoubleFree([], fixed.get(`${t.id}|${d}`) ?? [], P4, pol.breakAfter)) can++;
         }
-        const want = Math.min(pol.minDoubleFreeDays, can), n3 = load.get(t.id) ?? 0;
+        const want = Math.min(pol.minDoubleFreeDays, can), n4 = load.get(t.id) ?? 0;
         const room = caps.sort((a, b) => b - a).reduce((s, c, i) => s + (i >= D - want ? Math.max(0, c - 2) : c), 0);
         if (can < pol.minDoubleFreeDays) det.push(`${tn(t.id)}: ไม่ว่าง/ล็อกไว้จนทำได้แค่ ${can} วัน (ไม่นับเป็นข้อผิด)`);
-        if (n3 > room) {
+        if (n4 > room) {
           st = worst(st, "warn");
-          det.push(`${tn(t.id)} สอน ${fmt3(n3)} คาบ — เหลือคาบว่างไม่พอให้ว่าง 2 คาบติดกัน ${want} วัน`);
+          det.push(`${tn(t.id)} สอน ${fmt3(n4)} คาบ — เหลือคาบว่างไม่พอให้ว่าง 2 คาบติดกัน ${want} วัน`);
         }
       }
       out.push({
@@ -16395,13 +16644,13 @@ var ASPCore = (() => {
         details: det
       });
     }
-    const rc = repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P3);
+    const rc = repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P4);
     if (rc) {
       const det = [];
       let st = "ok";
       const lockedOnly = {};
       for (const [id, p] of Object.entries(input.placements)) if (p?.locked && Number.isInteger(p.slot)) lockedOnly[id] = p;
-      for (const x of repeatReport(events, lockedOnly, P3, D, { ...rawEx, breakAfter: pol.breakAfter }, pol.doubles)) {
+      for (const x of repeatReport(events, lockedOnly, P4, D, { ...rawEx, breakAfter: pol.breakAfter }, pol.doubles)) {
         if (x.kind === "day" && !rc.dayHard) continue;
         st = worst(st, "warn");
         det.push(`ล็อกไว้: ${issueText(x, tn, dn)} — ตัวจัดตารางย้ายให้ไม่ได้`);
@@ -16412,16 +16661,16 @@ var ASPCore = (() => {
         sw.set(k, (sw.get(k) ?? 0) + lessonPeriods(e));
         for (const t of e.teachers) tcw.set(`${t}|${g}`, (tcw.get(`${t}|${g}`) ?? 0) + lessonPeriods(e));
       }
-      if (rc.day > 0) for (const [k, n3] of tcw) {
+      if (rc.day > 0) for (const [k, n4] of tcw) {
         const [t, g] = k.split("|");
-        if (!rc.exempt.has(g) && n3 > rc.day * D) {
+        if (!rc.exempt.has(g) && n4 > rc.day * D) {
           st = worst(st, "warn");
-          det.push(`${tn(t)} สอน ${g} ${fmt3(n3)} คาบ/สัปดาห์ — เกินวันละ ${rc.day} ทุกวันอยู่แล้ว`);
+          det.push(`${tn(t)} สอน ${g} ${fmt3(n4)} คาบ/สัปดาห์ — เกินวันละ ${rc.day} ทุกวันอยู่แล้ว`);
         }
       }
-      const must = [...sw].filter(([, n3]) => rc.sameMax > 0 && n3 > rc.sameMax * D).map(([k, n3]) => {
+      const must = [...sw].filter(([, n4]) => rc.sameMax > 0 && n4 > rc.sameMax * D).map(([k, n4]) => {
         const [g, s] = k.split("|");
-        return `${g} ${s} ${fmt3(n3)} คาบ/สัปดาห์ → ซ้ำได้วันละ ${sameAllowed(n3, D, rc)} คาบ`;
+        return `${g} ${s} ${fmt3(n4)} คาบ/สัปดาห์ → ซ้ำได้วันละ ${sameAllowed(n4, D, rc)} คาบ`;
       });
       out.push({
         key: "repeat",
@@ -16442,10 +16691,10 @@ var ASPCore = (() => {
       status: "warn",
       can: `${proven.notes.length} ข้อ · ระบบยกเว้นให้เอง (พิสูจน์ด้วยการนับ)`,
       how: "ถ้าต้องการให้ครบ: ลดเวลาที่ครูไม่ว่าง ปลดล็อกคาบ หรือแบ่งคาบให้ครูคนอื่น",
-      details: proven.notes.map((n3) => n3.text)
+      details: proven.notes.map((n4) => n4.text)
     });
     if (pol.doubles.size) {
-      const rep = doubleReport(events, input.placements, P3, pol), want = rep.reduce((a, x) => a + x.pairsWanted, 0);
+      const rep = doubleReport(events, input.placements, P4, pol), want = rep.reduce((a, x) => a + x.pairsWanted, 0);
       out.push({
         key: "doubles",
         section: "policy",
@@ -16492,8 +16741,8 @@ var ASPCore = (() => {
     return x.kind === "same" ? `${x.grade} วัน${dn(x.day)}: ${x.subject} ${fmt3(x.count)} คาบ (${ps})${(x.inRow ?? 1) > 1 ? ` ติดกัน ${x.inRow} คาบ` : ""}${x.count > x.limit ? ` — ไม่เกิน ${x.limit}` : " — ไม่ควรติดกัน"}` : `${x.grade} วัน${dn(x.day)}: ${tn(x.teacher ?? "")} ${x.kind === "run" ? `สอนติดกัน ${x.count} คาบ` : `สอน ${x.count} คาบในวันเดียว`} (${ps}) — ไม่เกิน ${x.limit}`;
   }
   function planMeasure(input) {
-    const { setup, events, placements } = input, P3 = setup.periods, D = setup.days.length;
-    const pol = policyConfig(setup.schedulePolicy, P3, setup.teacherBlocks), raw = setup.schedulePolicy ?? {};
+    const { setup, events, placements } = input, P4 = setup.periods, D = setup.days.length;
+    const pol = policyConfig(setup.schedulePolicy, P4, setup.teacherBlocks), raw = setup.schedulePolicy ?? {};
     const chk = checkTimetable(input, { requireComplete: false }), s = optimizeTimetable(input, { maxSteps: 0 }).before;
     const placed = events.filter((e) => Number.isInteger(placements[e.id]?.slot)).length, total = events.length;
     const out = {};
@@ -16506,13 +16755,13 @@ var ASPCore = (() => {
     }
     const cfg = homeroomConfig(raw, setup.homeroom, D);
     if (cfg) {
-      const rows = homeroomReport(events, placements, P3, cfg), ok = rows.filter((r) => r.ok).length;
+      const rows = homeroomReport(events, placements, P4, cfg), ok = rows.filter((r) => r.ok).length;
       out.homeroom = { value: ok, of: rows.length, text: `ครบ ${ok}/${rows.length} ชั้น`, met: ok === rows.length, lower: false };
     }
     out.policy = { value: s.violations, text: s.violations ? `ผิด ${s.violations} จุด` : "ไม่ผิดเลย", met: !s.violations, lower: true };
-    if (repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P3)) {
+    if (repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P4)) {
       const tn = (id) => input.teachers.find((t) => t.id === id)?.name ?? id, dn = (d) => setup.days[d] ?? String(d + 1);
-      const rr = repeatReport(events, placements, P3, D, { ...raw, breakAfter: pol.breakAfter }, pol.doubles), c = (k) => rr.filter((x) => x.kind === k).length;
+      const rr = repeatReport(events, placements, P4, D, { ...raw, breakAfter: pol.breakAfter }, pol.doubles), c = (k) => rr.filter((x) => x.kind === k).length;
       out.repeat = {
         value: rr.length,
         text: rr.length ? `วิชาซ้ำวันเดียว ${c("same")} · ครูเดิมติดกันเกิน ${c("run")} · เกินวันละ ${c("day")}` : "ไม่เกินเลย",
@@ -16527,41 +16776,41 @@ var ASPCore = (() => {
         const p = placements[e.id];
         if (!p || !Number.isInteger(p.slot)) continue;
         for (const c of cellsOf(e.duration, p.slot)) {
-          const q = slotPosition(c, P3);
+          const q = slotPosition(c, P4);
           for (const t of e.teachers) if (act.has(t)) {
             const k = `${t}|${q.day}`;
             (used.get(k) ?? used.set(k, /* @__PURE__ */ new Set()).get(k)).add(q.period);
           }
         }
       }
-      let n3 = 0;
+      let n4 = 0;
       for (const t of act) if (!pol.minDailyFree.has(t)) for (let d = 0; d < D; d++) {
         const u = used.get(`${t}|${d}`)?.size ?? 0;
-        if ((u || pol.minTeacherPeriodsEveryDay) && u < pol.minTeacherPeriodsPerDay) n3++;
+        if ((u || pol.minTeacherPeriodsEveryDay) && u < pol.minTeacherPeriodsPerDay) n4++;
       }
-      out.minDaily = { value: n3, text: n3 ? `ต่ำกว่า ${n3} วัน-ครู` : "ครบ", met: !n3, lower: true };
+      out.minDaily = { value: n4, text: n4 ? `ต่ำกว่า ${n4} วัน-ครู` : "ครบ", met: !n4, lower: true };
     }
     const wk = Math.max(0, Number(raw.minTeacherPeriodsPerWeek) || 0);
     if (wk > 0) {
-      const n3 = teacherWeekLoads(events, input.teachers, wk).filter((x) => x.short > 0).length;
-      out.weekLoad = { value: n3, text: n3 ? `ต่ำกว่า ${n3} คน` : "ครบ", met: !n3, lower: true };
+      const n4 = teacherWeekLoads(events, input.teachers, wk).filter((x) => x.short > 0).length;
+      out.weekLoad = { value: n4, text: n4 ? `ต่ำกว่า ${n4} คน` : "ครบ", met: !n4, lower: true };
     }
     if (pol.teacherBothHalves) {
-      const n3 = halfDayReport(events, placements, input.teachers, P3, D, pol).length;
-      out.halves = { value: n3, text: n3 ? `ช่วงเดียว ${n3} วัน-ครู` : "ครบทุกวัน", met: !n3, lower: true };
+      const n4 = halfDayReport(events, placements, input.teachers, P4, D, pol).length;
+      out.halves = { value: n4, text: n4 ? `ช่วงเดียว ${n4} วัน-ครู` : "ครบทุกวัน", met: !n4, lower: true };
     }
     if (pol.minDoubleFreeDays > 0) {
-      const r = doubleFreeReport(events, placements, input.teachers, P3, D, pol, setup.teacherBlocks), ok = r.filter((x) => x.ok).length;
+      const r = doubleFreeReport(events, placements, input.teachers, P4, D, pol, setup.teacherBlocks), ok = r.filter((x) => x.ok).length;
       out.doubleFree = { value: ok, of: r.length, text: `ครบ ${ok}/${r.length} คน`, met: ok === r.length, lower: false };
     }
     if (pol.doubles.size) {
-      const r = doubleReport(events, placements, P3, pol), have = r.reduce((a, x) => a + Math.min(x.pairs, x.pairsWanted), 0), want = r.reduce((a, x) => a + x.pairsWanted, 0);
+      const r = doubleReport(events, placements, P4, pol), have = r.reduce((a, x) => a + Math.min(x.pairs, x.pairsWanted), 0), want = r.reduce((a, x) => a + x.pairsWanted, 0);
       out.doubles = { value: have, of: want, text: `ติดกัน ${have}/${want} คู่`, met: have >= want, lower: false };
     }
     out.mobility = { value: Math.round(s.mobility), text: `คะแนน ${Math.round(s.mobility).toLocaleString("en-US")} (ยิ่งต่ำยิ่งดี)`, met: true, lower: true };
     const mraw = setup.mobility ?? {};
     if (mraw.route && mraw.route.enabled !== false && mraw.gradeBuildings && Object.keys(mraw.gradeBuildings).length) {
-      const rr = routeReport(events, placements, P3, D, mraw), sum = (k) => rr.reduce((a, x) => a + x[k], 0);
+      const rr = routeReport(events, placements, P4, D, mraw), sum = (k) => rr.reduce((a, x) => a + x[k], 0);
       const bad = sum("jumps") + sum("backs") + sum("over");
       out.mobility = { value: bad, text: `ย้ายตึก ${sum("moves")} ครั้ง/สัปดาห์ · กระโดดไกล ${sum("jumps")} · เดินย้อน ${sum("backs")} · เกินกำหนด ${sum("over")}`, met: !bad, lower: true };
     }
@@ -16682,8 +16931,8 @@ var ASPCore = (() => {
     for (const r of input.setup.slotRules ?? []) if (r && !r.off && r.strength !== "soft" && r.id)
       out.push({ key: "slot:" + r.id, label: `ผ่อนกฎคาบ "${slotRuleLabel(r)}" เป็นพยายาม`, patch: [{ kind: "slotRule", id: r.id }] });
     const lockedIds = new Set(Object.entries(input.placements).filter(([, p]) => p?.locked).map(([id]) => id));
-    const ex = withAutoExempt(input), P3 = input.setup.periods, D = input.setup.days.length;
-    const inIssues = new Set(repeatReport(input.events, placements, P3, D, ex.setup.schedulePolicy).flatMap((x) => x.ids).filter((id) => lockedIds.has(id)));
+    const ex = withAutoExempt(input), P4 = input.setup.periods, D = input.setup.days.length;
+    const inIssues = new Set(repeatReport(input.events, placements, P4, D, ex.setup.schedulePolicy).flatMap((x) => x.ids).filter((id) => lockedIds.has(id)));
     if (inIssues.size) out.push({ key: "unlock", label: `ปลดล็อก ${inIssues.size} คาบที่อยู่ในวิชาซ้ำ`, patch: [{ kind: "unlock", ids: [...inIssues] }] });
     return out;
   }
@@ -16692,7 +16941,7 @@ var ASPCore = (() => {
   }
   function adviseRelax(input, placements, options = {}) {
     const before = tierVector(input, placements), opts = relaxOptions(input, placements).slice(0, options.maxTrials ?? 10);
-    const P3 = input.setup.periods;
+    const P4 = input.setup.periods;
     const run = (relax) => {
       const relaxed = withAutoExempt(applyRelax({ ...input, placements }, relax?.patch ?? []));
       const r = optimizeTimetable(relaxed, {
@@ -16710,7 +16959,7 @@ var ASPCore = (() => {
       for (const p of relax?.patch ?? []) {
         if (p.kind === "slotRule") {
           const rule = (input.setup.slotRules ?? []).find((x) => x.id === p.id);
-          if (rule) cost += input.events.filter((e) => slotRuleMatches(e, rule) && Number.isInteger(r.placements[e.id]?.slot) && slotRuleBroken(e, r.placements[e.id].slot, P3, rule)).length;
+          if (rule) cost += input.events.filter((e) => slotRuleMatches(e, rule) && Number.isInteger(r.placements[e.id]?.slot) && slotRuleBroken(e, r.placements[e.id].slot, P4, rule)).length;
         }
         if (p.kind === "unlock") cost += p.ids.filter((id) => r.placements[id]?.slot !== input.placements[id]?.slot).length;
       }
@@ -16752,8 +17001,8 @@ var ASPCore = (() => {
     return { before, trials, best, text };
   }
   function explainUnmet(input, placements, advice) {
-    const ex = withAutoExempt(input), { setup, events } = ex, P3 = setup.periods, D = setup.days.length;
-    const raw = setup.schedulePolicy ?? {}, pol = policyConfig(setup.schedulePolicy, P3, setup.teacherBlocks);
+    const ex = withAutoExempt(input), { setup, events } = ex, P4 = setup.periods, D = setup.days.length;
+    const raw = setup.schedulePolicy ?? {}, pol = policyConfig(setup.schedulePolicy, P4, setup.teacherBlocks);
     const tn = (id) => input.teachers.find((t) => t.id === id)?.name ?? id, dn = (d) => setup.days[d] ?? String(d + 1);
     const locked = new Set(Object.entries(input.placements).filter(([, p]) => p?.locked).map(([id]) => id));
     const v = tierVector(input, placements), out = [];
@@ -16774,7 +17023,7 @@ var ASPCore = (() => {
       for (const e of events) {
         const p = placements[e.id];
         if (!p || !Number.isInteger(p.slot)) continue;
-        const d = slotPosition(p.slot, P3).day;
+        const d = slotPosition(p.slot, P4).day;
         for (const t of e.teachers) {
           const k = `${t}|${d}`;
           (by.get(k) ?? by.set(k, []).get(k)).push({ e, slot: p.slot });
@@ -16785,30 +17034,30 @@ var ASPCore = (() => {
       for (const [k, list2] of by) {
         const [t, d] = k.split("|");
         if (!act.has(t)) continue;
-        const r = teacherDayPolicy(list2, P3, pol, k);
+        const r = teacherDayPolicy(list2, P4, pol, k);
         if (r.violations) {
           items.push(`${tn(t)} วัน${dn(+d)}: สอน ${r.used} คาบ`);
           ids.push(...list2.map((x) => x.e.id));
         }
       }
       if (pol.minDoubleFreeDays && pol.enforceDoubleFree) {
-        for (const x of doubleFreeReport(events, placements, input.teachers, P3, D, pol, setup.teacherBlocks)) if (!x.ok) items.push(`${tn(x.teacher)}: ว่าง 2 คาบติดกันแค่ ${x.days.length} วัน`);
+        for (const x of doubleFreeReport(events, placements, input.teachers, P4, D, pol, setup.teacherBlocks)) if (!x.ok) items.push(`${tn(x.teacher)}: ว่าง 2 คาบติดกันแค่ ${x.days.length} วัน`);
       }
       out.push({ key: "policy", title: `นโยบายครูแบบบังคับ ผิด ${v.policy} จุด`, items, reason: why("policy", ids) });
     }
     if (v.repeat) {
-      const rr = repeatReport(events, placements, P3, D, { ...raw, breakAfter: pol.breakAfter }, pol.doubles).filter((x) => x.kind !== "day" || repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P3)?.dayHard);
+      const rr = repeatReport(events, placements, P4, D, { ...raw, breakAfter: pol.breakAfter }, pol.doubles).filter((x) => x.kind !== "day" || repeatConfig({ ...raw, breakAfter: pol.breakAfter }, P4)?.dayHard);
       out.push({ key: "repeat", title: `วิชาเดิม/ครูเดิม ${v.repeat} จุด`, items: rr.map((x) => issueText(x, tn, dn)), reason: why("repeat", rr.flatMap((x) => x.ids)) });
     }
     if (v.homeroom) {
       const hr = homeroomConfig(raw, setup.homeroom, D);
-      const rows = homeroomReport(events, placements, P3, hr).filter((r) => !r.ok);
+      const rows = homeroomReport(events, placements, P4, hr).filter((r) => !r.ok);
       out.push({
         key: "homeroom",
         title: `ครูประจำชั้นคาบแรก ขาด ${v.homeroom} วัน`,
         items: rows.map((r) => `${r.grade}: ${r.teachers.map(tn).join(" + ")} คาบ 1 ได้ ${r.met}/${r.min} วัน`),
         // in the way: locked lessons of these classes in period 1
-        reason: why("homeroom", events.filter((e) => rows.some((r) => e.grades.includes(r.grade)) && locked.has(e.id) && Number.isInteger(placements[e.id]?.slot) && slotPosition(placements[e.id].slot, P3).period === 0).map((e) => e.id))
+        reason: why("homeroom", events.filter((e) => rows.some((r) => e.grades.includes(r.grade)) && locked.has(e.id) && Number.isInteger(placements[e.id]?.slot) && slotPosition(placements[e.id].slot, P4).period === 0).map((e) => e.id))
       });
     }
     if (v.prefer) {
@@ -16816,8 +17065,8 @@ var ASPCore = (() => {
       for (const e of events) {
         const p = placements[e.id];
         if (!p || !Number.isInteger(p.slot)) continue;
-        const soft = slotRulesFor(e, setup.slotRules, "soft"), q = slotPosition(p.slot, P3);
-        if (soft.length && softSlotBreaks(e, p.slot, P3, soft)) {
+        const soft = slotRulesFor(e, setup.slotRules, "soft"), q = slotPosition(p.slot, P4);
+        if (soft.length && softSlotBreaks(e, p.slot, P4, soft)) {
           items.push(`${e.grades.join(", ")} ${cleanSubject(e.subjects[0] ?? "")} วัน${dn(q.day)} คาบ ${q.period + 1}`);
           ids.push(e.id);
         }
@@ -16828,7 +17077,7 @@ var ASPCore = (() => {
   }
 
   // core/src/index.ts
-  var VERSION = "0.30.0";
+  var VERSION = "0.32.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -16837,7 +17086,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.48',inits:[],syncs:[]};
+var UX=window.UX={version:'24.50',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -19628,7 +19877,7 @@ function card(){
   var w=el('button','ux-btn','ส่งออก Word');w.type='button';w.onclick=exportWord;
   a.appendChild(o);a.appendChild(w);c.appendChild(a);
   sec.insertBefore(c,sec.firstChild)}
-UX.order={exportEach:exportEach,sigGroup:sigGroup,pickSig:pickSig,setSig:setSig,inkOnly:inkOnly,pickEmblem:pickEmblem,clearEmblem:clearEmblem,emblemOnPaper:emblemOnPaper,open:open,model:model,settings:settings,exportWord:exportWord,print:printDoc,teacherList:teacherList,sheets:function(){return sheets(teacherList())},state:S};
+UX.order={exportEach:exportEach,sigGroup:sigGroup,pickSig:pickSig,setSig:setSig,inkOnly:inkOnly,pickEmblem:pickEmblem,clearEmblem:clearEmblem,emblemOnPaper:emblemOnPaper,emblemImage:function(){return emblem(settings())},open:open,model:model,settings:settings,exportWord:exportWord,print:printDoc,teacherList:teacherList,sheets:function(){return sheets(teacherList())},state:S};
 UX.onInit(card);
 UX.onSync(card);
 })(window.UX);
@@ -20366,6 +20615,7 @@ if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
 var C=window.ASPCore,KEY='ux_docs_view_v1',SEL='ux_docs_sel_v1';
 var DOCS=[
   {k:'order',t:'ชุดคำสั่งมอบหมายให้ปฏิบัติการสอน',d:'คำสั่ง + สรุปสำหรับผู้บริหาร + ชุดรายคน'},
+  {k:'handover',t:'คำสั่งเปลี่ยนครูผู้สอนระหว่างภาคเรียน',d:'แผนเดิม → แผนปัจจุบัน · ผู้ส่งมอบ / ผู้รับมอบ · ตารางสอนใหม่'},
   {k:'teacher',t:'ตารางสอนรายครู',d:'A4 แนวนอน คนละ 1 แผ่น',sheet:true},
   {k:'grade',t:'ตารางเรียนรายชั้น',d:'A4 แนวนอน ชั้นละ 1 แผ่น',sheet:true},
   {k:'room',t:'ตารางการใช้ห้อง',d:'ห้องที่กำหนดไว้ในตารางสอน',sheet:true},
@@ -20376,7 +20626,7 @@ var DOCS=[
   {k:'teacherCourses',t:'รายงานรายวิชารายครู',d:'วิชา รหัส ชั้น หน้าที่ ชั่วโมง ของครูแต่ละคน',rep:true,pick:true},
   {k:'compare',t:'เปรียบเทียบแผน',d:'สิ่งที่เปลี่ยนระหว่างสองแผน',rep:true}];
 var OPT_DEFAULTS={showTeacher:true,showRoom:false,showCode:true,showGrades:true,showNotes:true,minHours:12,sort:C.COURSE_SORT_DEFAULT,sortBy:{}};
-var SORTED={order:1,teacherCourses:1,courses:1};   /* V24.48 documents with a course list */
+var SORTED={order:1,handover:1,teacherCourses:1,courses:1};   /* V24.48 documents with a course list */
 var S={mode:'new',doc:'order',target:'all',base:'',sig:'',model:null,info:null};
 try{if(localStorage.getItem(KEY)==='legacy')S.mode='legacy';var sv=JSON.parse(localStorage.getItem(SEL)||'null');
   if(sv&&DOCS.some(function(d){return d.k===sv.doc})){S.doc=sv.doc;S.target=sv.target||'all';S.base=sv.base||''}}catch(e){}
@@ -20503,6 +20753,20 @@ function comparePages(){
        v141DiffTeacher(q),arrow(q.old?v141RowGroups(q.a,q.old)||'—':'—',q.cur?v141RowGroups(q.b,q.cur)||'—':'—')]}),empty:'ไม่มีรายวิชาที่เปลี่ยน'},
     {kind:'heading',text:'ผลต่อชั่วโมงสอนของครู'},
     {kind:'table',columns:[{label:'ครู',w:5,align:'left'},{label:'แผนอ้างอิง',w:2},{label:'แผนที่เทียบ',w:2},{label:'ผลต่าง',w:2}],rows:imp.map(function(r){return r.slice(0,4)}),empty:'ไม่มีครูที่ชั่วโมงเปลี่ยน'}]}]}
+/* ---- V24.50 คำสั่งเปลี่ยนครูผู้สอนระหว่างภาคเรียน: db.docSettings.uxHandover {base, pick{key:bool}, orderNo, refOrder, reason, eff*, date*, ack, sheets} */
+function hoSaved(){return Object.assign({},ds().uxHandover||{})}
+function saveHo(patch){act(function(){ds().uxHandover=Object.assign(hoSaved(),patch)})}
+function hoBase(){var sc=project.scenarios||[],b=hoSaved().base;
+  return sc.find(function(x){return x.id===b&&x.id!==project.activeScenarioId})||sc.find(function(x){return x.id!==project.activeScenarioId})||null}
+function planOf(d){return {rows:d.rows||[],teachers:d.teachers||[],jointGroups:d.jointGroups||[],codes:(d.docSettings||{}).codes||{}}}
+function hoItems(){var b=hoBase();if(!b)return [];var list=[];try{list=C.teacherChanges(planOf(scenarioData(b)),planOf(db))}catch(e){}
+  return sortList('handover',list,function(x){return {name:x.subject,code:x.code,grades:x.grades}})}
+function hoPicked(items){var pk=hoSaved().pick||{};return items.filter(function(x){return Object.prototype.hasOwnProperty.call(pk,x.key)?!!pk[x.key]:x.basic})}
+function hoLabel(x){return x.grades.join(', ')+' '+x.subject+(x.code?' ('+x.code+')':'')+(x.kind==='co'||x.kind==='jointCo'?' · ครูร่วม':x.kind==='joint'?' · เรียนรวม':'')+': '+(x.from.join(', ')||'–')+' → '+(x.to.join(', ')||'–')}
+function hoModel(s){
+  var items=hoPicked(hoItems()),to={};items.forEach(function(x){x.toIds.forEach(function(id){to[id]=1})});
+  var sh=(UX.order?UX.order.sheets():[]).filter(function(x){return to[x.id]});
+  return C.buildHandoverDoc({settings:s,handover:hoSaved(),items:items,sheets:sh,gradeOrder:db.grades.slice(),emblem:UX.order&&UX.order.emblemImage?UX.order.emblemImage():null})}
 function reportPages(k,tg){return k==='kks'?kksPages():k==='exec'?execPages():k==='teacherCourses'?teacherPages(tg):comparePages()}
 
 /* ---- the model of the chosen document ---------------------------------------------------------------------------- */
@@ -20510,6 +20774,7 @@ function model(k,tg){
   k=k||S.doc;tg=tg||S.target;
   var s=shared(),o=opts(),d=docOf(k),m,n=0;
   if(k==='order'){m=UX.order.model();n=UX.order.state.counts?UX.order.state.counts.teachers:0}
+  else if(k==='handover'){m=hoModel(s);n=hoPicked(hoItems()).length}
   else if(d.sheet){var sh=sheetsFor(k,o);n=sh.length;if(tg!=='all')sh=sh.filter(function(x){return x.id===tg});m=C.buildTimetableDoc({kind:k,settings:s,sheets:sh})}
   else if(d.rep){var pages=reportPages(k,tg);n=k==='teacherCourses'?targets(k).length:k==='compare'?(project.scenarios||[]).length:pages.length;
     m=C.buildReportDoc({settings:s,title:d.t+' ภาคเรียนที่ '+s.semester+' ปีการศึกษา '+s.year,pages:pages})}
@@ -20532,7 +20797,8 @@ function exportWord(){
 function printDoc(){
   if(S.doc==='order'){UX.order.print('all');return}
   var m=model();if(!m.sections.length){UX.toast('ไม่มีหน้าที่จะพิมพ์');return}
-  var land=m.sections.every(function(x){return x.landscape}),page=land?'@page{size:A4 landscape;margin:0}':'@page{size:A4 portrait;margin:0}';
+  var land=m.sections.every(function(x){return x.landscape}),mixed=!land&&m.sections.some(function(x){return x.landscape});
+  var page=land?'@page{size:A4 landscape;margin:0}':mixed?'@page{size:A4;margin:0}':'@page{size:A4 portrait;margin:0}';   /* V24.50 mixed = the order's way */
   var html='<!doctype html><html lang="th"><head><meta charset="utf-8"><title>'+fileName('').replace(/[<&]/g,'')+'</title><style>body{margin:0;background:#fff}'+C.PAPER_CSS+page+'</style></head><body>'+
     C.renderHtml(m,false)+'</body></html>';
   var f=$('uxDocsPrint');if(f)f.remove();
@@ -20584,7 +20850,7 @@ function render(){
   var paper=el('div','ux-docs-paper ux-od-paper');paper.id='uxDocsPaper';paper.setAttribute('role','region');paper.setAttribute('aria-label','ตัวอย่างหน้ากระดาษ A4: '+d.t);paper.tabIndex=0;
   if(!m.sections.length)paper.appendChild(el('p','ux-docs-empty',S.doc==='room'?'ยังไม่ได้กำหนดห้องให้รายวิชาใดในตารางสอน (กำหนดห้องได้ในหน้าตารางสอนแบบเดิม)':'ยังไม่มีข้อมูลสำหรับเอกสารนี้ — จัดตารางสอนหรือรายวิชาก่อน'));
   else{var wrap=el('div');wrap.innerHTML=C.renderHtml(m,S.doc!=='order');paper.appendChild(wrap);   /* escaped by the core */
-    if(S.doc==='order'&&UX.order&&UX.order.emblemOnPaper)UX.order.emblemOnPaper(paper)}
+    if((S.doc==='order'||S.doc==='handover')&&UX.order&&UX.order.emblemOnPaper)UX.order.emblemOnPaper(paper)}
   paper.addEventListener('focusout',onPaperEdit);
   paper.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('dx-field')){e.preventDefault();e.target.blur()}});
   body.appendChild(paper);body.appendChild(panel(d,m));h.appendChild(body);
@@ -20597,6 +20863,7 @@ function fit(m){var p=$('uxDocsPaper');if(!p)return;m=m||S.model;
 function onPaperEdit(ev){
   var f=ev.target.closest&&ev.target.closest('.dx-field');if(!f)return;
   var key=f.dataset.field,val=f.textContent.replace(/\s+/g,' ').trim(),cur=shared(),patch={};
+  if(key&&key.indexOf('ho:')===0){var hk=key.slice(3);if(String(hoSaved()[hk]==null?C.HANDOVER_DEFAULTS[hk]:hoSaved()[hk])!==val){var hp={};hp[hk]=val;saveHo(hp)}return}
   if(['school','signerName','academicName'].indexOf(key)<0)return;
   if(key==='school')val=noPrefix(val);
   if(String(cur[key]||'')===val)return;
@@ -20615,10 +20882,37 @@ function sortGroup(k,o){
   g.appendChild(field('ค่ารวมทุกเอกสาร','opt.sort',C.courseSortOf(o.sort),'select',C.COURSE_SORTS));
   g.appendChild(el('p','ux-tt-hint','วิชาที่ไม่มีรหัสอยู่ท้ายเสมอ · ครูคนเดียวกันเรียงวิชาก่อนแล้วชั้น'));
   return g}
+function hoPanel(p){
+  var h=Object.assign({},C.HANDOVER_DEFAULTS,hoSaved()),sc=project.scenarios||[],b=hoBase(),cur=sc.find(function(x){return x.id===project.activeScenarioId})||{};
+  var g=group('เทียบแผน');
+  if(!b){g.appendChild(el('p','ux-tt-hint','มีแผนเดียว — ก่อนเปลี่ยนครู ให้คัดลอกแผนเก็บไว้เป็นแผนเดิมในหน้าแผน แล้วแก้ครูในแผนปัจจุบัน'));p.appendChild(g);return}
+  g.appendChild(field('แผนเดิม (ก่อนเปลี่ยนครู)','ho.base',b.id,'select',sc.filter(function(x){return x.id!==project.activeScenarioId}).map(function(x){return [x.id,x.name||x.id]})));
+  g.appendChild(el('p','ux-tt-hint','แผนปัจจุบัน: '+(cur.name||'แผนที่เปิดอยู่')));p.appendChild(g);
+  var items=hoItems(),picked=hoPicked(items),on={};picked.forEach(function(x){on[x.key]=1});
+  var l=group('รายการที่เปลี่ยนครู ('+picked.length+'/'+items.length+')');
+  if(!items.length)l.appendChild(el('p','ux-tt-hint','ไม่พบรายวิชาที่เปลี่ยนครูระหว่างสองแผนนี้'));
+  else{var row=el('div','ux-docs-acts');
+    [['วิชามีรหัสระดับประถม','basic'],['ทั้งหมด','all'],['ไม่เลือก','none']].forEach(function(o){var bb=btn('ux-btn ux-sm',o[0],function(){var pk={};items.forEach(function(x){pk[x.key]=o[1]==='all'?true:o[1]==='none'?false:x.basic});saveHo({pick:pk})});bb.dataset.k='ho-pick-'+o[1];row.appendChild(bb)});
+    l.appendChild(row);var ul=el('div','ux-ho-list');
+    items.forEach(function(x){var w=el('label','ux-ho-item'),c=el('input');c.type='checkbox';c.checked=!!on[x.key];c.dataset.key='ho.pick:'+x.key;c.dataset.k='ho-pick:'+x.key;
+      w.appendChild(c);w.appendChild(el('span',null,hoLabel(x)));ul.appendChild(w)});l.appendChild(ul)}
+  p.appendChild(l);
+  var t=group('ข้อความในคำสั่ง');
+  var r0=el('div','ux-od-row');r0.appendChild(field('เลขที่คำสั่ง','ho.orderNo',h.orderNo));r0.appendChild(field('อ้างคำสั่งเดิมที่','ho.refOrder',h.refOrder));t.appendChild(r0);
+  t.appendChild(field('เหตุผลการเปลี่ยน (ต่อจาก "เนื่องจาก")','ho.reason',h.reason));
+  var MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  function dateRow(label,pre){var r=el('div','ux-od-row');r.appendChild(field(label,'ho.'+pre+'Day',h[pre+'Day']));
+    r.appendChild(field('เดือน','ho.'+pre+'Month',h[pre+'Month'],'select',[[C.HANDOVER_DEFAULTS[pre+'Month'],'—']].concat(MONTHS.map(function(m){return [m,m]}))));
+    r.appendChild(field('พ.ศ.','ho.'+pre+'Year',h[pre+'Year']));return r}
+  t.appendChild(dateRow('มีผลตั้งแต่วันที่','eff'));t.appendChild(dateRow('สั่ง ณ วันที่','date'));
+  t.appendChild(field('ช่องครูเดิม / ครูใหม่ลงชื่อรับทราบ','ho.ack',h.ack!==false,'checkbox'));
+  t.appendChild(field('แนบตารางสอนใหม่ของครูผู้รับมอบ','ho.sheets',h.sheets!==false,'checkbox'));
+  t.appendChild(el('p','ux-tt-hint','ข้อความย่อหน้าแก้บนกระดาษได้ · ตราครุฑ ชื่อโรงเรียน ผู้ลงนาม ใช้ชุดเดียวกับชุดคำสั่ง'));
+  p.appendChild(t)}
 function panel(d,m){
   var p=el('aside','ux-docs-side ux-od-side');p.id='uxDocsPanel';p.setAttribute('aria-label','ตั้งค่าและส่งออก: '+d.t);
   var top=el('div','ux-docs-ptop');top.appendChild(el('h3',null,d.t));
-  var n=S.info||{n:0,pages:0},what=d.k==='order'||d.k==='workload'||d.k==='teacher'||d.k==='teacherCourses'?'ครู '+n.n+' คน':d.k==='grade'||d.k==='courses'?n.n+' ชั้น':d.k==='room'?n.n+' ห้อง':d.k==='compare'?n.n+' แผน':'แผนนี้';
+  var n=S.info||{n:0,pages:0},what=d.k==='handover'?n.n+' รายการ':d.k==='order'||d.k==='workload'||d.k==='teacher'||d.k==='teacherCourses'?'ครู '+n.n+' คน':d.k==='grade'||d.k==='courses'?n.n+' ชั้น':d.k==='room'?n.n+' ห้อง':d.k==='compare'?n.n+' แผน':'แผนนี้';
   var cnt=el('p','ux-docs-count',what+' · '+m.sections.length+' หน้า (ก่อนแบ่งหน้า)');cnt.id='uxDocsCount';top.appendChild(cnt);p.appendChild(top);
   var acts=el('div','ux-docs-acts');
   if(d.k==='order'){var oo=btn('ux-btn ux-primary','เปิดและแก้ไขชุดคำสั่ง',function(){UX.order.open()});oo.id='uxDocsOrderOpen';oo.dataset.k='order-open';acts.appendChild(oo)}
@@ -20647,6 +20941,7 @@ function panel(d,m){
     w.appendChild(field('คอลัมน์ "ชั้นที่สอน"','opt.showGrades',o.showGrades,'checkbox'));w.appendChild(field('คอลัมน์ "หมายเหตุ"','opt.showNotes',o.showNotes,'checkbox'));p.appendChild(w)}
   if(d.k==='courses'){var c=group('ตัวเลือก');
     c.appendChild(field('แสดงรหัสวิชา','opt.showCode',o.showCode,'checkbox'));c.appendChild(field('แสดงครูผู้สอน','opt.showTeacher',o.showTeacher,'checkbox'));p.appendChild(c)}
+  if(d.k==='handover')hoPanel(p);
   if(SORTED[d.k])p.appendChild(sortGroup(d.k,o));
   if(d.k==='order'){
     var es=UX.order.settings(),eg=group('ตราครุฑ');
@@ -20672,13 +20967,15 @@ function panel(d,m){
     sg.appendChild(field('ฟอนต์','s.font',s.font||C.ORDER_DEFAULTS.font,'select',[['TH SarabunIT๙','TH SarabunIT๙'],['TH Sarabun New','TH Sarabun New']]));
     sg.appendChild(field('ใช้เลขไทย (๑ ๒ ๓)','s.thaiDigits',!!s.thaiDigits,'checkbox'));
     p.appendChild(sg);
-    if(UX.order&&UX.order.sigGroup)p.appendChild(UX.order.sigGroup(['reports']))}                /* V24.47 ลายเซ็นสแกนในเอกสารนี้ */
+    if(UX.order&&UX.order.sigGroup)p.appendChild(UX.order.sigGroup(d.k==='handover'?['cover','list','personal']:['reports']))}                /* V24.47 ลายเซ็นสแกนในเอกสารนี้ */
   host.appendChild(more);p=host;
   p.addEventListener('change',function(ev){
     var t=ev.target,k=t.dataset&&t.dataset.key;if(!k)return;
     if(k==='target'){choose(S.doc,t.value);return}
     if(k==='base'){S.base=t.value;remember();S.sig='';render();return}
     var v=t.type==='checkbox'?t.checked:t.value,patch={};
+    if(k.indexOf('ho.pick:')===0){var pk=Object.assign({},hoSaved().pick||{});pk[k.slice(8)]=t.checked;saveHo({pick:pk});return}
+    if(k.indexOf('ho.')===0){var hp={};hp[k.slice(3)]=t.type==='checkbox'?t.checked:t.value;saveHo(hp);return}
     if(k.indexOf('opt.sortBy.')===0){var sb=Object.assign({},opts().sortBy||{});sb[k.slice(11)]=v;saveOpts({sortBy:sb});return}
     if(k.indexOf('opt.')===0){k=k.slice(4);if(k==='minHours')v=Math.max(0,Math.min(40,+v||0));patch[k]=v;saveOpts(patch);return}
     k=k.slice(2);
@@ -22405,6 +22702,122 @@ function applyAdvice(t){
 UX.solve={run:run,stop:stop,sets:sets,apply:apply,cards:cards,advise:advise,applyAdvice:applyAdvice,state:S};
 })(window.UX);
 
+/* >>> 75-jointedit.js */
+/* 75-jointedit.js — "แก้ไขกลุ่ม" on the เรียนรวม page (V24.49): one window to change everything of a group —
+   ชื่อกลุ่ม / ช่วงสอน · ชั่วโมงร่วม · วิชาและชั้นในกลุ่ม (one subject per class) · ครูหลัก · ครูร่วม + ชั่วโมงรายคน.
+   The name IS the group's id and the timetable keeps its periods under it, so a rename moves the periods, locks, rooms,
+   buildings, double-period settings, rules and every saved timetable version with it (ASPCore.renameJointKeys) —
+   nothing has to be placed again. Periods already placed stay where they are when subjects are added / removed.
+   Checks = the original "บันทึกกลุ่ม" (ASPCore.checkJointGroup), shown in the window. "บันทึก" = one Undo step.
+   Button added to each row of the original #jointTable (column "จัดการ"). Off with --legacy / __UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var C=window.ASPCore,S={orig:'',d:null};
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;return b}
+function F(n){try{return fmt(n)}catch(e){return String(n)}}
+function people(){return db.teachers.filter(function(t){return !t.team})}
+function nameOf(id){var t=db.teachers.find(function(x){return x.id===id});return t?t.name:''}
+function group(id){return (db.jointGroups||[]).find(function(g){return g.id===id})}
+function placed(id){var p=(db.timetable||{}).placements||{},pre='G~'+encodeURIComponent(id)+'~';return Object.keys(p).filter(function(k){return k.indexOf(pre)===0&&p[k]&&Number.isInteger(p[k].slot)}).length}
+/* hours of a course already used by OTHER groups */
+function usedElsewhere(rowId){return (db.jointGroups||[]).filter(function(g){return g.id!==S.orig&&(g.members||[]).indexOf(rowId)>-1}).reduce(function(a,g){return a+(+g.hours||0)},0)}
+function ctx(){return {original:S.orig,groups:(db.jointGroups||[]).map(function(g){return {id:g.id,hours:+g.hours||0,members:(g.members||[]).slice()}}),
+  rows:db.rows.map(function(r){return {id:r.id,grade:r.grade,subject:r.subject,hours:+r.hours||0}}),people:people().map(function(t){return t.id})}}
+function draft(){var d=S.d;return {id:String(d.id||'').trim(),hours:+d.hours||0,members:d.members.filter(Boolean),leader:d.leader,coTeachers:d.co.slice(),
+  teacherHours:Object.keys(d.th).filter(function(t){return d.th[t]!==''&&d.th[t]!=null&&(t===d.leader||d.co.indexOf(t)>-1)}).reduce(function(o,t){o[t]=+d.th[t];return o},{})}}
+
+function field(label,input){var w=el('label','ux-je-f');w.appendChild(el('span',null,label));w.appendChild(input);return w}
+function render(){
+  var b=$('uxJEB'),f=$('uxJEF'),d=S.d,g=group(S.orig);b.textContent='';f.textContent='';if(!g)return;
+  /* name + hours */
+  var r1=el('div','ux-je-row');
+  var nm=el('input');nm.type='text';nm.value=d.id;nm.dataset.k='je-name';nm.maxLength=80;nm.oninput=function(){d.id=nm.value;check()};
+  r1.appendChild(field('ชื่อกลุ่ม / ช่วงสอน',nm));
+  var hr=el('input');hr.type='number';hr.min='0.5';hr.step='0.5';hr.value=d.hours;hr.dataset.k='je-hours';hr.oninput=function(){d.hours=hr.value;check()};
+  r1.appendChild(field('ชั่วโมงร่วม / สัปดาห์',hr));b.appendChild(r1);
+  var np=placed(S.orig);
+  b.appendChild(el('p','ux-tt-hint',np?'จัดลงตารางสอนแล้ว '+np+' คาบ — เปลี่ยนชื่อได้เลย คาบ ล็อก ห้อง และฉบับตารางย้ายตามชื่อใหม่ ไม่ต้องจัดใหม่':'ยังไม่ได้จัดลงตารางสอน'));
+  /* members: one subject per class */
+  var ms=el('fieldset','ux-je-g');ms.appendChild(el('legend',null,'วิชาและชั้นในกลุ่ม (ชั้นละ 1 วิชา)'));
+  var grid=el('div','ux-je-grid');
+  db.grades.forEach(function(gr,i){
+    var rows=db.rows.filter(function(r){return r.grade===gr&&(+r.hours||0)>0});if(!rows.length)return;
+    var s=el('select');s.dataset.k='je-m-'+gr;s.setAttribute('aria-label','วิชาในกลุ่ม ชั้น '+gr);
+    var o0=el('option',null,'— ไม่อยู่ในกลุ่ม —');o0.value='';s.appendChild(o0);
+    rows.forEach(function(r){var free=(+r.hours||0)-usedElsewhere(r.id),o=el('option',null,r.subject+' · '+F(r.hours)+' ชม.'+(free<(+r.hours||0)?' (ว่าง '+F(free)+')':'')+(r.teacher?' · '+nameOf(r.teacher):''));o.value=r.id;s.appendChild(o)});
+    s.value=d.members.filter(function(id){return rows.some(function(r){return r.id===id})})[0]||'';
+    s.onchange=function(){d.members=d.members.filter(function(id){return !rows.some(function(r){return r.id===id})});if(s.value)d.members.push(s.value);
+      d.members.sort(function(a,b2){return db.grades.indexOf((db.rows.find(function(r){return r.id===a})||{}).grade)-db.grades.indexOf((db.rows.find(function(r){return r.id===b2})||{}).grade)});check()};
+    var w=el('label','ux-je-m');w.appendChild(el('b',null,gr));w.appendChild(s);grid.appendChild(w)});
+  ms.appendChild(grid);b.appendChild(ms);
+  /* teachers */
+  var ts=el('fieldset','ux-je-g');ts.appendChild(el('legend',null,'ครูผู้สอน (ช่องชั่วโมงว่าง = เต็มชั่วโมงกลุ่ม)'));
+  var lr=el('div','ux-je-row'),ls=el('select');ls.dataset.k='je-leader';
+  var lo=el('option',null,'— เลือกครูผู้สอนหลัก —');lo.value='';ls.appendChild(lo);
+  people().forEach(function(t){var o=el('option',null,t.name);o.value=t.id;ls.appendChild(o)});ls.value=d.leader||'';
+  ls.onchange=function(){var old=d.leader;d.leader=ls.value;d.co=d.co.filter(function(x){return x!==d.leader});delete d.th[old];render()};
+  lr.appendChild(field('ครูหลัก',ls));
+  lr.appendChild(field('ชั่วโมงครูหลัก',hourBox(d.leader,'je-h-lead')));ts.appendChild(lr);
+  var list=el('div','ux-je-co');
+  people().filter(function(t){return t.id!==d.leader}).forEach(function(t){
+    var on=d.co.indexOf(t.id)>-1,row=el('div','ux-je-ci'+(on?' on':'')),lb=el('label'),cb=el('input');cb.type='checkbox';cb.checked=on;cb.dataset.k='je-co-'+t.id;
+    cb.onchange=function(){if(cb.checked){if(d.co.indexOf(t.id)<0)d.co.push(t.id)}else{d.co=d.co.filter(function(x){return x!==t.id});delete d.th[t.id]}render()};
+    lb.appendChild(cb);lb.appendChild(el('span',null,t.name+(t.status&&t.status!=='active'?' ('+((C.STAFF_STATUS||{})[t.status]||t.status)+')':'')));row.appendChild(lb);
+    if(on)row.appendChild(hourBox(t.id,'je-h-'+t.id));list.appendChild(row)});
+  ts.appendChild(list);b.appendChild(ts);
+  var msg=el('div','ux-je-msg');msg.id='uxJEMsg';msg.setAttribute('role','status');b.appendChild(msg);
+  f.appendChild(el('span','ux-hr-sp'));
+  f.appendChild(btn('ux-btn','ยกเลิก',function(){$('uxJE').close()}));
+  var ok=btn('ux-btn ux-primary','บันทึก',save);ok.id='uxJESave';ok.dataset.k='je-save';f.appendChild(ok);
+  check()}
+function hourBox(tid,k){var i=el('input');i.type='number';i.min='0.5';i.step='0.5';i.dataset.k=k;i.placeholder='เต็ม';i.disabled=!tid;
+  i.value=tid&&S.d.th[tid]!=null?S.d.th[tid]:'';i.setAttribute('aria-label','ชั่วโมงของ '+nameOf(tid));
+  i.oninput=function(){if(i.value==='')delete S.d.th[tid];else S.d.th[tid]=i.value;check()};return i}
+function check(){var e=C.checkJointGroup(draft(),ctx()),m=$('uxJEMsg'),ok=$('uxJESave');
+  if(m){m.textContent='';m.className='ux-je-msg'+(e.length?' bad':'');
+    if(e.length){var ul=el('ul');e.forEach(function(x){ul.appendChild(el('li',null,x))});m.appendChild(ul)}
+    else{var d=draft(),g=group(S.orig);m.textContent=d.id!==S.orig?'จะเปลี่ยนชื่อ "'+S.orig+'" → "'+d.id+'"'+(placed(S.orig)?' พร้อมย้ายคาบในตารางสอน':''):'พร้อมบันทึก';if(!g)m.textContent=''}}
+  if(ok)ok.disabled=!!e.length;return e}
+function same(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+function save(){
+  if(check().length)return;
+  var d=draft(),g=group(S.orig);if(!g)return;
+  var renamed=d.id!==S.orig,onlyName=same([+g.hours||0,g.members||[],g.leader||'',g.coTeachers||[],g.teacherHours||{}],[d.hours,d.members,d.leader,d.coTeachers,d.teacherHours]);
+  var moved=0;
+  act(function(){
+    var tt=db.timetable,key0='',fresh=false;
+    try{key0=ttSourceKey();fresh=!!(tt&&tt.signature)&&tt.signature===key0}catch(e){}
+    if(renamed&&tt)moved=C.renameJointKeys(tt,S.orig,d.id);
+    g.id=d.id;g.hours=d.hours;g.members=d.members;g.leader=d.leader;g.coTeachers=d.coTeachers;g.teacherHours=d.teacherHours;
+    /* a pure rename changes nothing in the timetable: keep it "up to date" if it was */
+    if(onlyName&&tt){try{var key1=ttSourceKey();if(fresh)tt.signature=key1;(tt.versions||[]).forEach(function(v){if(v&&v.sourceKey===key0)v.sourceKey=key1})}catch(e){}}});
+  $('uxJE').close();
+  UX.toast('บันทึกกลุ่ม '+d.id+' แล้ว'+(renamed&&moved?' · ย้ายข้อมูลตารางสอนตามชื่อใหม่ '+moved+' รายการ':'')+' (ย้อนกลับได้)');
+  UX.jointEdit.last={from:S.orig,to:d.id,moved:moved,onlyName:onlyName}}
+function open(id){
+  var g=group(id);if(!g){UX.toast('ไม่พบกลุ่ม '+id);return}
+  S.orig=g.id;S.d={id:g.id,hours:+g.hours||0,members:(g.members||[]).slice(),leader:g.leader||'',co:(g.coTeachers||[]).slice(),th:Object.assign({},g.teacherHours||{})};
+  var d=$('uxJE');
+  if(!d){d=el('dialog','ux-say ux-je no-print');d.id='uxJE';d.setAttribute('aria-labelledby','uxJET');
+    var h=el('div','ux-say-head'),t=el('h2');t.id='uxJET';h.appendChild(t);
+    var x=btn('ux-asg-x','✕',function(){d.close()});x.setAttribute('aria-label','ปิด');h.appendChild(x);d.appendChild(h);
+    var bb=el('div','ux-say-body');bb.id='uxJEB';d.appendChild(bb);var ff=el('div','ux-say-foot');ff.id='uxJEF';d.appendChild(ff);document.body.appendChild(d)}
+  $('uxJET').textContent='แก้ไขกลุ่มเรียนรวม · '+g.id;
+  render();if(!d.open)d.showModal();var n=d.querySelector('[data-k="je-name"]');if(n)n.focus()}
+/* the button in each row of the original table (re-added whenever the table is drawn again) */
+function decorate(){
+  var tb=$('jointTable');if(!tb)return;
+  tb.querySelectorAll('select[data-joint-leader]').forEach(function(s){
+    var tr=s.closest('tr'),id=s.getAttribute('data-joint-leader');if(!tr||tr.querySelector('.ux-je-open'))return;
+    var cell=(tr.querySelector('[data-remove-joint]')||{}).parentNode||tr.lastElementChild;if(!cell)return;
+    var b=btn('btn tiny ux-je-open','แก้ไขกลุ่ม',function(){open(id)});b.dataset.jeOpen=id;b.setAttribute('aria-label','แก้ไขกลุ่ม '+id+' (ชื่อ ชั่วโมง วิชา ครู)');
+    cell.insertBefore(b,cell.firstChild)})}
+UX.onInit(function(){var tb=$('jointTable');if(!tb)return;decorate();new MutationObserver(decorate).observe(tb,{childList:true,subtree:true})});
+UX.jointEdit={open:open,decorate:decorate,state:S};
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -22421,7 +22834,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="cfa684f23a13";window.__UX_WEBAPP_LABEL="24.48";
+(function(){window.__UX_WEBAPP="b1533b101546";window.__UX_WEBAPP_LABEL="24.50";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
