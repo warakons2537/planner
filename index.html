@@ -11084,6 +11084,8 @@ var ASPCore = (() => {
     AUTH_APP: () => AUTH_APP,
     AUTH_OFFLINE_GRACE_MS: () => AUTH_OFFLINE_GRACE_MS,
     AUTH_SOON_MS: () => AUTH_SOON_MS,
+    COURSE_SORTS: () => COURSE_SORTS,
+    COURSE_SORT_DEFAULT: () => COURSE_SORT_DEFAULT,
     COVER_WEIGHT: () => COVER_WEIGHT,
     DEFAULT_BUILDINGS: () => DEFAULT_BUILDINGS,
     DEFAULT_HEAVY_SUBJECTS: () => DEFAULT_HEAVY_SUBJECTS,
@@ -11159,6 +11161,7 @@ var ASPCore = (() => {
     cleanSession: () => cleanSession,
     cleanSubject: () => cleanSubject,
     compact: () => compact,
+    courseSortOf: () => courseSortOf,
     coverConfig: () => coverConfig,
     crc32: () => crc32,
     curriculumRows: () => curriculumRows,
@@ -11183,6 +11186,7 @@ var ASPCore = (() => {
     fill: () => fill,
     findGrades: () => findGrades,
     findSubjects: () => findSubjects,
+    firstCode: () => firstCode,
     fixedByDay: () => fixedByDay,
     freeBlocks: () => freeBlocks,
     generateTimetable: () => generateTimetable,
@@ -11202,6 +11206,7 @@ var ASPCore = (() => {
     homeroomMin: () => homeroomMin,
     homeroomReport: () => homeroomReport,
     hoursText: () => hoursText,
+    isActivity: () => isActivity,
     isDouble: () => isDouble,
     isExtra: () => isExtra,
     isHeavyForMobility: () => isHeavyForMobility,
@@ -11279,7 +11284,9 @@ var ASPCore = (() => {
     slotRulesFor: () => slotRulesFor,
     softSlotBreaks: () => softSlotBreaks,
     solveTimetable: () => solveTimetable,
+    sortCourses: () => sortCourses,
     staffFlags: () => staffFlags,
+    subjectArea: () => subjectArea,
     subjectDayCost: () => subjectDayCost,
     subjectFamily: () => subjectFamily,
     subjectMatches: () => subjectMatches,
@@ -15516,6 +15523,73 @@ var ASPCore = (() => {
     }
     return out;
   }
+  var subjectArea = (name) => letterOf(compact(name)) || (/ป้องกัน/.test(compact(name)) ? "ส" : "");
+  var isActivity = (name) => ACTIVITY.test(compact(name));
+
+  // core/src/coursesort.ts
+  var COURSE_SORTS = [["curriculum", "ตามโครงสร้างหลักสูตร"], ["code", "ตามรหัสวิชา"], ["plan", "ตามลำดับในแผน"]];
+  var COURSE_SORT_DEFAULT = "curriculum";
+  var courseSortOf = (x) => x === "plan" || x === "code" || x === "curriculum" ? x : COURSE_SORT_DEFAULT;
+  var AREAS = "ทควสพศงอ";
+  var CODE = /^[ก-ฮ]\d{5}/;
+  var ACTS = [/แนะแนว/, /ลูกเสือ|เนตรนารี|ยุวกาชาด|ยุว/, /ชุมนุม/, /เพื่อสังคม|บำเพ็ญ|สาธารณประโยชน์/];
+  var WORDS = [...SUBJECT_WORDS].sort((a, b) => b[0].length - a[0].length);
+  function firstCode(code) {
+    const all = String(code ?? "").split(/[\/,]/).map((s) => compact(s)).filter((s) => s && s !== "-" && s !== "–" && s !== "—");
+    return all.filter((s) => CODE.test(s)).sort()[0] ?? all[0] ?? "";
+  }
+  function subjectKey(name) {
+    const c = compact(String(name).split(" / ")[0]).replace(/(?:ป|ม|อ)\.\d+(?:[-–](?:(?:ป|ม)\.)?\d+)?/g, "").replace(/\(.*?\)|ฯ|[0-9]+$|พื้นฐาน|เพิ่มเติม/g, "");
+    const w2 = WORDS.find(([word]) => c.includes(compact(word)));
+    return w2 ? w2[1].join("|") : c;
+  }
+  var areaRank = (letter) => {
+    const i = letter ? AREAS.indexOf(letter) : -1;
+    return i < 0 ? AREAS.length : i;
+  };
+  var actRank = (name) => {
+    const c = compact(name), i = ACTS.findIndex((r) => r.test(c));
+    return i < 0 ? ACTS.length : i;
+  };
+  function sortCourses(items, get, mode, gradeOrder = []) {
+    if (courseSortOf(mode) === "plan") return items.slice();
+    const gi = (g) => {
+      const i = gradeOrder.indexOf(g);
+      return i < 0 ? 1e6 : i;
+    };
+    const rows = items.map((x, i) => {
+      const k = get(x), name = String(k.name ?? ""), code = firstCode(k.code), grades = (k.grades ?? []).map(String);
+      const act = isActivity(name);
+      const coded = !!code;
+      const area = coded ? code[0] : act ? "" : subjectArea(name);
+      const type = coded ? +code[3] || 9 : isExtra(name) ? 2 : 1;
+      return { x, i, name, code, coded, act, area, type, grade: Math.min(1e6, ...grades.map(gi)), group: (coded ? area + type : "") + "·" + subjectKey(name) };
+    });
+    const first = {};
+    for (const r of rows) {
+      const g = (r.coded ? "C" : "N") + r.group, f = first[g];
+      if (!f) first[g] = { code: r.code, i: r.i };
+      else {
+        if (r.code && (!f.code || r.code < f.code)) f.code = r.code;
+        if (r.i < f.i) f.i = r.i;
+      }
+    }
+    const key2 = (r) => {
+      const f = first[(r.coded ? "C" : "N") + r.group];
+      if (r.coded) return mode === "code" ? [0, f.code, r.grade, r.code, r.i] : [0, areaRank(r.area), r.type, f.code, r.grade, r.code, r.i];
+      return r.act ? [1, 1, actRank(r.name), f.i, r.grade, r.i] : [1, 0, areaRank(r.area), r.type, f.i, r.grade, r.i];
+    };
+    const cmp = (a, b) => {
+      for (let k = 0; k < Math.max(a.length, b.length); k++) {
+        const x = a[k], y = b[k];
+        if (x === y) continue;
+        if (typeof x === "number" && typeof y === "number") return x - y;
+        return String(x).localeCompare(String(y), "th");
+      }
+      return 0;
+    };
+    return rows.map((r) => ({ r, k: key2(r) })).sort((a, b) => cmp(a.k, b.k)).map((o) => o.r.x);
+  }
 
   // core/src/versions.ts
   function versionPlacements(input, placements) {
@@ -16754,7 +16828,7 @@ var ASPCore = (() => {
   }
 
   // core/src/index.ts
-  var VERSION = "0.29.0";
+  var VERSION = "0.30.0";
   return __toCommonJS(index_exports);
 })();
 
@@ -16763,7 +16837,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.47',inits:[],syncs:[]};
+var UX=window.UX={version:'24.48',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -19247,10 +19321,14 @@ function teacherList(){
   var cd=codes();
   return db.teachers.filter(function(t){return !t.team}).map(function(t){
     var items=[];try{items=docOrderWork(t.id)}catch(e){}
-    return {id:t.id,name:t.name,homeroom:((t.profile||{}).homeroom||[]).filter(Boolean),items:items.map(function(x){
+    return {id:t.id,name:t.name,homeroom:((t.profile||{}).homeroom||[]).filter(Boolean),items:sortItems(items.map(function(x){
       var g=x.kind==='G'?(db.jointGroups||[]).find(function(j){return j.id===x.origin}):null;
       return {label:x.kind==='G'?String(x.origin):strip(x.subjects[0]),joint:x.kind==='G',grades:x.grades.slice(),hours:+x.hours||0,
-        code:x.kind==='R'?(cd[x.origin]||''):((g&&g.members)||[]).map(function(id){return cd[id]}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i}).join(' / ')}})}})}
+        code:x.kind==='R'?(cd[x.origin]||''):((g&&g.members)||[]).map(function(id){return cd[id]}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i}).join(' / ')}}))}})}
+/* V24.48 เรียงรายวิชาตามที่ตั้งในหน้าเอกสาร (63-docs) — ไม่มีหน้าเอกสาร = ตามโครงสร้างหลักสูตร */
+function sortItems(items){
+  var mode=UX.docs&&UX.docs.sortMode?UX.docs.sortMode('order'):C.COURSE_SORT_DEFAULT;
+  return C.sortCourses(items,function(x){return {name:x.label,code:x.code,grades:x.grades}},mode,db.grades)}
 function sheets(list){
   var tt=db.timetable,P=tt.periods,days=tt.days.slice(),ev={};
   try{ttBuild().events.forEach(function(e){ev[e.id]=e})}catch(e){}
@@ -20297,7 +20375,8 @@ var DOCS=[
   {k:'exec',t:'รายงานสรุปสำหรับผู้บริหาร',d:'ชั่วโมงรายชั้น ภาระสอน เรื่องที่ต้องตรวจ',rep:true},
   {k:'teacherCourses',t:'รายงานรายวิชารายครู',d:'วิชา รหัส ชั้น หน้าที่ ชั่วโมง ของครูแต่ละคน',rep:true,pick:true},
   {k:'compare',t:'เปรียบเทียบแผน',d:'สิ่งที่เปลี่ยนระหว่างสองแผน',rep:true}];
-var OPT_DEFAULTS={showTeacher:true,showRoom:false,showCode:true,showGrades:true,showNotes:true,minHours:12};
+var OPT_DEFAULTS={showTeacher:true,showRoom:false,showCode:true,showGrades:true,showNotes:true,minHours:12,sort:C.COURSE_SORT_DEFAULT,sortBy:{}};
+var SORTED={order:1,teacherCourses:1,courses:1};   /* V24.48 documents with a course list */
 var S={mode:'new',doc:'order',target:'all',base:'',sig:'',model:null,info:null};
 try{if(localStorage.getItem(KEY)==='legacy')S.mode='legacy';var sv=JSON.parse(localStorage.getItem(SEL)||'null');
   if(sv&&DOCS.some(function(d){return d.k===sv.doc})){S.doc=sv.doc;S.target=sv.target||'all';S.base=sv.base||''}}catch(e){}
@@ -20307,6 +20386,9 @@ function btn(cls,text,fn,label){var b=el('button',cls,text);b.type='button';if(f
 function docOf(k){return DOCS.filter(function(d){return d.k===k})[0]||DOCS[0]}
 function ds(){return db.docSettings||(db.docSettings={})}
 function opts(){return Object.assign({},OPT_DEFAULTS,ds().uxDocs||{})}
+/* V24.48 เรียงรายวิชา: uxDocs.sort = ค่ารวม · uxDocs.sortBy[doc] = แยกเอกสาร ('' = ใช้ค่ารวม) */
+function sortMode(k){var o=opts();return C.courseSortOf((o.sortBy||{})[k]||o.sort)}
+function sortList(k,items,get){return C.sortCourses(items,get,sortMode(k),db.grades)}
 function shared(){return UX.order?UX.order.settings():Object.assign({},C.ORDER_DEFAULTS)}
 function remember(){try{localStorage.setItem(SEL,JSON.stringify({doc:S.doc,target:S.target,base:S.base}))}catch(e){}}
 function noPrefix(x){return String(x||'').replace(/^\s*โรงเรียน\s*/,'').trim()}
@@ -20355,6 +20437,7 @@ function courseGrades(){
     var items=db.rows.filter(function(r){return r.grade===g&&(+r.hours||0)>0}).map(function(r){
       return {subject:r.subject,code:cd[r.id]||'',hours:+r.hours||0,joint:!!joint[r.id],
         teachers:[r.teacher].concat(r.coTeachers||[]).filter(Boolean).map(nameOf).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i})}});
+    items=sortList('courses',items,function(x){return {name:x.subject,code:x.code,grades:[g]}});
     var tg=0;try{tg=+target(g)||0}catch(e){}
     return {grade:g,target:tg,items:items}}).filter(function(x){return x.items.length||x.target>0})}
 
@@ -20392,11 +20475,11 @@ function execPages(){
 function teacherPages(tg){
   var plan='';try{plan=v141CurrentName()}catch(e){}
   return db.teachers.filter(function(t){return !t.team&&(tg==='all'||t.id===tg)}).map(function(t){return {t:t,x:v141Summarize(t.id)}})
-    .filter(function(o){return tg!=='all'||o.x.details.length}).map(function(o){var x=o.x,parts=[
+    .filter(function(o){return tg!=='all'||o.x.details.length}).map(function(o){var x=o.x,det=sortList('teacherCourses',x.details,function(r){return {name:r.subject,code:r.code,grades:String(r.grade||'').split(/,\s*/)}}),parts=[
     {kind:'stats',items:[{label:'ชั่วโมงตามรายการรายชั้น',value:F(x.raw)},{label:'ภาระสอนหลังคิดเรียนรวม',value:F(x.planned)},{label:'ชุดรายวิชาที่รับผิดชอบ',value:String(x.details.length)},{label:'รายการกลุ่มเรียนรวม',value:String(x.groups)}]}];
     if(Math.abs(x.calculated-x.planned)>0.0001)parts.push({kind:'note',text:'⚠ ตัวเลขรายละเอียดและระบบหลักไม่ตรงกัน โปรดตรวจกลุ่มเรียนรวมก่อนออกเอกสาร'});
     parts.push({kind:'table',columns:[{label:'ที่',w:.7},{label:'รายวิชา',w:4,align:'left'},{label:'รหัส',w:1.6},{label:'ชั้น',w:1.6},{label:'หน้าที่',w:1.3},{label:'รูปแบบ',w:1.3},{label:'ชม.',w:.9}],
-      rows:x.details.map(function(r,i){return [String(i+1),r.subject+(r.group?'\nกลุ่ม '+r.group:''),r.code||'—',r.grade,r.role,r.kind,F(r.hours)]}),
+      rows:det.map(function(r,i){return [String(i+1),r.subject+(r.group?'\nกลุ่ม '+r.group:''),r.code||'—',r.grade,r.role,r.kind,F(r.hours)]}),
       total:['','รวมภาระสอนตามการคำนวณ','','','','',F(x.calculated)],empty:'ยังไม่มีรายวิชาที่ได้รับมอบหมาย'},
       {kind:'note',text:'รายงานใน '+plan+' · ชั่วโมงตามรายการรายชั้นเป็นข้อมูลก่อนหักส่วนที่เรียนรวม ไม่ใช่ภาระสอนจริง · กลุ่มที่ข้อมูลไม่ถูกต้องไม่นำมาหักชั่วโมง'});
     return {name:'รายวิชา '+o.t.name,title:'รายงานรายวิชาที่ได้รับมอบหมาย',subtitle:o.t.name,parts:parts}})}
@@ -20526,6 +20609,12 @@ function field(label,key,val,type,options){
   if(type==='checkbox')i.checked=!!val;else i.value=val==null?'':val;
   w.appendChild(i);return w}
 function group(title){var g=el('fieldset','ux-od-g');g.appendChild(el('legend',null,title));return g}
+function sortGroup(k,o){
+  var g=group('เรียงรายวิชา'),names={};C.COURSE_SORTS.forEach(function(x){names[x[0]]=x[1]});
+  g.appendChild(field('เอกสารนี้','opt.sortBy.'+k,(o.sortBy||{})[k]||'','select',[['','ใช้ค่ารวม ('+names[C.courseSortOf(o.sort)]+')']].concat(C.COURSE_SORTS)));
+  g.appendChild(field('ค่ารวมทุกเอกสาร','opt.sort',C.courseSortOf(o.sort),'select',C.COURSE_SORTS));
+  g.appendChild(el('p','ux-tt-hint','วิชาที่ไม่มีรหัสอยู่ท้ายเสมอ · ครูคนเดียวกันเรียงวิชาก่อนแล้วชั้น'));
+  return g}
 function panel(d,m){
   var p=el('aside','ux-docs-side ux-od-side');p.id='uxDocsPanel';p.setAttribute('aria-label','ตั้งค่าและส่งออก: '+d.t);
   var top=el('div','ux-docs-ptop');top.appendChild(el('h3',null,d.t));
@@ -20558,6 +20647,7 @@ function panel(d,m){
     w.appendChild(field('คอลัมน์ "ชั้นที่สอน"','opt.showGrades',o.showGrades,'checkbox'));w.appendChild(field('คอลัมน์ "หมายเหตุ"','opt.showNotes',o.showNotes,'checkbox'));p.appendChild(w)}
   if(d.k==='courses'){var c=group('ตัวเลือก');
     c.appendChild(field('แสดงรหัสวิชา','opt.showCode',o.showCode,'checkbox'));c.appendChild(field('แสดงครูผู้สอน','opt.showTeacher',o.showTeacher,'checkbox'));p.appendChild(c)}
+  if(SORTED[d.k])p.appendChild(sortGroup(d.k,o));
   if(d.k==='order'){
     var es=UX.order.settings(),eg=group('ตราครุฑ');
     eg.appendChild(el('p','ux-tt-hint','กึ่งกลางด้านบน เหนือ "คำสั่งโรงเรียน…" สูง 3 ซม. ตามระเบียบงานสารบรรณ — ใส่ครั้งเดียว ใช้ทั้งหน้าจอ PDF และ Word'));
@@ -20589,6 +20679,7 @@ function panel(d,m){
     if(k==='target'){choose(S.doc,t.value);return}
     if(k==='base'){S.base=t.value;remember();S.sig='';render();return}
     var v=t.type==='checkbox'?t.checked:t.value,patch={};
+    if(k.indexOf('opt.sortBy.')===0){var sb=Object.assign({},opts().sortBy||{});sb[k.slice(11)]=v;saveOpts({sortBy:sb});return}
     if(k.indexOf('opt.')===0){k=k.slice(4);if(k==='minHours')v=Math.max(0,Math.min(40,+v||0));patch[k]=v;saveOpts(patch);return}
     k=k.slice(2);
     if(k==='school')v=noPrefix(v);
@@ -20599,7 +20690,7 @@ function panel(d,m){
 var wasWide=window.innerWidth>=1100;
 window.addEventListener('resize',function(){if(UX.cur()!=='documents'||S.mode!=='new')return;var w=window.innerWidth>=1100;if(w!==wasWide){wasWide=w;S.sig='';render()}else fit()});
 UX.docs={state:S,list:function(){return DOCS.slice()},model:model,setMode:setMode,choose:choose,open:function(k,tg){if(S.mode!=='new')setMode('new');choose(k,tg);UX.go('documents')},
-  render:function(){S.sig='';render()},exportWord:exportWord,print:printDoc,targets:targets,sheets:function(k){return sheetsFor(k,opts())},workloadRows:workloadRows,courseGrades:courseGrades};
+  render:function(){S.sig='';render()},exportWord:exportWord,print:printDoc,targets:targets,sheets:function(k){return sheetsFor(k,opts())},workloadRows:workloadRows,courseGrades:courseGrades,sortMode:sortMode};
 UX.onInit(function(){document.body.classList.toggle('ux-docs-on',S.mode==='new')});
 UX.onSync(render);
 })(window.UX);
@@ -22330,7 +22421,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="f19abc9b15a4";window.__UX_WEBAPP_LABEL="24.47";
+(function(){window.__UX_WEBAPP="cfa684f23a13";window.__UX_WEBAPP_LABEL="24.48";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
