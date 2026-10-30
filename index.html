@@ -17259,6 +17259,7 @@ function shell(){
   w.appendChild(side);
   var main=el('div','wl-main'),card=el('div','wl-card');card.id='uxLoginCard';main.appendChild(card);
   main.appendChild(el('p','wl-foot',(B.name||'WL Scheduler')+' V'+UX.version+' · สำหรับผู้ดูแลระบบ'));
+  var portal=el('p','wl-foot');var pa=el('a',null,'← ทางเข้า WL (ทุกแอป)');pa.href='../';portal.appendChild(pa);main.appendChild(portal);
   w.appendChild(main);document.body.appendChild(w);return w}
 function message(card){
   var m=el('div','wl-msg'+(S.msgKind?' '+S.msgKind:''));m.setAttribute('role',S.msgKind==='ok'||S.msgKind==='info'?'status':'alert');m.dataset.k='login-msg';
