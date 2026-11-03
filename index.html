@@ -3416,7 +3416,7 @@ body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-a
 .ux-je-open{margin:0 4px 4px 0}
 
 /* >>> 80-suite.css */
-/* 80-suite.css — V24.53 หน้าตาเดียวกับ WL Admin / WL Sub (Wangluek Connected): เขียวจากโลโก้ + ทองโรงเรียน, Noto Sans Thai + Pridi,
+/* 80-suite.css — V24.54 หน้าตาเดียวกับ WL Admin / WL Sub (Wangluek Connected): เขียวจากโลโก้ + ทองโรงเรียน, Noto Sans Thai + Pridi,
    ปุ่มทรงแคปซูล, แยกชั้นด้วยโทนพื้น (ไม่ใช้เงาหนัก), เมนูที่เลือกอยู่ = แถบเขียวอ่อน (--chosen). ค่าสีเป็นของ pp/css/app.css.
    ทำที่ชั้นโทเคนเป็นหลัก — ไม่แตะตรรกะ/ข้อมูลใดๆ. ปิดได้ด้วย <html data-suite="off"> */
 :root:not([data-suite="off"]){
@@ -3468,6 +3468,12 @@ body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-a
 :root:not([data-suite="off"]) .ux-tt-best{background:#e4f4e5;border-color:#bfe0c2;color:#0f3d1c}
 :root:not([data-suite="off"]) .ux-toast{background:#2e312e}
 :root:not([data-suite="off"]) .ux-toast button{color:#2e312e}
+/* swap = teal solid; "ย้ายตาม" = light outline so a full grid is not a wall of buttons */
+:root:not([data-suite="off"]) .ux-tt-swap{background:#006781;border-radius:99px;padding:2px 10px}
+:root:not([data-suite="off"]) .ux-tt-swap.chain{background:#fff;color:#5a3f00;box-shadow:inset 0 0 0 1px #d9a531;font-weight:600}
+/* step guide: one thin row (status + how-to + next); the sidebar already shows where you are */
+:root:not([data-suite="off"]) .ux-guide-what,:root:not([data-suite="off"]) .ux-guide-prev{display:none!important}
+:root:not([data-suite="off"]) .ux-guide{padding-top:6px;padding-bottom:6px}
 @media (prefers-color-scheme:dark){:root:not([data-suite="off"]) body{background:#f6fbf6}}
 
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0a4a26"></head>
@@ -17281,7 +17287,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.53',inits:[],syncs:[]};
+var UX=window.UX={version:'24.54',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -20131,7 +20137,7 @@ function where(slot){var p=C.slotPosition(slot,db.timetable.periods);return 'ว
 function commit(next,msg){
   act(function(){db.timetable.placements=next;db.timetable.signature=ttSourceKey();db.timetable.lastResult='ปรับตารางด้วยตนเอง'});
   UX.live(msg);S.sig='';render()}
-/* V24.53 ย้ายตาม: เลือกช่องที่ชน → ASPCore.planMove หาชุดคาบที่ต้องขยับน้อยที่สุด (คาบอื่นไม่ถูกแตะ) แสดงตัวอย่างก่อนใช้ */
+/* V24.54 ย้ายตาม: เลือกช่องที่ชน → ASPCore.planMove หาชุดคาบที่ต้องขยับน้อยที่สุด (คาบอื่นไม่ถูกแตะ) แสดงตัวอย่างก่อนใช้ */
 function chainPlan(o){
   var id=S.sel,e=S.input.events.find(function(x){return x.id===id});if(!e)return;
   var r;try{r=C.planMove(S.input,id,o.slot)}catch(err){r={ok:false,reason:'คำนวณไม่สำเร็จ'}}
@@ -20375,7 +20381,7 @@ function target(o,occupied){
   var can=o.state==='best'||o.state==='ok'||(o.state==='policy'&&!S.report.strict)||o.state==='clash';
   var lbl=o.state==='clash'?(o.swap?'สลับได้':'ย้ายตาม'):LABEL[o.state];
   if(occupied){                                                     /* a lesson is already shown here: only a small badge */
-    if(o.state==='clash'&&can){var sw=btn('ux-tt-swap',o.swap?'⇄ สลับ':'↪ ย้ายตาม',function(){moveTo(o)},(o.swap?'สลับกับ ':'ย้ายมาช่องนี้และขยับคาบที่ชน: ')+o.who+' — '+where(o.slot));sw.dataset.k='slot-'+o.slot;return sw}
+    if(o.state==='clash'&&can){var sw=btn('ux-tt-swap'+(o.swap?'':' chain'),o.swap?'⇄ สลับ':'↪ ย้ายตาม',function(){moveTo(o)},(o.swap?'สลับกับ ':'ย้ายมาช่องนี้และขยับคาบที่ชน: ')+o.who+' — '+where(o.slot));sw.dataset.k='slot-'+o.slot;return sw}
     return el('span','ux-tt-why'+(o.state==='clash'?'':' grey'),o.who||LABEL[o.state])}
   var t=can?btn('ux-tt-target st-'+(o.state==='clash'?(o.swap?'swap':'chain'):o.state),null,function(){moveTo(o)}):el('div','ux-tt-target st-'+o.state);
   t.appendChild(el('b',null,lbl));if(o.who&&o.state!=='best'&&o.state!=='ok')t.appendChild(el('span',null,o.who));
@@ -23044,7 +23050,7 @@ UX.jointEdit={open:open,decorate:decorate,state:S};
 })(window.UX);
 
 /* >>> 76-editlog.js */
-/* 76-editlog.js — V24.53 ประวัติการแก้ไขตารางสอน.
+/* 76-editlog.js — V24.54 ประวัติการแก้ไขตารางสอน.
    Wraps the original act(): every edit that changes the timetable (manual move, swap, "ย้ายตาม", lock / unlock, take out,
    auto-generate, optimise, repair …) is compared before / after and one line is added to db.timetable.editLog
    [{t, kind, text, moves:[{id,label,from,to}]}] — inside the same act(), so it is saved, synced and undone together with the edit.
@@ -23144,7 +23150,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="6b1670580845";window.__UX_WEBAPP_LABEL="24.53";
+(function(){window.__UX_WEBAPP="980bdb684c81";window.__UX_WEBAPP_LABEL="24.54";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
