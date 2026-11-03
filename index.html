@@ -2626,6 +2626,9 @@ button.ux-tt-target{cursor:pointer}
 .ux-tt-target.st-best{background:#dff3e6;border:2px solid #1f7a45;color:#124d2b}
 .ux-tt-target.st-ok{background:#f0faf3;border:1.5px dashed #2b8a50;color:#1b5e36}
 .ux-tt-target.st-policy{background:#fff4e2;border:1.5px dashed #b26b00;color:#7a4500}
+.ux-tt-target.st-chain{background:#fff6e5;border:1.5px dashed #c98a14;color:#7a4e00}
+.ux-tt-planlist{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:var(--ux-fs-sm)}
+.ux-tt-plan .ux-tt-planwarn{color:#8a4b00;font-weight:600}
 .ux-tt-target.st-swap{background:#eaf1fb;border:1.5px dashed #2f62b0;color:#1d4280}
 .ux-tt-target.st-clash{background:#fbeceb;color:#8a2c25}
 .ux-tt-target.st-blocked,.ux-tt-target.st-dayRule{background:repeating-linear-gradient(45deg,#eef1f4 0 6px,#e3e8ec 6px 12px);color:#4b5866}
@@ -11280,6 +11283,7 @@ var ASPCore = (() => {
     passwordProblem: () => passwordProblem,
     periodIndex: () => periodIndex,
     placeRemaining: () => placeRemaining,
+    planMove: () => planMove,
     planCheck: () => planCheck,
     planCommands: () => planCommands,
     planHeadline: () => planHeadline,
@@ -14619,6 +14623,114 @@ var ASPCore = (() => {
       added.push(id);
     }
     return { placements: cur, added, left: explainUnplaced(input, cur) };
+  }
+
+  function planMove(input, id, target, options = {}) {
+    const { setup } = input, periods = setup.periods, days = setup.days.length;
+    const maxMoves = options.maxMoves ?? 4, budget = options.budget ?? 40000, cap = options.cap ?? 60;
+    const events = new Map(input.events.map((e) => [e.id, e]));
+    const e0 = events.get(id), p0 = input.placements[id];
+    if (!e0) return { ok: false, reason: "ไม่พบคาบนี้" };
+    if (!p0 || !Number.isInteger(p0.slot)) return { ok: false, reason: "คาบนี้ยังไม่ได้ลงตาราง" };
+    if (p0.locked) return { ok: false, reason: "คาบนี้ถูกล็อกอยู่ — ปลดล็อกก่อน" };
+    if (p0.slot === target) return { ok: false, reason: "อยู่ช่องนี้แล้ว" };
+    const own = /* @__PURE__ */ new Map();
+    const ownOf = (ev) => own.get(ev.id) ?? (own.set(ev.id, ownSlots(ev, input)), own.get(ev.id));
+    if (!ownOf(e0).includes(target)) return { ok: false, reason: "ช่องนี้ขัดกฎวัน/กฎคาบ หรือครูไม่ว่าง จึงย้ายไปไม่ได้" };
+    const cur = /* @__PURE__ */ new Map(), occ = /* @__PURE__ */ new Map(), orig = /* @__PURE__ */ new Map(), rooms = /* @__PURE__ */ new Map();
+    const add = (ev, s) => {
+      for (const c of cellsOf(ev.duration, s)) (occ.get(c) ?? occ.set(c, []).get(c)).push(ev.id);
+      cur.set(ev.id, s);
+    };
+    const del = (ev) => {
+      for (const c of cellsOf(ev.duration, cur.get(ev.id))) {
+        const a = occ.get(c);
+        a.splice(a.indexOf(ev.id), 1);
+      }
+      cur.delete(ev.id);
+    };
+    for (const e of input.events) {
+      const p = input.placements[e.id];
+      rooms.set(e.id, roomOf2(e, p, setup.taskRooms));
+      if (p && Number.isInteger(p.slot)) {
+        orig.set(e.id, p.slot);
+        add(e, p.slot);
+      }
+    }
+    const clashOf = (ev, s) => {
+      const out = /* @__PURE__ */ new Set(), room = rooms.get(ev.id);
+      for (const c of cellsOf(ev.duration, s)) for (const k of occ.get(c) ?? []) {
+        if (k === ev.id) continue;
+        const o = events.get(k);
+        if (o.grades.some((g) => ev.grades.includes(g)) || o.teachers.some((t) => ev.teachers.includes(t)) || room && rooms.get(k) === room) out.add(k);
+      }
+      return out;
+    };
+    const dayOf = (s) => slotPosition(s, periods).day;
+    const moved = /* @__PURE__ */ new Map();
+    let nodes = 0, sols = [];
+    const solve = (pending, K) => {
+      if (sols.length >= cap || ++nodes > budget) return;
+      if (!pending.length) {
+        sols.push(new Map(moved));
+        return;
+      }
+      const pid = pending[0], rest = pending.slice(1), ev = events.get(pid);
+      const cands = pid === id ? [target] : ownOf(ev).filter((s) => s !== orig.get(pid));
+      const ranked = [];
+      for (const s of cands) {
+        const cl = clashOf(ev, s);
+        let bad = false;
+        for (const k of cl) if (input.placements[k]?.locked || moved.has(k) || k === id) {
+          bad = true;
+          break;
+        }
+        if (bad || moved.size + 1 + rest.length + cl.size > K) continue;
+        const o = orig.get(pid);
+        ranked.push({ s, cl, rank: cl.size * 1e4 + (dayOf(s) === dayOf(o) ? 0 : 1e3) + Math.abs(s - o) });
+      }
+      ranked.sort((a, b) => a.rank - b.rank);
+      for (const { s, cl } of ranked) {
+        const back = [...cl];
+        for (const k of back) del(events.get(k));
+        add(ev, s);
+        moved.set(pid, s);
+        solve([...rest, ...back], K);
+        moved.delete(pid);
+        del(ev);
+        for (const k of back) add(events.get(k), orig.get(k));
+        if (sols.length >= cap || nodes > budget) return;
+      }
+    };
+    const pol = policyConfig(setup.schedulePolicy, periods, setup.teacherBlocks), mob = mobilityConfig(setup.mobility);
+    const base = check(input, input.placements);
+    const baseHard = base.violations.filter((v) => isHard(v.rule)).length;
+    const basePol = new Set(policyOf(base.violations).map(key));
+    const evalSol = (m) => {
+      const pl = { ...input.placements };
+      for (const [k, s] of m) pl[k] = { ...pl[k], slot: s };
+      const r = check(input, pl);
+      if (r.violations.filter((v) => isHard(v.rule)).length > baseHard) return null;
+      const added = policyOf(r.violations).filter((v) => !basePol.has(key(v)));
+      const score = scoreTimetable({ events: input.events, placements: pl, teachers: input.teachers, periods, days, policy: pol, mobility: mob }).total;
+      return { placements: pl, moves: [...m].map(([k, s]) => ({ id: k, from: orig.get(k), to: s })).sort((a, b) => (a.id === id ? -1 : 0) - (b.id === id ? -1 : 0)), policy: added.map((v) => v.message), score };
+    };
+    let firstDirty = null, clean = null;
+    for (let K = 1; K <= maxMoves && !clean; K++) {
+      sols = [];
+      nodes = 0;
+      del(e0);
+      solve([id], K);
+      add(e0, orig.get(id));
+      const scored = sols.map(evalSol).filter(Boolean);
+      const ok = scored.filter((x) => !x.policy.length).sort((a, b) => a.score - b.score)[0];
+      if (ok) clean = ok;
+      else if (!firstDirty && scored.length) firstDirty = scored.sort((a, b) => a.policy.length - b.policy.length || a.score - b.score)[0];
+    }
+    const pick = clean && firstDirty && clean.moves.length === firstDirty.moves.length ? clean : firstDirty && clean ? clean : clean ?? firstDirty;
+    if (!pick) return { ok: false, reason: `ย้ายไม่ได้ภายใน ${maxMoves} คาบ — ช่องนี้ติดคาบที่ล็อกอยู่ หรือต้องรื้อตารางมากกว่านั้น` };
+    const alt = clean && firstDirty && firstDirty.moves.length < clean.moves.length ? firstDirty : null;
+    return { ok: true, ...pick, alt, delta: pick.score - scoreTimetable({ events: input.events, placements: input.placements, teachers: input.teachers, periods, days, policy: pol, mobility: mob }).total };
   }
 
   // core/src/storage.ts
@@ -19956,10 +20068,37 @@ function where(slot){var p=C.slotPosition(slot,db.timetable.periods);return 'ว
 function commit(next,msg){
   act(function(){db.timetable.placements=next;db.timetable.signature=ttSourceKey();db.timetable.lastResult='ปรับตารางด้วยตนเอง'});
   UX.live(msg);S.sig='';render()}
+/* V24.52 ย้ายตาม: เลือกช่องที่ชน → ASPCore.planMove หาชุดคาบที่ต้องขยับน้อยที่สุด (คาบอื่นไม่ถูกแตะ) แสดงตัวอย่างก่อนใช้ */
+function chainPlan(o){
+  var id=S.sel,e=S.input.events.find(function(x){return x.id===id});if(!e)return;
+  var r;try{r=C.planMove(S.input,id,o.slot)}catch(err){r={ok:false,reason:'คำนวณไม่สำเร็จ'}}
+  S.plan={id:id,slot:o.slot,r:r,use:'main'};S.sig='';render();
+  UX.live(r.ok?'พบแผนย้าย '+r.moves.length+' คาบ':(r.reason||'ย้ายไม่ได้'))}
+function applyPlan(){
+  var pl=S.plan;if(!pl||!pl.r.ok)return;var r=pl.use==='alt'&&pl.r.alt?pl.r.alt:pl.r,next=Object.assign({},db.timetable.placements);
+  r.moves.forEach(function(m){next[m.id]=Object.assign({},next[m.id],{slot:m.to})});
+  var e=S.input.events.find(function(x){return x.id===pl.id});S.plan=null;
+  commit(next,'ย้าย '+subj(e)+' ไป'+where(pl.slot)+' พร้อมขยับอีก '+(r.moves.length-1)+' คาบ');
+  UX.toast('ย้าย '+subj(e)+' ไป'+where(pl.slot)+(r.moves.length>1?' (ขยับตามอีก '+(r.moves.length-1)+' คาบ)':'')+' แล้ว','↶ ย้อนกลับ',function(){UX.clickId(UX.ORIG.buttons.undo)})}
+function planBox(){
+  var pl=S.plan,r=pl.r,box=el('div','ux-tt-best ux-tt-plan');
+  if(!r.ok){box.appendChild(el('b',null,'ย้ายไป'+where(pl.slot)+'ไม่ได้'));box.appendChild(el('span',null,r.reason||''));
+    box.appendChild(btn('ux-btn','ปิด',function(){S.plan=null;S.sig='';render()}));return box}
+  var u=pl.use==='alt'&&r.alt?r.alt:r;
+  box.appendChild(el('b',null,'ย้ายไป'+where(pl.slot)+' — กระทบ '+u.moves.length+' คาบ'+(u.moves.length>1?' (ขยับตามอีก '+(u.moves.length-1)+')':'')));
+  var ul=el('ul','ux-tt-planlist');
+  u.moves.forEach(function(m,i){var ev=S.input.events.find(function(x){return x.id===m.id});
+    ul.appendChild(el('li',null,(i?'↪ ':'● ')+subj(ev)+' '+C.gradeRange(ev.grades,db.grades)+' : '+where(m.from)+' → '+where(m.to)))});
+  box.appendChild(ul);
+  if(u.policy&&u.policy.length)box.appendChild(el('span','ux-tt-planwarn','⚠ ทำให้ครูผิดนโยบาย: '+u.policy.slice(0,2).join(' · ')+(u.policy.length>2?' …':'')));
+  else box.appendChild(el('span',null,'ไม่ชน ไม่ผิดนโยบายครู · คาบอื่นในตารางอยู่ที่เดิม'));
+  if(r.alt){box.appendChild(btn('ux-btn',pl.use==='alt'?'ดูแผนที่ไม่ผิดนโยบาย ('+r.moves.length+' คาบ)':'ดูแผนที่กระทบน้อยกว่า ('+r.alt.moves.length+' คาบ แต่ผิดนโยบายครู)',function(){pl.use=pl.use==='alt'?'main':'alt';S.sig='';render()}))}
+  var go=btn('ux-btn ux-primary','ใช้แผนนี้',applyPlan);go.dataset.k='plan-go';box.appendChild(go);
+  box.appendChild(btn('ux-btn','ยกเลิก',function(){S.plan=null;S.sig='';render()}));return box}
 function moveTo(o){
   var id=S.sel,e=S.input.events.find(function(x){return x.id===id});if(!e)return;
   if(o.state==='policy'&&S.report.strict){UX.toast('โรงเรียนตั้งให้ห้ามวางคาบที่ทำให้ครูผิดนโยบาย');return}
-  if(o.state==='clash'&&!o.swap)return;
+  if(o.state==='clash'&&!o.swap){chainPlan(o);return}
   var next=C.moveLesson(db.timetable.placements,id,o.slot,o.state==='clash'?o.clashWith[0]:undefined);
   var other=o.state==='clash'?S.input.events.find(function(x){return x.id===o.clashWith[0]}):null;
   commit(next,other?'สลับ '+subj(e)+' กับ '+subj(other)+' แล้ว':'ย้าย '+subj(e)+' ไป'+where(o.slot)+' แล้ว');
@@ -19982,7 +20121,7 @@ function repState(d){var r={};try{var pc=C.policyConfig(d.setup.schedulePolicy,d
     x.ids.forEach(function(id){(r[id]=r[id]||[]).push(why)})})}catch(e){}return r}
 function pairState(d){var r={};try{C.doubleReport(d.events,d.placements,db.timetable.periods,C.policyConfig(d.setup.schedulePolicy,db.timetable.periods)).forEach(function(x){r[x.key]=x})}catch(err){}return r}
 function select(id){
-  S.sel=S.sel===id?null:id;S.report=S.sel?C.slotOptions(S.input,S.sel):null;S.sig='';render();
+  S.plan=null;S.sel=S.sel===id?null:id;S.report=S.sel?C.slotOptions(S.input,S.sel):null;S.sig='';render();
   if(S.sel){var r=S.report.counts;UX.live('เลือก '+subj(S.input.events.find(function(e){return e.id===id}))+' · วางได้ '+(r.best+r.ok)+' ช่อง · สลับได้ '+S.report.options.filter(function(o){return o.swap}).length+' ช่อง')}}
 
 /* ---- render ------------------------------------------------------------------------------------------------------------ */
@@ -20000,6 +20139,7 @@ function render(){
   var d=data(),ents=entities(S.view);
   if(!ents.some(function(x){return x[0]===S.key})){S.key=ents.length?ents[0][0]:''}
   if(S.sel&&!d.events.some(function(e){return e.id===S.sel})){S.sel=null;S.report=null}
+  if(S.plan&&S.plan.id!==S.sel)S.plan=null;
   if(S.sel)S.report=C.slotOptions(d,S.sel);
   S.pairs=Object.keys(doubles()).length?pairState(d):null;
   S.rep=repState(d);
@@ -20169,14 +20309,14 @@ function card(e,p){
   return b}
 function target(o,occupied){
   if(o.state==='invalid'||o.state==='current')return null;
-  var can=o.state==='best'||o.state==='ok'||(o.state==='policy'&&!S.report.strict)||(o.state==='clash'&&o.swap);
-  var lbl=o.state==='clash'?(o.swap?'สลับได้':'ชน'):LABEL[o.state];
+  var can=o.state==='best'||o.state==='ok'||(o.state==='policy'&&!S.report.strict)||o.state==='clash';
+  var lbl=o.state==='clash'?(o.swap?'สลับได้':'ย้ายตาม'):LABEL[o.state];
   if(occupied){                                                     /* a lesson is already shown here: only a small badge */
-    if(o.state==='clash'&&can){var sw=btn('ux-tt-swap','⇄ สลับ',function(){moveTo(o)},'สลับกับ '+o.who+' — '+where(o.slot));sw.dataset.k='slot-'+o.slot;return sw}
+    if(o.state==='clash'&&can){var sw=btn('ux-tt-swap',o.swap?'⇄ สลับ':'↪ ย้ายตาม',function(){moveTo(o)},(o.swap?'สลับกับ ':'ย้ายมาช่องนี้และขยับคาบที่ชน: ')+o.who+' — '+where(o.slot));sw.dataset.k='slot-'+o.slot;return sw}
     return el('span','ux-tt-why'+(o.state==='clash'?'':' grey'),o.who||LABEL[o.state])}
-  var t=can?btn('ux-tt-target st-'+(o.state==='clash'?'swap':o.state),null,function(){moveTo(o)}):el('div','ux-tt-target st-'+o.state);
+  var t=can?btn('ux-tt-target st-'+(o.state==='clash'?(o.swap?'swap':'chain'):o.state),null,function(){moveTo(o)}):el('div','ux-tt-target st-'+o.state);
   t.appendChild(el('b',null,lbl));if(o.who&&o.state!=='best'&&o.state!=='ok')t.appendChild(el('span',null,o.who));
-  if(can){t.dataset.k='slot-'+o.slot;t.setAttribute('aria-label',(o.state==='clash'?'สลับกับ '+o.who:lbl)+' — '+where(o.slot))}
+  if(can){t.dataset.k='slot-'+o.slot;t.setAttribute('aria-label',(o.state==='clash'?(o.swap?'สลับกับ ':'ย้ายมาช่องนี้และขยับคาบที่ชน: ')+o.who:lbl)+' — '+where(o.slot))}
   else t.title=o.who;
   return t}
 function tray(d){
@@ -20209,6 +20349,7 @@ function panel(d){
     dc.onchange=function(){setDouble(e,dc.checked)};dw.appendChild(dc);
     var dt=el('span');dt.appendChild(el('b',null,'คาบคู่'));dt.appendChild(document.createTextNode(' — เรียน 2 คาบติดกันในวันเดียว ('+same+' ชม./สัปดาห์ = '+Math.floor(same/2)+' คู่'+(same%2?' + 1 คาบเดี่ยว':'')+')'));dw.appendChild(dt);p.appendChild(dw);
     if(isD&&S.pairs&&S.pairs[dkey(e)]){var ps=S.pairs[dkey(e)];p.appendChild(el('p','ux-tt-meta '+(ps.pairs>=ps.pairsWanted?'ux-ok':'ux-warn'),ps.pairs>=ps.pairsWanted?'✓ ติดกันครบ '+ps.pairs+' คู่':'ติดกันแล้ว '+ps.pairs+'/'+ps.pairsWanted+' คู่ — กด ⚖ ปรับให้ดีขึ้น หรือลากให้ติดกัน'))}}
+  if(S.plan&&S.plan.id===S.sel)p.appendChild(planBox());
   if(r.best!=null){var bo=r.options.filter(function(o){return o.slot===r.best})[0],box=el('div','ux-tt-best');
     box.appendChild(el('b',null,'ช่องที่ดีที่สุด: '+where(r.best)));
     box.appendChild(el('span',null,(bo.delta<0?'คะแนนนโยบาย/การเดินตึกดีขึ้น '+Math.round(-bo.delta):'ครูว่าง ชั้นว่าง ไม่ผิดนโยบาย')));
@@ -20232,7 +20373,7 @@ function panel(d){
    would do. Drop = the same moveTo()/takeOut() as tapping (one Undo step). The card follows the pointer with transform in one
    requestAnimationFrame per frame (layout read once per frame: elementFromPoint, then writes). Esc cancels. Tap-to-move stays. */
 var D={tabDay:null,tabAt:0,node:null,id:null,pid:null,type:'',x0:0,y0:0,x:0,y:0,on:false,timer:0,ghost:null,raf:0,hover:null,hoverTd:null,drop:null,endedAt:0,scroller:null};
-function canDrop(o){return o&&(o.state==='best'||o.state==='ok'||(o.state==='policy'&&!S.report.strict)||(o.state==='clash'&&o.swap))}
+function canDrop(o){return o&&(o.state==='best'||o.state==='ok'||(o.state==='policy'&&!S.report.strict)||o.state==='clash')}
 function optionAt(td,y){
   if(!S.report)return null;var day=+td.dataset.day,per=+td.dataset.period;
   var os=S.report.options.filter(function(o){return o.day===day&&o.period===per&&o.state!=='invalid'});if(!os.length)return null;
@@ -20252,7 +20393,7 @@ function dropInfo(x,y){
     if(e0&&(S.rows==='teacher'?e0.teachers:e0.grades).indexOf(td.dataset.row)<0)return {kind:'no',el:td,text:S.rows==='teacher'?'คนละครู — วางในแถวของครูผู้สอน':'คนละชั้น — วางในแถวของชั้นนี้'}}
   var o=optionAt(td,y);if(!o)return {kind:'no',text:'วางที่นี่ไม่ได้',el:td};
   if(o.state==='current')return {kind:'none',el:td};
-  if(canDrop(o))return {kind:'ok',o:o,el:td,text:o.state==='clash'?'สลับกับ '+o.who:o.state==='policy'?'วางได้ (ขัดนโยบายครู)':o.state==='best'?'วางได้ · ดีที่สุด':'วางได้'};
+  if(canDrop(o))return {kind:'ok',o:o,el:td,text:o.state==='clash'?(o.swap?'สลับกับ '+o.who:'ย้ายตาม — ดูแผนก่อนใช้'):o.state==='policy'?'วางได้ (ขัดนโยบายครู)':o.state==='best'?'วางได้ · ดีที่สุด':'วางได้'};
   if(o.state==='policy')return {kind:'no',el:td,text:'โรงเรียนตั้งห้ามผิดนโยบาย'};
   return {kind:'no',el:td,text:(o.state==='clash'?'ชน: ':'')+(o.who||LABEL[o.state]||'วางไม่ได้')}}
 function scroller(n){for(var e=n&&n.parentElement;e&&e!==document.body;e=e.parentElement){var cs=getComputedStyle(e);if(/(auto|scroll)/.test(cs.overflowY)&&e.scrollHeight>e.clientHeight+4)return e}return document.scrollingElement||document.documentElement}
