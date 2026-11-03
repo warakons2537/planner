@@ -2626,6 +2626,14 @@ button.ux-tt-target{cursor:pointer}
 .ux-tt-target.st-best{background:#dff3e6;border:2px solid #1f7a45;color:#124d2b}
 .ux-tt-target.st-ok{background:#f0faf3;border:1.5px dashed #2b8a50;color:#1b5e36}
 .ux-tt-target.st-policy{background:#fff4e2;border:1.5px dashed #b26b00;color:#7a4500}
+.ux-tt-log{margin:14px 0 24px}
+.ux-tt-log summary{cursor:pointer;font-weight:600;padding:8px 0}
+.ux-tt-loglist{list-style:none;margin:8px 0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:420px;overflow:auto}
+.ux-tt-loglist>li{border-left:3px solid #c9d6e2;padding:4px 10px;font-size:var(--ux-fs-sm)}
+.ux-tt-loglist>li.k-chain,.ux-tt-loglist>li.k-auto{border-left-color:#c98a14}
+.ux-tt-loglist>li.k-move,.ux-tt-loglist>li.k-swap{border-left-color:#2f62b0}
+.ux-tt-logt{display:block;opacity:.65;font-size:.85em}
+.ux-tt-logsub{list-style:none;margin:2px 0 0;padding-left:14px;opacity:.85}
 .ux-tt-target.st-chain{background:#fff6e5;border:1.5px dashed #c98a14;color:#7a4e00}
 .ux-tt-planlist{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:var(--ux-fs-sm)}
 .ux-tt-plan .ux-tt-planwarn{color:#8a4b00;font-weight:600}
@@ -22978,6 +22986,91 @@ function decorate(){
     cell.insertBefore(b,cell.firstChild)})}
 UX.onInit(function(){var tb=$('jointTable');if(!tb)return;decorate();new MutationObserver(decorate).observe(tb,{childList:true,subtree:true})});
 UX.jointEdit={open:open,decorate:decorate,state:S};
+})(window.UX);
+
+/* >>> 76-editlog.js */
+/* 76-editlog.js — V24.52 ประวัติการแก้ไขตารางสอน.
+   Wraps the original act(): every edit that changes the timetable (manual move, swap, "ย้ายตาม", lock / unlock, take out,
+   auto-generate, optimise, repair …) is compared before / after and one line is added to db.timetable.editLog
+   [{t, kind, text, moves:[{id,label,from,to}]}] — inside the same act(), so it is saved, synced and undone together with the edit.
+   Shown under the timetable ("📋 ประวัติการแก้ไขตาราง"), downloadable as CSV, can be cleared. Newest 500 are kept.
+   Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES||typeof window.act!=='function'||window.act.__uxLog)return;
+var C=window.ASPCore,MAX=500,MOVES=40,orig=window.act;
+function snap(){var t=window.db&&db.timetable,o={};if(t&&t.placements)Object.keys(t.placements).forEach(function(k){var p=t.placements[k];if(p)o[k]={slot:p.slot,locked:!!p.locked}});return o}
+function evName(id){try{var e=UX.optimize.input().events.find(function(x){return x.id===id});if(e)return String(e.kind==='G'?e.origin:e.subjects[0]).replace(/^\S+\s+/,'')+' '+C.gradeRange(e.grades,db.grades)}catch(err){}return id}
+function where(slot){var t=db.timetable,p=C.slotPosition(slot,t.periods);return 'วัน'+t.days[p.day]+' คาบ '+(p.period+1)+(p.half?' (ครึ่งหลัง)':'')}
+function diff(a,b){
+  var moved=[],locked=[],unlocked=[],added=[],removed=[];
+  Object.keys(b).forEach(function(k){var x=a[k],y=b[k];
+    if(!x)added.push(k);
+    else{if(x.slot!==y.slot)moved.push(k);if(!x.locked&&y.locked)locked.push(k);if(x.locked&&!y.locked)unlocked.push(k)}});
+  Object.keys(a).forEach(function(k){if(!b[k])removed.push(k)});
+  return {moved:moved,locked:locked,unlocked:unlocked,added:added,removed:removed}}
+function entry(a,b){
+  var d=diff(a,b),n=d.moved.length+d.added.length+d.removed.length;
+  if(!n&&!d.locked.length&&!d.unlocked.length)return null;
+  var e={t:Date.now(),kind:'',text:'',moves:[]};
+  var mv=function(k){return {id:k,label:evName(k),from:a[k]?a[k].slot:null,to:b[k]?b[k].slot:null}};
+  var last=(db.timetable.lastResult||'');
+  if(!n){var ids=d.locked.length?d.locked:d.unlocked;e.kind=d.locked.length?'lock':'unlock';
+    e.text=(d.locked.length?'ล็อก ':'ปลดล็อก ')+(ids.length===1?evName(ids[0]):ids.length+' คาบ');return e}
+  var all=d.moved.concat(d.added,d.removed);
+  if(all.length<=MOVES)e.moves=all.map(mv);
+  if(n>6){e.kind='auto';e.text=(last&&/จัด|ปรับ|สร้าง|ล้าง|คืน|ช่วย/.test(last)?last:'ปรับตารางหลายคาบ')+' · เปลี่ยน '+n+' คาบ';return e}
+  if(d.removed.length&&!d.moved.length&&!d.added.length){e.kind='out';e.text='เอาออกจากตาราง: '+d.removed.map(evName).join(', ');return e}
+  if(d.added.length&&!d.moved.length&&!d.removed.length){e.kind='put';e.text='วางลงตาราง: '+d.added.map(function(k){return evName(k)+' → '+where(b[k].slot)}).join(', ');return e}
+  if(d.moved.length===1&&n===1){var k=d.moved[0];e.kind='move';e.text='ย้าย '+evName(k)+' : '+where(a[k].slot)+' → '+where(b[k].slot);return e}
+  if(d.moved.length===2&&n===2&&a[d.moved[0]].slot===b[d.moved[1]].slot&&a[d.moved[1]].slot===b[d.moved[0]].slot){
+    e.kind='swap';e.text='สลับ '+evName(d.moved[0])+' กับ '+evName(d.moved[1]);return e}
+  e.kind='chain';e.text='ย้ายตาม '+n+' คาบ: '+d.moved.slice(0,3).map(evName).join(', ')+(n>3?' …':'');return e}
+window.act=function(fn){
+  var before=null;
+  try{before=snap()}catch(err){}
+  return orig.call(this,function(){
+    var r=fn.apply(this,arguments);
+    try{if(before&&db.timetable){var en=entry(before,snap());
+      if(en){var L=Array.isArray(db.timetable.editLog)?db.timetable.editLog:(db.timetable.editLog=[]);L.push(en);if(L.length>MAX)L.splice(0,L.length-MAX)}}}catch(err){}
+    return r})};
+window.act.__uxLog=1;
+
+/* ---- panel ---- */
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+var ICON={move:'↪',swap:'⇄',chain:'⛓',lock:'🔒',unlock:'🔓',out:'✕',put:'＋',auto:'✦'};
+var S={sig:'',all:false};
+function fmt(t){try{return new Date(t).toLocaleString('th-TH',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+function csv(L){
+  var q=function(s){return '"'+String(s==null?'':s).replace(/"/g,'""')+'"'};
+  var rows=[['เวลา','ประเภท','รายการ','คาบที่เปลี่ยน']];
+  L.forEach(function(x){rows.push([new Date(x.t).toISOString(),x.kind,x.text,(x.moves||[]).map(function(m){return m.label+': '+(m.from==null?'-':where(m.from))+' → '+(m.to==null?'-':where(m.to))}).join(' | ')])});
+  var blob=new Blob(['﻿'+rows.map(function(r){return r.map(q).join(',')}).join('\r\n')],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ประวัติแก้ไขตารางสอน.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
+function render(){
+  var sec=$('timetable');if(!sec||UX.cur()!=='timetable')return;
+  var L=(db.timetable&&db.timetable.editLog)||[],sig=L.length+'|'+(L.length?L[L.length-1].t:0)+'|'+S.all;
+  var h=$('uxEditLog');if(h&&h.parentNode===sec&&sig===S.sig)return;S.sig=sig;
+  var open=h&&h.querySelector('details')&&h.querySelector('details').open;
+  if(!h||h.parentNode!==sec){h=el('section','ux-tt-log no-print');h.id='uxEditLog';sec.appendChild(h)}
+  h.textContent='';
+  var dt=el('details');dt.open=!!open;dt.appendChild(el('summary',null,'📋 ประวัติการแก้ไขตาราง ('+L.length+' รายการ)'));
+  if(!L.length)dt.appendChild(el('p','ux-tt-hint','ยังไม่มีการแก้ไข — ทุกครั้งที่ย้าย สลับ ล็อก เอาออก หรือจัดตารางอัตโนมัติ จะถูกบันทึกที่นี่'));
+  else{
+    var bar=el('div','ux-tt-acts'),b1=el('button','ux-btn','ดาวน์โหลด CSV');b1.type='button';b1.onclick=function(){csv(L)};bar.appendChild(b1);
+    var b2=el('button','ux-btn','ล้างประวัติ');b2.type='button';b2.onclick=function(){if(!confirm('ล้างประวัติการแก้ไขตารางทั้งหมดหรือไม่? (ตัวตารางไม่ถูกแตะ)'))return;
+      window.act(function(){db.timetable.editLog=[]})};bar.appendChild(b2);dt.appendChild(bar);
+    var ul=el('ul','ux-tt-loglist'),show=S.all?L.length:Math.min(L.length,30);
+    for(var i=L.length-1;i>=L.length-show;i--){var x=L[i],li=el('li','k-'+x.kind);
+      li.appendChild(el('span','ux-tt-logt',fmt(x.t)));li.appendChild(el('b',null,(ICON[x.kind]||'•')+' '+x.text));
+      if(x.moves&&x.moves.length>1&&x.kind!=='swap'){var sub=el('ul','ux-tt-logsub');
+        x.moves.forEach(function(m){sub.appendChild(el('li',null,m.label+' : '+(m.from==null?'ไม่ได้ลง':where(m.from))+' → '+(m.to==null?'เอาออก':where(m.to))))});li.appendChild(sub)}
+      ul.appendChild(li)}
+    dt.appendChild(ul);
+    if(L.length>show){var more=el('button','ux-btn','แสดงทั้งหมด ('+L.length+')');more.type='button';more.onclick=function(){S.all=true;S.sig='';render()};dt.appendChild(more)}}
+  h.appendChild(dt)}
+UX.onSync(render);
+UX.editLog={entry:entry,render:render};
 })(window.UX);
 
 /* >>> 99-start.js */
