@@ -5,8 +5,8 @@
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#f4f6f8",
- "theme_color": "#0a5a9c",
+ "background_color": "#f6fbf6",
+ "theme_color": "#0a4a26",
  "description": "จัดรายวิชา ครู ตารางสอน และเอกสารราชการ — ซิงก์ระหว่างเครื่องผ่าน Google Drive ของคุณ",
  "icons": [
   {
