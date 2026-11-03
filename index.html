@@ -3416,7 +3416,7 @@ body.ux-tabs-on .ux-newver{bottom:calc(var(--ux-tabs-h,64px) + 24px + env(safe-a
 .ux-je-open{margin:0 4px 4px 0}
 
 /* >>> 80-suite.css */
-/* 80-suite.css — V24.54 หน้าตาเดียวกับ WL Admin / WL Sub (Wangluek Connected): เขียวจากโลโก้ + ทองโรงเรียน, Noto Sans Thai + Pridi,
+/* 80-suite.css — V24.55 หน้าตาเดียวกับ WL Admin / WL Sub (Wangluek Connected): เขียวจากโลโก้ + ทองโรงเรียน, Noto Sans Thai + Pridi,
    ปุ่มทรงแคปซูล, แยกชั้นด้วยโทนพื้น (ไม่ใช้เงาหนัก), เมนูที่เลือกอยู่ = แถบเขียวอ่อน (--chosen). ค่าสีเป็นของ pp/css/app.css.
    ทำที่ชั้นโทเคนเป็นหลัก — ไม่แตะตรรกะ/ข้อมูลใดๆ. ปิดได้ด้วย <html data-suite="off"> */
 :root:not([data-suite="off"]){
@@ -14696,7 +14696,7 @@ var ASPCore = (() => {
 
   function planMove(input, id, target, options = {}) {
     const { setup } = input, periods = setup.periods, days = setup.days.length;
-    const maxMoves = options.maxMoves ?? 4, budget = options.budget ?? 40000, cap = options.cap ?? 60;
+    const maxMoves = options.maxMoves ?? 6, budget = options.budget ?? 40000, cap = options.cap ?? 60;
     const events = new Map(input.events.map((e) => [e.id, e]));
     const e0 = events.get(id), p0 = input.placements[id];
     if (!e0) return { ok: false, reason: "ไม่พบคาบนี้" };
@@ -17287,7 +17287,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.54',inits:[],syncs:[]};
+var UX=window.UX={version:'24.55',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -20137,7 +20137,7 @@ function where(slot){var p=C.slotPosition(slot,db.timetable.periods);return 'ว
 function commit(next,msg){
   act(function(){db.timetable.placements=next;db.timetable.signature=ttSourceKey();db.timetable.lastResult='ปรับตารางด้วยตนเอง'});
   UX.live(msg);S.sig='';render()}
-/* V24.54 ย้ายตาม: เลือกช่องที่ชน → ASPCore.planMove หาชุดคาบที่ต้องขยับน้อยที่สุด (คาบอื่นไม่ถูกแตะ) แสดงตัวอย่างก่อนใช้ */
+/* V24.55 ย้ายตาม: เลือกช่องที่ชน → ASPCore.planMove หาชุดคาบที่ต้องขยับน้อยที่สุด (คาบอื่นไม่ถูกแตะ) แสดงตัวอย่างก่อนใช้ */
 function chainPlan(o){
   var id=S.sel,e=S.input.events.find(function(x){return x.id===id});if(!e)return;
   var r;try{r=C.planMove(S.input,id,o.slot)}catch(err){r={ok:false,reason:'คำนวณไม่สำเร็จ'}}
@@ -23050,7 +23050,7 @@ UX.jointEdit={open:open,decorate:decorate,state:S};
 })(window.UX);
 
 /* >>> 76-editlog.js */
-/* 76-editlog.js — V24.54 ประวัติการแก้ไขตารางสอน.
+/* 76-editlog.js — V24.55 ประวัติการแก้ไขตารางสอน.
    Wraps the original act(): every edit that changes the timetable (manual move, swap, "ย้ายตาม", lock / unlock, take out,
    auto-generate, optimise, repair …) is compared before / after and one line is added to db.timetable.editLog
    [{t, kind, text, moves:[{id,label,from,to}]}] — inside the same act(), so it is saved, synced and undone together with the edit.
@@ -23150,7 +23150,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="980bdb684c81";window.__UX_WEBAPP_LABEL="24.54";
+(function(){window.__UX_WEBAPP="aca7fcd07617";window.__UX_WEBAPP_LABEL="24.55";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
