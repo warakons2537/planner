@@ -11264,6 +11264,7 @@ var ASPCore = (() => {
     buildMatrix: () => buildMatrix,
     buildOrderDoc: () => buildOrderDoc,
     buildReportDoc: () => buildReportDoc,
+    buildDayTimetableDoc: () => buildDayTimetableDoc,
     buildTimetableDoc: () => buildTimetableDoc,
     buildWorkloadDoc: () => buildWorkloadDoc,
     buildingDistance: () => buildingDistance,
@@ -14403,6 +14404,79 @@ var ASPCore = (() => {
     });
     return finish(sections, s, `${SHEET_TITLE[input.kind]} ภาคเรียนที่ ${s.semester} ปีการศึกษา ${s.year}`);
   }
+  function dayHex(h) {
+    const sat = 0.55, lig = 0.92, a = sat * Math.min(lig, 1 - lig);
+    const f = (n) => { const k = (n + h / 30) % 12; return lig - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)); };
+    return [f(0), f(8), f(4)].map((x) => Math.round(x * 255).toString(16).padStart(2, "0")).join("").toUpperCase();
+  }
+  // V24.56 ตารางรวมทั้งโรงเรียน: วันละ 1 แผ่น แถว = ชั้น (หรือครู) คอลัมน์ = คาบ เหมือนหน้าจอ "ทุกชั้น"
+  function daySection(day, rows, s, byT, part) {
+    const P3 = day.periods;
+    const lunch = s.lunchAfter > 0 && s.lunchAfter < P3 ? s.lunchAfter : 0;
+    const times = s.periodTimes.length >= P3 ? s.periodTimes : defaultTimes(P3, lunch);
+    const width = 29.7 - 1.5 - 1.5, labelW = byT ? 3.4 : 2.2, lunchW = lunch ? 1 : 0, pw = (width - labelW - lunchW) / P3;
+    const widths = [labelW];
+    for (let p = 0; p < P3; p++) {
+      widths.push(pw);
+      if (lunch && p + 1 === lunch) widths.push(lunchW);
+    }
+    const total = 2 + rows.length;
+    const lunchCol = (r) => lunch ? [r === 0 ? { paras: [P("พักกลางวัน", { align: "center" })], vertical: true, merge: "start" } : { paras: [], merge: "cont" }] : [];
+    const spread = (f, r) => {
+      const out = [];
+      for (let p = 0; p < P3; p++) {
+        out.push(f(p));
+        if (lunch && p + 1 === lunch) out.push(...lunchCol(r));
+      }
+      return out;
+    };
+    const rowH = Math.max(0.9, Math.min(1.7, 12.2 / Math.max(rows.length, 1)));
+    const body = rows.map((r, ri) => ({ height: rowH, cells: [
+      { paras: [P([RUN(r.label, { bold: true, size: 11 })], { align: "center" })], vAlign: "center", fill: "F2F2F2" },
+      ...spread((p) => {
+        const items = r.cells[p] ?? [];
+        if (!items.length) return { paras: [P("", { align: "center" })], vAlign: "center" };
+        const paras = [];
+        for (const it of items) {
+          paras.push(P([RUN(it.text, { bold: true, size: 10 })], { align: "center" }));
+          if (it.sub) paras.push(P([RUN(it.sub, { size: 8.5 })], { align: "center" }));
+        }
+        return { paras, vAlign: "center", fill: dayHex(items[0].hue) };
+      }, ri + 2)
+    ] }));
+    const rowsAll = [
+      { cells: [{ paras: [P([RUN(byT ? "ครู / คาบ" : "ชั้น / คาบ", { bold: true, size: 11 })], { align: "center" })], vAlign: "center", merge: "start" }, ...spread((p) => ({ paras: [P([RUN("คาบ " + (p + 1), { bold: true, size: 11 })], { align: "center" })], vAlign: "center" }), 0)] },
+      { cells: [{ paras: [], merge: "cont" }, ...spread((p) => ({ paras: [P([RUN(times[p] ?? "", { size: 9 })], { align: "center" })], vAlign: "center" }), 1)] },
+      ...body
+    ];
+    void total;
+    return {
+      name: "ตารางรวม วัน" + day.name + (part ? " (" + part + ")" : ""),
+      landscape: true,
+      margins: { top: 1.5, bottom: 1.2, left: 1.5, right: 1.5 },
+      blocks: [
+        P([RUN("โรงเรียน" + s.school, { bold: true, size: 18 })], { align: "center", after: 4 }),
+        { kind: "table", borders: false, widths: [width / 3, width / 3, width / 3], rows: [{ cells: [
+          cell([[RUN("ตารางสอนรวม วัน" + day.name + (part ? " (" + part + ")" : ""), { bold: true, size: 18 })]], {}, "left"),
+          cell([[RUN(`จำนวน ${day.count} คาบ`, { bold: true, size: 18 })]]),
+          cell([[RUN(`ปีการศึกษา ${s.semester}/${s.year}`, { bold: true, size: 18 })]], {}, "right")
+        ] }] },
+        { kind: "table", widths, rows: rowsAll, size: Math.max(12, s.size - 2) },
+        P("", { after: 10 }),
+        sheetSigns(s, "reports", width)
+      ]
+    };
+  }
+  function buildDayTimetableDoc(input) {
+    const s = settingsOf(input.settings), byT = input.rowsBy === "teacher", per = input.maxRows ?? 12, sections = [];
+    for (const day of input.days) {
+      const chunks = [];
+      for (let i = 0; i < day.rows.length; i += per) chunks.push(day.rows.slice(i, i + per));
+      if (!chunks.length) chunks.push([]);
+      chunks.forEach((c, i) => sections.push(daySection(day, c, s, byT, chunks.length > 1 ? `${i + 1}/${chunks.length}` : "")));
+    }
+    return finish(sections, s, `ตารางสอนรวมทั้งโรงเรียน ภาคเรียนที่ ${s.semester} ปีการศึกษา ${s.year}`);
+  }
   var PORTRAIT = { top: 1.75, bottom: 1.5, left: 2, right: 1.5 };
   var WIDTH = 21 - 2 - 1.5;
   function heading(title, s) {
@@ -17287,7 +17361,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'24.55',inits:[],syncs:[]};
+var UX=window.UX={version:'24.56',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -20849,6 +20923,7 @@ var DOCS=[
   {k:'handover',t:'คำสั่งเปลี่ยนครูผู้สอนระหว่างภาคเรียน',d:'แผนเดิม → แผนปัจจุบัน · ผู้ส่งมอบ / ผู้รับมอบ · ตารางสอนใหม่'},
   {k:'teacher',t:'ตารางสอนรายครู',d:'A4 แนวนอน คนละ 1 แผ่น',sheet:true},
   {k:'grade',t:'ตารางเรียนรายชั้น',d:'A4 แนวนอน ชั้นละ 1 แผ่น',sheet:true},
+  {k:'day',t:'ตารางรวมทั้งโรงเรียนรายวัน',d:'A4 แนวนอน วันละ 1 แผ่น · ชั้น × คาบ (หรือครู × คาบ)',pick:true,day:true},
   {k:'room',t:'ตารางการใช้ห้อง',d:'ห้องที่กำหนดไว้ในตารางสอน',sheet:true},
   {k:'workload',t:'สรุปภาระงานสอนรายครู',d:'ชั่วโมงสอนเทียบเพดานและเกณฑ์ขั้นต่ำ'},
   {k:'courses',t:'โครงสร้างเวลาเรียนรายชั้น',d:'รายวิชา รหัส ชั่วโมง ครูผู้สอน รายชั้น'},
@@ -20856,7 +20931,7 @@ var DOCS=[
   {k:'exec',t:'รายงานสรุปสำหรับผู้บริหาร',d:'ชั่วโมงรายชั้น ภาระสอน เรื่องที่ต้องตรวจ',rep:true},
   {k:'teacherCourses',t:'รายงานรายวิชารายครู',d:'วิชา รหัส ชั้น หน้าที่ ชั่วโมง ของครูแต่ละคน',rep:true,pick:true},
   {k:'compare',t:'เปรียบเทียบแผน',d:'สิ่งที่เปลี่ยนระหว่างสองแผน',rep:true}];
-var OPT_DEFAULTS={showTeacher:true,showRoom:false,showCode:true,showGrades:true,showNotes:true,minHours:12,sort:C.COURSE_SORT_DEFAULT,sortBy:{}};
+var OPT_DEFAULTS={dayRows:'grade',showTeacher:true,showRoom:false,showCode:true,showGrades:true,showNotes:true,minHours:12,sort:C.COURSE_SORT_DEFAULT,sortBy:{}};
 var SORTED={order:1,handover:1,teacherCourses:1,courses:1};   /* V24.48 documents with a course list */
 var S={mode:'new',doc:'order',target:'all',base:'',sig:'',model:null,info:null};
 try{if(localStorage.getItem(KEY)==='legacy')S.mode='legacy';var sv=JSON.parse(localStorage.getItem(SEL)||'null');
@@ -20887,6 +20962,7 @@ function targets(kind){
   if(kind==='grade'){var ev=events(),used={};Object.keys(ev).forEach(function(id){ev[id].grades.forEach(function(g){used[g]=1})});
     return db.grades.filter(function(g){return used[g]}).map(function(g){return [g,g]})}
   if(kind==='room')return roomsOf(events()).map(function(r){return [r,r]});
+  if(kind==='day')return db.timetable.days.map(function(d,i){return [String(i),'วัน'+d]});
   if(kind==='teacherCourses')return db.teachers.filter(function(t){return !t.team}).map(function(t){return [t.id,t.name]});
   if(kind==='compare')return (project.scenarios||[]).map(function(x){return [x.id,x.name||x.id]});
   return []}
@@ -20906,6 +20982,23 @@ function sheetsFor(kind,o){
       if(!cells[pos.day][pos.period]){cells[pos.day][pos.period]=lines;count++}
       else cells[pos.day][pos.period]=cells[pos.day][pos.period].concat(lines)});
     return {id:key,name:x[1],days:days,periods:P,cells:cells,count:count}})}
+/* V24.56 ตารางรวมทั้งโรงเรียน: วันละ 1 แผ่น · แถว = ชั้นหรือครู · คอลัมน์ = คาบ (เหมือนมุมมอง "ทุกชั้น" ในหน้าตารางสอน) */
+function hueOf(s){var h=0;s=String(s);for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function daySheets(o){
+  var tt=db.timetable,P=tt.periods,ev=events(),byT=o.dayRows==='teacher',rows;
+  if(byT){var used={};Object.keys(ev).forEach(function(id){ev[id].teachers.forEach(function(t){used[t]=1})});
+    rows=db.teachers.filter(function(t){return !t.team&&used[t.id]}).map(function(t){return {key:t.id,label:String(t.name||'').replace(/^ครู\s*/,'')}})}
+  else{var g={};Object.keys(ev).forEach(function(id){ev[id].grades.forEach(function(x){g[x]=1})});rows=db.grades.filter(function(x){return g[x]}).map(function(x){return {key:x,label:x}})}
+  return tt.days.map(function(dn,di){
+    var map={},count=0;
+    Object.keys(tt.placements||{}).forEach(function(id){
+      var e=ev[id],p=tt.placements[id];if(!e||!p||!Number.isInteger(p.slot))return;
+      var pos=C.slotPosition(p.slot,P);if(pos.day!==di)return;count++;
+      var subj=e.kind==='G'?String(e.origin):strip(e.subjects[0]),who=e.teachers.map(nameOf).filter(Boolean).join(', ');
+      var sub=byT?(e.kind==='G'?C.gradeRange(e.grades,db.grades):e.grades.join(', ')):[o.showTeacher&&who?who:'',o.showRoom&&e.room?e.room:''].filter(Boolean).join(' · ');
+      (byT?e.teachers:e.grades).forEach(function(k){var key=k+'|'+pos.period;(map[key]=map[key]||[]).push({half:pos.half,text:subj,sub:sub,hue:hueOf(subj)})})});
+    return {id:String(di),name:dn,periods:P,count:count,rows:rows.map(function(r){
+      return {label:r.label,cells:Array.from({length:P},function(_,p){return (map[r.key+'|'+p]||[]).sort(function(a,b){return a.half-b.half})})}})}})}
 function workloadRows(){
   var ld={};try{ld=metrics().teacherLoads.load||{}}catch(e){}
   return db.teachers.filter(function(t){return !t.team}).map(function(t){
@@ -21006,6 +21099,7 @@ function model(k,tg){
   var s=shared(),o=opts(),d=docOf(k),m,n=0;
   if(k==='order'){m=UX.order.model();n=UX.order.state.counts?UX.order.state.counts.teachers:0}
   else if(k==='handover'){m=hoModel(s);n=hoPicked(hoItems()).length}
+  else if(d.day){var dd=daySheets(o);n=dd.length;if(tg!=='all')dd=dd.filter(function(x){return x.id===tg});m=C.buildDayTimetableDoc({settings:s,rowsBy:o.dayRows,days:dd})}
   else if(d.sheet){var sh=sheetsFor(k,o);n=sh.length;if(tg!=='all')sh=sh.filter(function(x){return x.id===tg});m=C.buildTimetableDoc({kind:k,settings:s,sheets:sh})}
   else if(d.rep){var pages=reportPages(k,tg);n=k==='teacherCourses'?targets(k).length:k==='compare'?(project.scenarios||[]).length:pages.length;
     m=C.buildReportDoc({settings:s,title:d.t+' ภาคเรียนที่ '+s.semester+' ปีการศึกษา '+s.year,pages:pages})}
@@ -21143,7 +21237,7 @@ function hoPanel(p){
 function panel(d,m){
   var p=el('aside','ux-docs-side ux-od-side');p.id='uxDocsPanel';p.setAttribute('aria-label','ตั้งค่าและส่งออก: '+d.t);
   var top=el('div','ux-docs-ptop');top.appendChild(el('h3',null,d.t));
-  var n=S.info||{n:0,pages:0},what=d.k==='handover'?n.n+' รายการ':d.k==='order'||d.k==='workload'||d.k==='teacher'||d.k==='teacherCourses'?'ครู '+n.n+' คน':d.k==='grade'||d.k==='courses'?n.n+' ชั้น':d.k==='room'?n.n+' ห้อง':d.k==='compare'?n.n+' แผน':'แผนนี้';
+  var n=S.info||{n:0,pages:0},what=d.k==='handover'?n.n+' รายการ':d.k==='order'||d.k==='workload'||d.k==='teacher'||d.k==='teacherCourses'?'ครู '+n.n+' คน':d.k==='day'?n.n+' วัน':d.k==='grade'||d.k==='courses'?n.n+' ชั้น':d.k==='room'?n.n+' ห้อง':d.k==='compare'?n.n+' แผน':'แผนนี้';
   var cnt=el('p','ux-docs-count',what+' · '+m.sections.length+' หน้า (ก่อนแบ่งหน้า)');cnt.id='uxDocsCount';top.appendChild(cnt);p.appendChild(top);
   var acts=el('div','ux-docs-acts');
   if(d.k==='order'){var oo=btn('ux-btn ux-primary','เปิดและแก้ไขชุดคำสั่ง',function(){UX.order.open()});oo.id='uxDocsOrderOpen';oo.dataset.k='order-open';acts.appendChild(oo)}
@@ -21161,6 +21255,11 @@ function panel(d,m){
     if(d.k==='grade'){g.appendChild(field('แสดงชื่อครูในช่อง','opt.showTeacher',o.showTeacher,'checkbox'));g.appendChild(field('แสดงห้องในช่อง','opt.showRoom',o.showRoom,'checkbox'))}
     if(d.k==='teacher')g.appendChild(el('p','ux-tt-hint','เหมือนตารางสอนรายครูในชุดคำสั่งทุกประการ'));
     p.appendChild(g)}
+  if(d.day){var dg=group('พิมพ์ของ');
+    dg.appendChild(field('วัน','target',S.target,'select',[['all','ทุกวัน ('+targets('day').length+')']].concat(targets('day'))));
+    dg.appendChild(field('แถวของตารางเป็น','opt.dayRows',o.dayRows,'select',[['grade','ชั้นเรียน (ชั้น × คาบ)'],['teacher','ครู (ครู × คาบ)']]));
+    if(o.dayRows!=='teacher'){dg.appendChild(field('แสดงชื่อครูในช่อง','opt.showTeacher',o.showTeacher,'checkbox'));dg.appendChild(field('แสดงห้องในช่อง','opt.showRoom',o.showRoom,'checkbox'))}
+    dg.appendChild(el('p','ux-tt-hint','สีของช่องแยกตามวิชา เหมือนหน้าตารางสอน · ถ้าแถวเยอะ (ครู) จะแบ่งเป็นหลายแผ่นต่อวัน'));p.appendChild(dg)}
   if(d.k==='teacherCourses'){var tc=group('พิมพ์ของ');
     tc.appendChild(field('ครู','target',S.target,'select',[['all','ครูที่มีรายวิชาทุกคน']].concat(targets(d.k))));p.appendChild(tc)}
   if(d.k==='compare'){var ids=compareIds(),sc=targets('compare'),cg=group('เทียบแผน');
@@ -21193,7 +21292,7 @@ function panel(d,m){
     sg.appendChild(field('ผู้อำนวยการ','s.signerName',s.signerName));
     sg.appendChild(field('ให้หัวหน้าฝ่ายวิชาการลงนามด้วย','s.academicSign',s.academicSign!==false,'checkbox'));   /* V24.25 */
     if(s.academicSign!==false)sg.appendChild(field('หัวหน้าฝ่ายวิชาการ','s.academicName',s.academicName||''));
-    if(d.sheet){var P=db.timetable.periods,lunch=s.lunchAfter==null?Math.min(3,P-1):s.lunchAfter;
+    if(d.sheet||d.day){var P=db.timetable.periods,lunch=s.lunchAfter==null?Math.min(3,P-1):s.lunchAfter;
       sg.appendChild(field('พักกลางวันหลังคาบที่','s.lunchAfter',String(lunch),'select',[['0','ไม่มีช่องพัก']].concat(Array.from({length:Math.max(0,P-1)},function(_,i){return [String(i+1),String(i+1)]}))))}
     sg.appendChild(field('ฟอนต์','s.font',s.font||C.ORDER_DEFAULTS.font,'select',[['TH SarabunIT๙','TH SarabunIT๙'],['TH Sarabun New','TH Sarabun New']]));
     sg.appendChild(field('ใช้เลขไทย (๑ ๒ ๓)','s.thaiDigits',!!s.thaiDigits,'checkbox'));
@@ -23150,7 +23249,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="aca7fcd07617";window.__UX_WEBAPP_LABEL="24.55";
+(function(){window.__UX_WEBAPP="c293d5ec5860";window.__UX_WEBAPP_LABEL="24.56";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
