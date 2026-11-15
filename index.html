@@ -3550,6 +3550,39 @@ body.ux-has-user #uxMenuAcc,body.ux-has-user #uxMenu :is(#uxNavAuto,#uxNavSide,#
 .ux-ts-roomchip button:hover{background:var(--ux-bad-bg);color:var(--ux-bad)}
 .ux-ts-roomchip button:focus-visible{box-shadow:var(--ux-focus)}
 
+/* >>> 92-term.css */
+/* 92-term.css — V25.2 ปีการศึกษา/ภาคเรียนของแผน (js/92-term.js) */
+.ux-term-chip{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;margin:-2px 0 6px;padding:3px 10px;border-radius:99px;font-size:var(--ux-fs-sm);font-weight:600;
+  background:var(--ux-brand-soft);color:var(--ux-brand);cursor:pointer;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.ux-term-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ux-brand);flex:none}
+.ux-term-chip.todo{background:var(--ux-accent-wash,#ffeeda);color:var(--ux-accent-ink,#6b3400)}
+.ux-term-chip.todo::before{background:var(--ux-accent,#f07d12)}
+.ux-term-chip:hover{filter:brightness(.97)}
+.ux-term-chip:focus-visible{box-shadow:var(--ux-focus)}
+#uxHeadPlan .ux-term-chip{margin:0 0 0 6px;align-self:center}
+body.ux-rail #uxBar .ux-term-chip{display:none}
+.ux-term-tag{display:inline-block;margin-left:8px;padding:1px 9px;border-radius:8px;font:600 var(--ux-fs-xs)/1.7 var(--ux-font);background:var(--ux-brand-soft);color:var(--ux-brand);vertical-align:middle;white-space:nowrap}
+.ux-term-tag.todo{background:var(--ux-accent-wash,#ffeeda);color:var(--ux-accent-ink,#6b3400)}
+.ux-term{width:min(760px,calc(100vw - 24px))}
+.ux-term-sec{padding:4px 0 14px;border-bottom:1px solid var(--ux-line);display:flex;flex-direction:column;gap:8px}
+.ux-term-sec:last-child{border-bottom:0}
+.ux-term-sec h3{margin:8px 0 0;font-size:var(--ux-fs-lg);color:var(--ux-navy)}
+.ux-term-sec .ux-od-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.ux-term-sub{margin:4px 0 0;font-weight:600;font-size:var(--ux-fs-md)}
+.ux-term-list{list-style:none;margin:0;padding:0;max-height:220px;overflow:auto;border:1px solid var(--ux-line);border-radius:10px;background:#fff}
+.ux-term-list li{display:flex;align-items:center;gap:10px;padding:6px 10px;border-bottom:1px solid #eef2f6}
+.ux-term-list li:last-child{border-bottom:0}
+.ux-term-list label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0;cursor:pointer}
+.ux-term-list input,.ux-term-tbl input{width:18px;height:18px;accent-color:var(--ux-brand);flex:none;margin-top:2px}
+.ux-term-list small{color:var(--ux-ink-soft);white-space:nowrap;font-size:var(--ux-fs-xs)}
+.ux-term-scroll{max-height:260px;overflow:auto;border:1px solid var(--ux-line);border-radius:10px;background:#fff}
+.ux-term-tbl{border-collapse:collapse;width:100%;font-size:var(--ux-fs-sm)}
+.ux-term-tbl th{position:sticky;top:0;background:var(--ux-sheet,#eef3fa);text-align:left;padding:6px 8px;font-weight:600}
+.ux-term-tbl td{padding:5px 8px;border-top:1px solid #eef2f6;vertical-align:top}
+.ux-term-new{font-weight:700;color:var(--ux-brand);white-space:nowrap}
+.ux-term-chk{color:var(--ux-warn)}
+.ux-term-more summary{cursor:pointer;font-size:var(--ux-fs-sm);color:var(--ux-brand);font-weight:600}
+
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0562a5"></head>
 <body class=""><div class="wl-splash" id="wlSplash" role="status" aria-live="polite"><img src="data:image/png;base64,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" width="64" height="64" alt=""><b>WL Scheduler</b><span>กำลังเปิดระบบ…</span><i></i><small class="suite">Wangluek (Y.N.) Connected</small></div>
 <script>(function(){var s=document.getElementById("wlSplash");if(!s)return;var d=0;function h(){if(d)return;d=1;s.classList.add("out");setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s)},320)}
@@ -17435,7 +17468,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'25.1',inits:[],syncs:[]};
+var UX=window.UX={version:'25.2',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -17911,9 +17944,10 @@ function sync(){
   /* plan select mirror */
   var o=$(E.planSelect)||$(E.planSelectAlt),ps=$('uxPlan');
   if(o&&ps){
-    var sig=[].map.call(o.options,function(q){return q.value+'|'+q.text}).join('§');
+    var sig=[].map.call(o.options,function(q){return q.value+'|'+q.text}).join('§')+(UX.term?'§'+UX.term.sig():'');
     if(ps.dataset.sig!==sig){ps.dataset.sig=sig;ps.innerHTML='';
-      [].forEach.call(o.options,function(q){var n=document.createElement('option');n.value=q.value;n.textContent=q.text.replace(/\s+/g,' ').slice(0,60);ps.appendChild(n)})}
+      [].forEach.call(o.options,function(q){var n=document.createElement('option');n.value=q.value;n.textContent=q.text.replace(/\s+/g,' ').slice(0,60);ps.appendChild(n)});
+      if(UX.term)try{UX.term.group(ps)}catch(e){}}                                  /* V25.2: จัดกลุ่มตามปีการศึกษา/ภาคเรียน */
     if(ps.value!==o.value)ps.value=o.value}
 }
 
@@ -19864,6 +19898,7 @@ function apply(){
   $('uxCodes').close();UX.toast('ใส่รหัสวิชาจากหลักสูตรแล้ว '+pick.length+' รายวิชา (ย้อนกลับได้)')}
 function open(){
   var st=UX.order&&UX.order.settings?UX.order.settings():{};S.semester=String(st.semester)==='2'?2:1;
+  if(UX.term){var tm=UX.term.current();if(tm.semester)S.semester=tm.semester}     /* V25.2: ภาคเรียนของแผน */
   compute();var d=dlg();render();if(!d.open)d.showModal()}
 UX.codes={open:open,state:S};
 function button(){var t=$('uxAsgTools');if(!t||t.querySelector('.ux-codes-btn'))return;
@@ -20002,7 +20037,7 @@ function panel(){
   var s=settings(),p=el('div','ux-od-side');p.id='uxOrderSide';
   var a=group('ข้อมูลในคำสั่ง');
   a.appendChild(field('โรงเรียน (ต่อจากคำว่า "โรงเรียน")','school',s.school));
-  var r1=el('div','ux-od-row');r1.appendChild(field('ภาคเรียน','semester',s.semester,'select',[['1','1'],['2','2'],['3','3']]));r1.appendChild(field('ปีการศึกษา','year',s.year));a.appendChild(r1);
+  var r1=el('div','ux-od-row');r1.appendChild(field('ภาคเรียน','semester',s.semester,'select',[['1','1'],['2','2']]));r1.appendChild(field('ปีการศึกษา','year',s.year));a.appendChild(r1);
   a.appendChild(field('เลขที่คำสั่ง (ก่อน /ปี)','orderNo',s.orderNo||C.ORDER_DEFAULTS.orderNo));
   var r2=el('div','ux-od-row');r2.appendChild(field('สั่ง ณ วันที่','dateDay',s.dateDay||''));
   r2.appendChild(field('เดือน','dateMonth',s.dateMonth||'','select',[['','—']].concat(MONTHS.map(function(m){return [m,m]}))));r2.appendChild(field('พ.ศ.','dateYear',s.dateYear||''));a.appendChild(r2);
@@ -21360,7 +21395,7 @@ function panel(d,m){
     var s=shared(),sg=group('ข้อมูลโรงเรียนและผู้ลงนาม');
     sg.appendChild(el('p','ux-tt-hint','ใช้ร่วมกับชุดคำสั่ง — แก้ที่นี่ เปลี่ยนในทุกเอกสาร'));
     sg.appendChild(field('โรงเรียน (ต่อจากคำว่า "โรงเรียน")','s.school',s.school));
-    var r=el('div','ux-od-row');r.appendChild(field('ภาคเรียน','s.semester',s.semester,'select',[['1','1'],['2','2'],['3','3']]));r.appendChild(field('ปีการศึกษา','s.year',s.year));sg.appendChild(r);
+    var r=el('div','ux-od-row');r.appendChild(field('ภาคเรียน','s.semester',s.semester,'select',[['1','1'],['2','2']]));r.appendChild(field('ปีการศึกษา','s.year',s.year));sg.appendChild(r);
     sg.appendChild(field('ผู้อำนวยการ','s.signerName',s.signerName));
     sg.appendChild(field('ให้หัวหน้าฝ่ายวิชาการลงนามด้วย','s.academicSign',s.academicSign!==false,'checkbox'));   /* V24.25 */
     if(s.academicSign!==false)sg.appendChild(field('หัวหน้าฝ่ายวิชาการ','s.academicName',s.academicName||''));
@@ -23594,6 +23629,178 @@ UX.account={sync:sync,open:function(){setOpen(true)}};
 UX.onInit(sync);UX.onSync(sync);
 })(window.UX);
 
+/* >>> 92-term.js */
+/* 92-term.js — V25.2 ปีการศึกษา + ภาคเรียน ของแต่ละแผน (แบบเบา: ป้ายต่อแผน ไม่แยกฐานข้อมูล).
+   ที่เก็บ = ที่เดิมที่เอกสารทุกฉบับอ่านอยู่แล้ว: data.docSettings.uxOrder.{year, semester} (เวอร์ชันเก่าเปิดไฟล์ได้ตามเดิม)
+   + data.termSet = true เมื่อผู้ใช้ยืนยันแล้ว. แผนเก่าที่ยังไม่ยืนยัน: เสนอค่าจากการตั้งค่าเอกสารเดิม / db.period — ไม่ซ่อนแผนใด.
+   · ป้าย "ภาคเรียนที่ 2/2569" ใต้ตัวเลือกแผน → หน้าต่างตั้งค่า (แผนนี้ · แผนที่ยังไม่ระบุทั้งหมด · สร้างแผนภาคเรียนถัดไป)
+   · ตัวเลือกแผนจัดกลุ่มตามปี/ภาค (ใหม่สุดอยู่บน) · การ์ดในหน้าจัดการแผนมีป้ายภาคเรียน
+   · "สร้างแผนภาคเรียนถัดไป": คัดลอกแผน (ครู ห้อง เงื่อนไข คงเดิม) → เปลี่ยนรหัสวิชาตามหลักสูตรของภาคใหม่ (ดูรายการก่อนยืนยัน,
+     ASPCore.proposeCodes) → รีเซ็ตเลขที่/วันที่คำสั่ง → เลือกได้ว่าจะคงตารางสอนเดิมหรือเริ่มตารางว่าง
+   ใช้เฉพาะภาคเรียนที่ 1 และ 2. DOM nodes + textContent only. Off with --legacy / window.__UX_NO_NEW_FEATURES. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var C=window.ASPCore,S={asked:false,next:null};
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function btn(cls,text,fn,k){var b=el('button',cls,text);b.type='button';if(fn)b.onclick=fn;if(k)b.dataset.k=k;return b}
+
+/* ---- data ----------------------------------------------------------------------------------------------------------------- */
+function dataOf(s){return s.id===project.activeScenarioId?db:s.data}
+function termOfData(d){
+  var ds=(d&&d.docSettings)||{},o=ds.uxOrder||{},old=String(ds.semester||'');
+  var y=String(o.year||'').replace(/\D/g,'').slice(0,4)||(String((d&&d.period)||'').match(/25\d\d/)||[''])[0]||(old.match(/25\d\d/)||[''])[0];
+  var sem=String(o.semester)==='2'?2:String(o.semester)==='1'?1:0;
+  if(!sem){var m=old.match(/ภาคเรียนที่\s*([12])/);sem=m?+m[1]:0}
+  return {year:y,semester:sem,set:!!(d&&d.termSet)&&!!y&&!!sem}}
+function label(t,short){return t.year&&t.semester?(short?t.semester+'/'+t.year:'ภาคเรียนที่ '+t.semester+'/'+t.year):'ยังไม่ระบุภาคเรียน'}
+function write(d,y,sem){
+  d.docSettings=d.docSettings||{};d.docSettings.uxOrder=Object.assign({},d.docSettings.uxOrder||{},{year:String(y),semester:String(sem)});d.termSet=true}
+function validYear(y){y=String(y||'').replace(/\D/g,'');return /^25\d\d$/.test(y)?y:''}
+function current(){return termOfData(db)}
+function setCurrent(y,sem){y=validYear(y);sem=+sem===2?2:1;if(!y)return false;act(function(){write(db,y,sem)});return true}
+function nextOf(t){return t.semester===1?{year:t.year,semester:2}:{year:String(+t.year+1),semester:1}}
+function unset(){return project.scenarios.filter(function(s){return !termOfData(dataOf(s)).set})}
+function sig(){try{return project.scenarios.map(function(s){var t=termOfData(dataOf(s));return s.id+':'+t.year+'/'+t.semester+(t.set?'':'?')}).join(',')}catch(e){return ''}}
+
+/* ---- plan selector: groups by year / semester, newest first; nothing is hidden ----------------------------------------------- */
+function group(sel){
+  var by={},keys=[];
+  [].slice.call(sel.options).forEach(function(o){
+    var s=project.scenarios.find(function(x){return x.id===o.value}),t=s?termOfData(dataOf(s)):{year:'',semester:0,set:false};
+    var k=t.set?t.year+'|'+t.semester:'';if(!by[k]){by[k]={t:t,items:[]};keys.push(k)}by[k].items.push(o)});
+  if(keys.length===1&&keys[0]==='')return;                                      /* nothing labelled yet: the plain list */
+  keys.sort(function(a,b){if(!a)return 1;if(!b)return -1;var x=a.split('|'),y=b.split('|');return (+y[0]-+x[0])||(+y[1]-+x[1])});
+  sel.textContent='';
+  keys.forEach(function(k){var g=document.createElement('optgroup');g.label=k?label(by[k].t):'ยังไม่ระบุภาคเรียน';by[k].items.forEach(function(o){g.appendChild(o)});sel.appendChild(g)})}
+
+/* ---- the chip under the plan selector ---------------------------------------------------------------------------------------- */
+function chip(){
+  var pm=$('uxPlanManage');if(!pm)return;
+  var c=$('uxTermChip');
+  if(!c){c=btn('ux-term-chip','',open,'term-open');c.id='uxTermChip'}
+  if(c.nextSibling!==pm||c.parentNode!==pm.parentNode)pm.parentNode.insertBefore(c,pm);
+  var t=current(),tx=t.set?label(t):(t.year&&t.semester?label(t)+' · ยังไม่ยืนยัน':'ตั้งปีการศึกษา / ภาคเรียน');
+  if(c.textContent!==tx)c.textContent=tx;
+  c.classList.toggle('todo',!t.set);
+  c.title='ปีการศึกษาและภาคเรียนของแผนนี้ — ใช้กับรหัสวิชา คำสั่ง และหัวเอกสารทุกฉบับ (กดเพื่อเปลี่ยน หรือสร้างแผนภาคเรียนถัดไป)'}
+function cards(){
+  var host=$('scenarioCards');if(!host||!host.getClientRects().length)return;
+  [].forEach.call(host.querySelectorAll('.scenario-card'),function(card,i){
+    var s=project.scenarios[i],h=card.querySelector('h3');if(!s||!h)return;
+    var t=termOfData(dataOf(s)),tx=t.set?label(t,true):'ยังไม่ระบุภาค',b=h.querySelector('.ux-term-tag');
+    if(!b){b=el('span','ux-term-tag');h.appendChild(b)}
+    if(b.textContent!==tx)b.textContent=tx;b.classList.toggle('todo',!t.set)})}
+
+/* ---- the window --------------------------------------------------------------------------------------------------------------- */
+function dlg(){
+  var d=$('uxTerm');if(d)return d;
+  d=el('dialog','ux-say ux-term no-print');d.id='uxTerm';d.setAttribute('aria-labelledby','uxTermT');
+  var h=el('div','ux-say-head'),t=el('h2',null,'ปีการศึกษาและภาคเรียน');t.id='uxTermT';h.appendChild(t);
+  var x=btn('ux-asg-x','✕',function(){d.close()});x.setAttribute('aria-label','ปิด');h.appendChild(x);d.appendChild(h);
+  var b=el('div','ux-say-body');b.id='uxTermBody';d.appendChild(b);
+  var f=el('div','ux-say-foot');f.id='uxTermFoot';d.appendChild(f);document.body.appendChild(d);return d}
+function yearField(v,k){var w=el('label','ux-od-f');w.appendChild(el('span',null,'ปีการศึกษา (พ.ศ.)'));var i=el('input');i.type='text';i.inputMode='numeric';i.maxLength=4;i.value=v||'';i.dataset.k=k;i.style.width='6.5em';w.appendChild(i);return {w:w,i:i}}
+function semField(v,k){var w=el('label','ux-od-f');w.appendChild(el('span',null,'ภาคเรียนที่'));var s=el('select');s.dataset.k=k;[1,2].forEach(function(n){var o=el('option',null,String(n));o.value=String(n);s.appendChild(o)});s.value=String(v===2?2:1);w.appendChild(s);return {w:w,i:s}}
+function render(){
+  var b=$('uxTermBody'),f=$('uxTermFoot');if(!b)return;b.textContent='';f.textContent='';S.next=null;
+  var t=current(),thisYear=String(new Date().getFullYear()+543);
+  /* 1. this plan */
+  var sec=el('section','ux-term-sec');sec.appendChild(el('h3',null,'แผนนี้'));
+  sec.appendChild(el('p','ux-tt-hint',currentScenario().name));
+  var row=el('div','ux-od-row'),yf=yearField(t.year||thisYear,'term-year'),sf=semField(t.semester||1,'term-sem');row.appendChild(yf.w);row.appendChild(sf.w);
+  var sv=btn('ux-btn ux-primary',t.set?'บันทึก':'ยืนยัน',function(){
+    if(!validYear(yf.i.value)){UX.toast('ปีการศึกษาต้องเป็น พ.ศ. 4 หลัก เช่น '+thisYear);yf.i.focus();return}
+    setCurrent(yf.i.value,+sf.i.value);UX.toast('แผนนี้ = '+label(current())+' · เอกสารและรหัสวิชาจะใช้ค่านี้');render()},'term-save');
+  row.appendChild(sv);sec.appendChild(row);
+  sec.appendChild(el('p','ux-tt-hint',t.set?'ใช้กับ: รหัสวิชาจากหลักสูตร · คำสั่งมอบหมายการสอน · หัวตารางและรายงานทุกฉบับ · ไฟล์ส่งออกระบบสอนแทน':'ค่าที่เห็นเป็นค่าที่ระบบเสนอจากการตั้งค่าเอกสารเดิม — ตรวจแล้วกด "ยืนยัน"'));
+  b.appendChild(sec);
+  /* 2. plans not labelled yet */
+  var un=unset().filter(function(s){return s.id!==project.activeScenarioId});
+  if(un.length){
+    var s2=el('section','ux-term-sec');s2.appendChild(el('h3',null,'แผนอื่นที่ยังไม่ระบุภาคเรียน ('+un.length+' แผน)'));
+    s2.appendChild(el('p','ux-tt-hint','เลือกแผนที่เป็นของภาคเรียนเดียวกัน แล้วตั้งพร้อมกัน — แผนที่ไม่เลือกยังอยู่ครบ ภายใต้ "ยังไม่ระบุภาคเรียน"'));
+    var r2=el('div','ux-od-row'),y2=yearField(t.year||thisYear,'term-all-year'),m2=semField(t.semester||1,'term-all-sem');r2.appendChild(y2.w);r2.appendChild(m2.w);
+    var all=btn('ux-btn','เลือกทั้งหมด',function(){var on=[].some.call(ul.querySelectorAll('input'),function(c){return !c.checked});[].forEach.call(ul.querySelectorAll('input'),function(c){c.checked=on})},'term-all-tick');r2.appendChild(all);
+    var go=btn('ux-btn ux-primary','ตั้งให้แผนที่เลือก',function(){
+      var y=validYear(y2.i.value),ids=[].filter.call(ul.querySelectorAll('input'),function(c){return c.checked}).map(function(c){return c.value});
+      if(!y){UX.toast('ปีการศึกษาต้องเป็น พ.ศ. 4 หลัก');y2.i.focus();return}
+      if(!ids.length){UX.toast('เลือกแผนอย่างน้อย 1 แผน');return}
+      project.scenarios.forEach(function(s){if(ids.indexOf(s.id)>-1&&s.id!==project.activeScenarioId)write(s.data,y,+m2.i.value===2?2:1)});
+      try{persist()}catch(e){}
+      UX.toast('ตั้ง '+ids.length+' แผน = ภาคเรียนที่ '+m2.i.value+'/'+y);render()},'term-all-go');r2.appendChild(go);s2.appendChild(r2);
+    var ul=el('ul','ux-term-list');
+    un.forEach(function(s){var g=termOfData(s.data),li=el('li'),lb=el('label'),c=el('input');c.type='checkbox';c.value=s.id;c.checked=g.year===(t.year||'')&&g.semester===(t.semester||0)&&!!g.year;
+      lb.appendChild(c);lb.appendChild(el('span',null,s.name));li.appendChild(lb);li.appendChild(el('small',null,g.year&&g.semester?'ระบบเดา: '+label(g,true):'ไม่มีข้อมูลให้เดา'));ul.appendChild(li)});
+    s2.appendChild(ul);b.appendChild(s2)}
+  /* 3. next semester */
+  var s3=el('section','ux-term-sec');s3.appendChild(el('h3',null,'สร้างแผนภาคเรียนถัดไป'));
+  if(!t.set){s3.appendChild(el('p','ux-tt-hint','ยืนยันปีการศึกษาและภาคเรียนของแผนนี้ก่อน แล้วจึงสร้างแผนภาคเรียนถัดไปได้'));b.appendChild(s3)}
+  else{
+    var n=nextOf(t),P=preview(n);S.next={term:n,preview:P,ticks:{},keep:true};
+    s3.appendChild(el('p','ux-tt-hint','คัดลอกแผนนี้เป็น "'+label(n)+'" — ครู รายวิชา เรียนรวม ห้อง และเงื่อนไขคงเดิม · แผนเดิมไม่ถูกแตะ'));
+    if(P.changes.length){
+      s3.appendChild(el('p','ux-term-sub','รหัสวิชาที่จะเปลี่ยนตามหลักสูตรของภาคเรียนที่ '+n.semester+' ('+P.changes.length+' วิชา) — เอาเครื่องหมายออกถ้าไม่ต้องการเปลี่ยน'));
+      var tb=el('table','ux-term-tbl'),hr=el('tr');['','ชั้น','รายวิชา','รหัสเดิม','รหัสใหม่','ในหลักสูตร'].forEach(function(x){hr.appendChild(el('th',null,x))});var th=el('thead');th.appendChild(hr);tb.appendChild(th);
+      var bd=el('tbody');P.changes.forEach(function(p){var tr=el('tr'),td=el('td'),c=el('input');c.type='checkbox';c.checked=p.sure!=='check';c.dataset.row=p.rowId;c.setAttribute('aria-label','เปลี่ยนรหัส '+p.grade+' '+p.subject);
+        S.next.ticks[p.rowId]=c.checked;c.onchange=function(){S.next.ticks[p.rowId]=c.checked};td.appendChild(c);tr.appendChild(td);
+        tr.appendChild(el('td',null,p.grade));tr.appendChild(el('td',null,p.subject));tr.appendChild(el('td',null,p.current||'—'));tr.appendChild(el('td','ux-term-new',p.entry.code));
+        tr.appendChild(el('td',p.sure==='check'?'ux-term-chk':'',p.entry.name+(p.sure==='check'?' · โปรดตรวจ':'')));bd.appendChild(tr)});
+      tb.appendChild(bd);var wrap=el('div','ux-term-scroll');wrap.appendChild(tb);s3.appendChild(wrap)}
+    else s3.appendChild(el('p','ux-term-sub',P.covered?'รหัสวิชาของแผนนี้ตรงกับภาคเรียนที่ '+n.semester+' อยู่แล้ว หรือไม่มีรหัสให้เปลี่ยน':'หลักสูตรที่ฝังในโปรแกรมไม่มีรายวิชาของชั้นในแผนนี้สำหรับภาคเรียนที่ '+n.semester+' — รหัสวิชาคงเดิม'));
+    if(P.missing.length){var d1=el('details','ux-term-more');d1.appendChild(el('summary',null,'วิชาในแผนที่ไม่พบในหลักสูตรภาคเรียนที่ '+n.semester+' ('+P.missing.length+') — ตรวจเองหลังสร้าง'));d1.appendChild(el('p','ux-tt-hint',P.missing.join(' · ')));s3.appendChild(d1)}
+    if(P.extra.length){var d2=el('details','ux-term-more');d2.appendChild(el('summary',null,'วิชาในหลักสูตรภาคเรียนที่ '+n.semester+' ที่แผนยังไม่มี ('+P.extra.length+') — เพิ่มเองในหน้ารายวิชาถ้าต้องเปิดสอน'));d2.appendChild(el('p','ux-tt-hint',P.extra.join(' · ')));s3.appendChild(d2)}
+    var kp=el('label','ux-ts-chk'),kc=el('input');kc.type='checkbox';kc.checked=true;kc.dataset.k='term-keep';kc.onchange=function(){S.next.keep=kc.checked};kp.appendChild(kc);
+    var ks=el('span');ks.appendChild(el('b',null,'คงตารางสอนเดิมไว้เป็นจุดเริ่ม'));ks.appendChild(el('small',null,'เอาเครื่องหมายออก = เริ่มจากตารางว่าง (ฉบับตารางและประวัติการแก้ไขของภาคเดิมไม่ถูกคัดลอกในทั้งสองกรณี)'));kp.appendChild(ks);s3.appendChild(kp);
+    s3.appendChild(btn('ux-btn ux-primary','สร้างแผน '+label(n),createNext,'term-next'));
+    b.appendChild(s3)}
+  f.appendChild(btn('ux-btn','ปิด',function(){$('uxTerm').close()},'term-close'))}
+function open(){var d=dlg();render();if(!d.open)d.showModal()}
+
+/* ---- next semester ------------------------------------------------------------------------------------------------------------ */
+function preview(n){
+  var codes=(db.docSettings&&db.docSettings.codes)||{},E=C.WL_CURRICULUM_2567||[],out={changes:[],missing:[],extra:[],covered:false};
+  if(!C.proposeCodes)return out;
+  var rows=db.rows.map(function(r){return {id:r.id,grade:r.grade,subject:r.subject,hours:+r.hours||0}});
+  var props=C.proposeCodes(rows,E,n.semester,codes),hit={},used={};
+  props.forEach(function(p){hit[p.rowId]=1;used[p.entry.code]=1;if(p.current!==p.entry.code)out.changes.push(p)});
+  var grades={};E.forEach(function(e){if(e.semester===n.semester)grades[e.grade]=1});out.covered=db.grades.some(function(g){return grades[g]});
+  rows.forEach(function(r){if(grades[r.grade]&&!hit[r.id]&&!(C.isActivity&&C.isActivity(r.subject)))out.missing.push(r.grade+' '+r.subject)});
+  E.forEach(function(e){if(e.semester===n.semester&&db.grades.indexOf(e.grade)>-1&&!used[e.code])out.extra.push(e.grade+' '+e.name+' ('+e.code+')')});
+  return out}
+function createNext(){
+  var N=S.next;if(!N)return;
+  if(project.scenarios.length>=100){UX.toast('รองรับสูงสุด 100 แผน — ลบแผนที่ไม่ใช้ก่อน');return}
+  if(typeof commitEdit==='function')commitEdit();
+  var src=currentScenario(),from=current(),data=clone(db),n=N.term;
+  write(data,n.year,n.semester);
+  var o=data.docSettings.uxOrder;['orderNo','dateDay','dateMonth','dateYear'].forEach(function(k){delete o[k]});       /* คำสั่งฉบับใหม่: เลขที่/วันที่ยังไม่มี */
+  data.docSettings.codes=data.docSettings.codes||{};data.docSettings.codeOrigins=data.docSettings.codeOrigins||{};
+  var lab=(C.WL_CURRICULUM_LABEL||'หลักสูตร')+' · ภาคเรียนที่ '+n.semester,changed=0;
+  N.preview.changes.forEach(function(p){if(N.ticks[p.rowId]){data.docSettings.codes[p.rowId]=p.entry.code;data.docSettings.codeOrigins[p.rowId]=lab;changed++}});
+  if(data.timetable){delete data.timetable.versions;delete data.timetable.editLog;
+    if(!N.keep){data.timetable.placements={};data.timetable.signature='';data.timetable.lastResult=''}}
+  if(/25\d\d/.test(String(data.period||'')))data.period=String(data.period).replace(/25\d\d/,n.year);
+  var base='แผน'+label(n),name=base,i=2;while(project.scenarios.some(function(s){return s.name===name}))name=base+' ('+(i++)+')';
+  var id='S'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  src.data=clone(db);
+  project.scenarios.push({id:id,name:name,note:'สร้างจาก "'+src.name+'" ('+label(from)+')'+(changed?' · เปลี่ยนรหัสวิชา '+changed+' วิชา':''),data:data});
+  switchScenario(id);
+  $('uxTerm').close();UX.go('courses');
+  UX.toast('สร้าง "'+name+'" แล้ว'+(changed?' · เปลี่ยนรหัสวิชา '+changed+' วิชา':'')+' — ตรวจรายวิชาและครูของภาคเรียนใหม่ แล้วจัดตาราง','กลับแผนเดิม',function(){switchScenario(src.id)})}
+
+/* ---- old plans: ask once per opening, never hide anything -------------------------------------------------------------------- */
+function ask(){
+  if(S.asked)return;var t;try{t=current()}catch(e){return}
+  if(!db.rows.length){return}                                                    /* an empty new plan: nothing to label yet */
+  S.asked=true;if(t.set)return;
+  setTimeout(function(){if(current().set)return;
+    UX.toast('แผนนี้ยังไม่ได้ระบุปีการศึกษา/ภาคเรียน'+(t.year&&t.semester?' (ระบบเสนอ '+label(t,true)+')':''),'ตั้งค่า',open)},2500)}
+
+UX.term={open:open,current:current,of:termOfData,label:label,sig:sig,group:group,preview:preview,state:S};
+UX.onSync(function(){chip();cards();ask()});
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -23610,7 +23817,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="5cca950e3765";window.__UX_WEBAPP_LABEL="25.1";
+(function(){window.__UX_WEBAPP="ee767f6e299c";window.__UX_WEBAPP_LABEL="25.2";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
