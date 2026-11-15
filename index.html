@@ -3500,6 +3500,56 @@ body.ux-rail #uxSteps .ux-grp{display:block;height:1px;margin:6px 14px;padding:0
 :root:not([data-suite="off"]) .ux-more-pop .ux-btn{border-color:transparent!important;border-radius:9px;color:var(--ux-ink)!important;font-weight:500}
 :root:not([data-suite="off"]) .ux-more-pop .ux-btn:hover{background:var(--ux-brand-soft)!important}
 
+/* >>> 91-account.css */
+/* 91-account.css — V25.1 แถบผู้ใช้มุมขวาบน (js/91-account.js) — ขนาดและพฤติกรรมตาม WL Substitute (.tb-user / .user-panel / .tb-logout) */
+.ux-user{position:relative;display:flex;align-items:center;gap:8px;margin-left:auto;min-width:0;flex:0 0 auto}
+.ux-user[hidden]{display:none}
+.ux-i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ux-userbtn{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:9px;min-width:0;border:1px solid transparent;border-radius:99px;padding:3px 10px 3px 4px;cursor:pointer;color:var(--ux-ink)}
+.ux-userbtn:hover,.ux-userbtn[aria-expanded="true"]{background:rgba(5,44,110,.07);border-color:var(--ux-rule,#c3cfdd)}
+.ux-userbtn:focus-visible{box-shadow:var(--ux-focus)}
+.ux-avatar{width:32px;height:32px;border-radius:50%;background:var(--ux-brand);color:#fff;display:grid;place-items:center;font-weight:600;flex:none}
+.ux-user-nm{display:flex;flex-direction:column;line-height:1.25;min-width:0;text-align:left}
+.ux-user-nm b{font-size:14px;font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ux-user-nm small{font-size:12px;color:var(--ux-ink-soft)}
+.ux-chev{width:16px;height:16px;color:var(--ux-ink-soft)}
+.ux-user-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(320px,calc(100vw - 24px));background:#fff;border:1px solid var(--ux-rule,#c3cfdd);border-radius:16px;box-shadow:0 8px 32px rgba(5,44,110,.22);z-index:80;overflow:hidden;display:flex;flex-direction:column}
+.ux-user-panel[hidden]{display:none}
+.ux-user-head{display:flex;flex-direction:column;padding:12px 16px;border-bottom:1px solid var(--ux-line);line-height:1.4;background:var(--ux-sheet,#eef3fa)}
+.ux-user-head b{font-family:var(--ux-font-head);font-size:16px;color:var(--ux-navy)}
+.ux-user-head small{color:var(--ux-ink-soft);font-size:12.5px;overflow:hidden;text-overflow:ellipsis}
+.ux-user-head small:empty{display:none}
+.ux-user-sec{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--ux-brand);padding:10px 16px 2px}
+.ux-user-chk{display:flex;gap:10px;align-items:flex-start;padding:8px 16px;cursor:pointer}
+.ux-user-chk input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--ux-brand);flex:none}
+.ux-user-chk span{display:flex;flex-direction:column;line-height:1.35}
+.ux-user-chk b{font-size:14px;font-weight:500}
+.ux-user-chk small{font-size:12px;color:var(--ux-ink-soft)}
+.ux-user-seg{display:flex;align-items:center;gap:6px;padding:6px 16px 12px;border-bottom:1px solid var(--ux-line)}
+.ux-user-segl{font-size:14px;margin-right:auto}
+.ux-user-seg button{all:unset;box-sizing:border-box;min-height:32px;padding:0 12px;border-radius:99px;border:1px solid var(--ux-outline,#6e7b8c);font-size:13px;color:var(--ux-brand);cursor:pointer}
+.ux-user-seg button.on{background:var(--ux-brand);border-color:var(--ux-brand);color:#fff;font-weight:600}
+.ux-user-seg button:focus-visible{box-shadow:var(--ux-focus)}
+.ux-user-item{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:11px 16px;color:var(--ux-ink);cursor:pointer;font-size:14.5px}
+.ux-user-item:hover,.ux-user-item:focus-visible{background:var(--ux-brand-soft)}
+.ux-logout{all:unset;box-sizing:border-box;display:none;width:40px;height:40px;place-items:center;border-radius:50%;border:1px solid var(--ux-outline,#6e7b8c);color:var(--ux-ink);cursor:pointer;flex:none}
+.ux-logout:hover{background:rgba(5,44,110,.07)}
+.ux-logout:focus-visible{box-shadow:var(--ux-focus)}
+@media (min-width:600px){.ux-logout{display:grid}}
+@media (max-width:1100px){.ux-user-nm small{display:none}.ux-user-nm b{max-width:150px}}
+@media (max-width:599px){.ux-user-nm,.ux-chev{display:none}.ux-userbtn{padding:3px}
+  .ux-head-row>.ux-head-t{flex:1 1 0;min-width:0}.ux-user{order:1}.ux-head-row>.ux-head-plan{order:2;flex:1 1 100%}.ux-head-row>.ux-head-act{order:3}}
+/* signed in: the account lives in the top bar — not a second time in the ⋯ menu */
+body.ux-has-user #uxMenuAcc,body.ux-has-user #uxMenu :is(#uxNavAuto,#uxNavSide,#uxNavBottom){display:none!important}
+/* ⚙ เงื่อนไข → ห้องเรียนเฉพาะ */
+.ux-ts-rooms{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ux-ts-rooms li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 0;border-bottom:1px dashed #e3eaf2}
+.ux-ts-rooms li>b{min-width:9em;color:var(--ux-navy)}
+.ux-ts-roomchip{display:inline-flex;align-items:center;gap:4px;background:var(--ux-brand-soft);border-radius:8px;padding:2px 4px 2px 10px;font-size:var(--ux-fs-sm)}
+.ux-ts-roomchip button{all:unset;box-sizing:border-box;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--ux-ink-soft)}
+.ux-ts-roomchip button:hover{background:var(--ux-bad-bg);color:var(--ux-bad)}
+.ux-ts-roomchip button:focus-visible{box-shadow:var(--ux-focus)}
+
 </style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WL Scheduler"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#0562a5"></head>
 <body class=""><div class="wl-splash" id="wlSplash" role="status" aria-live="polite"><img src="data:image/png;base64,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" width="64" height="64" alt=""><b>WL Scheduler</b><span>กำลังเปิดระบบ…</span><i></i><small class="suite">Wangluek (Y.N.) Connected</small></div>
 <script>(function(){var s=document.getElementById("wlSplash");if(!s)return;var d=0;function h(){if(d)return;d=1;s.classList.add("out");setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s)},320)}
@@ -17385,7 +17435,7 @@ var ASPCore = (() => {
 /* 00-core.js — shared helpers. Everything lives under window.UX; nothing here edits plan data. */
 (function(){'use strict';
 if(window.UX)return;
-var UX=window.UX={version:'25.0',inits:[],syncs:[]};
+var UX=window.UX={version:'25.1',inits:[],syncs:[]};
 
 UX.$=function(id){return document.getElementById(id)};
 UX.clickId=function(id){var e=UX.$(id);if(e){e.click();return true}return false};
@@ -17671,7 +17721,8 @@ UX.onSync(menu);
 UX.onSync(function(){if(S.locked)inert(true)});
 
 /* ---- start (before the other modules: the e-mailed link's #… must not reach 22-drive.js) ---------------------------------- */
-UX.auth={state:S,check:check,signOut:signOut,lock:function(){lockNow('')},session:function(){return S.session},config:cfg};
+UX.auth={state:S,check:check,signOut:signOut,lock:function(){lockNow('')},session:function(){return S.session},config:cfg,
+  remembered:remembered,setRemember:function(keep){if(S.session)saveSession(S.session,!!keep)}};   /* V25.1: 91-account.js */
 if(!cfg){lock('login');return}
 var rec=C.readRecoveryHash(location.hash);
 if(rec){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
@@ -21194,7 +21245,7 @@ function render(){
   nav.appendChild(ul);body.appendChild(nav);
 
   var paper=el('div','ux-docs-paper ux-od-paper');paper.id='uxDocsPaper';paper.setAttribute('role','region');paper.setAttribute('aria-label','ตัวอย่างหน้ากระดาษ A4: '+d.t);paper.tabIndex=0;
-  if(!m.sections.length)paper.appendChild(el('p','ux-docs-empty',S.doc==='room'?'ยังไม่ได้กำหนดห้องให้รายวิชาใดในตารางสอน (กำหนดห้องได้ที่หน้าตารางสอน → ⋯ → หน้าตั้งค่าละเอียด)':'ยังไม่มีข้อมูลสำหรับเอกสารนี้ — จัดตารางสอนหรือรายวิชาก่อน'));
+  if(!m.sections.length)paper.appendChild(el('p','ux-docs-empty',S.doc==='room'?'ยังไม่ได้กำหนดห้องให้รายวิชาใดในตารางสอน (กำหนดห้องได้ที่หน้าตารางสอน → ⚙ เงื่อนไข → ห้องเรียนเฉพาะ)':'ยังไม่มีข้อมูลสำหรับเอกสารนี้ — จัดตารางสอนหรือรายวิชาก่อน'));
   else{var wrap=el('div');wrap.innerHTML=C.renderHtml(m,S.doc!=='order');paper.appendChild(wrap);   /* escaped by the core */
     if((S.doc==='order'||S.doc==='handover')&&UX.order&&UX.order.emblemOnPaper)UX.order.emblemOnPaper(paper)}
   paper.addEventListener('focusout',onPaperEdit);
@@ -21828,11 +21879,51 @@ function followUp(kind){
   if(out.length)setTimeout(function(){UX.toast(out.join(' · '))},1800);
   return out}
 
+/* ---- V25.1 ห้องเรียนเฉพาะ (db.timetable.taskRooms — ข้อมูลเดียวกับหน้าเดิม: 'R:<row id>' / 'G:<group id>' → ชื่อห้อง) ------------- */
+function roomTasks(){
+  var seen={},out=[];
+  try{ttBuild().events.forEach(function(e){var k=e.kind+':'+e.origin;if(seen[k])return;seen[k]=1;
+    out.push({k:k,name:e.kind==='G'?'▣ '+e.origin+' ('+C.gradeRange(e.grades,db.grades)+')':e.subjects.join(' / ')})})}catch(err){}
+  return out.sort(function(a,b){return a.name.localeCompare(b.name,'th',{numeric:true})})}
+function roomClash(){try{return C.checkTimetable(UX.optimize.input(),{requireComplete:false}).counts.roomDouble||0}catch(e){return 0}}
+function setRoom(k,room){
+  room=String(room||'').replace(/\s+/g,' ').trim();
+  change(function(){var r=T().taskRooms;if(!r||typeof r!=='object')r=T().taskRooms={};if(room)r[k]=room;else delete r[k]});
+  var n=room?roomClash():0;
+  UX.toast(room?'กำหนดห้อง "'+room+'" แล้ว'+(n?' · ตารางตอนนี้มีห้องซ้อนคาบ '+n+' จุด — กด ✦ จัดตารางอัตโนมัติ (ปรับจากตารางเดิม) เพื่อแก้':''):'เอาห้องเฉพาะออกแล้ว')}
+function secRooms(b){
+  var tasks=roomTasks(),rooms=T().taskRooms||{},names={};tasks.forEach(function(t){names[t.k]=t.name});
+  b.appendChild(el('p','ux-tt-hint','วิชาหรือกลุ่มเรียนรวมที่ระบุห้องเดียวกัน จะไม่ถูกจัดให้ใช้ห้องนั้นพร้อมกัน (เช่น ห้องคอมพิวเตอร์ ห้องวิทยาศาสตร์) · ที่ไม่ระบุถือว่าไม่จำกัดห้อง'));
+  if(!tasks.length){b.appendChild(el('p','ux-tt-hint','ยังไม่มีรายวิชาที่มีครูสอน — เพิ่มรายวิชาก่อน'));return}
+  var row=el('div','ux-ts-row');
+  var sel=el('select');sel.dataset.k='ts-room-task';sel.setAttribute('aria-label','วิชาหรือกลุ่มเรียนรวม');
+  tasks.forEach(function(t){var o=el('option',null,t.name+(rooms[t.k]?'  — '+rooms[t.k]:''));o.value=t.k;sel.appendChild(o)});
+  if(S.roomTask&&names[S.roomTask])sel.value=S.roomTask;
+  var inp=el('input');inp.type='text';inp.placeholder='ชื่อห้อง เช่น ห้องคอมพิวเตอร์';inp.dataset.k='ts-room-name';inp.setAttribute('aria-label','ชื่อห้องเฉพาะ');inp.setAttribute('list','uxRoomNames');
+  var dl=el('datalist');dl.id='uxRoomNames';var uniq={};Object.keys(rooms).forEach(function(k){uniq[rooms[k]]=1});Object.keys(uniq).sort().forEach(function(r){var o=el('option');o.value=r;dl.appendChild(o)});
+  inp.value=rooms[sel.value]||'';
+  sel.onchange=function(){S.roomTask=sel.value;inp.value=(T().taskRooms||{})[sel.value]||''};
+  var save=function(){if(!inp.value.trim()){UX.toast('พิมพ์ชื่อห้องก่อน (ถ้าจะเอาห้องออก กด ✕ ที่รายการด้านล่าง)');inp.focus();return}S.roomTask=sel.value;setRoom(sel.value,inp.value)};
+  inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();save()}};
+  var go=btn('ux-btn ux-primary','บันทึกห้อง',save);go.dataset.k='ts-room-save';
+  row.appendChild(sel);row.appendChild(inp);row.appendChild(dl);row.appendChild(go);b.appendChild(row);
+  var by={};Object.keys(rooms).forEach(function(k){(by[rooms[k]]=by[rooms[k]]||[]).push(k)});
+  var list=Object.keys(by).sort(function(a,c){return a.localeCompare(c,'th',{numeric:true})});
+  if(!list.length){b.appendChild(el('p','ux-tt-hint','ยังไม่ได้กำหนดห้องเฉพาะ'));return}
+  var ul=el('ul','ux-ts-rooms');ul.dataset.k='ts-room-list';
+  list.forEach(function(r){var li=el('li');li.appendChild(el('b',null,r));
+    by[r].sort(function(a,c){return (names[a]||a).localeCompare(names[c]||c,'th',{numeric:true})}).forEach(function(k){
+      var chip=el('span','ux-ts-roomchip',names[k]||('(ไม่มีรายวิชานี้แล้ว) '+k.replace(/^[RG]:/,'')));
+      var x=btn(null,'✕',function(){setRoom(k,'')},'เอา '+(names[k]||k)+' ออกจากห้อง '+r);chip.appendChild(x);li.appendChild(chip)});
+    ul.appendChild(li)});
+  b.appendChild(ul)}
+
 /* ---- the tab ------------------------------------------------------------------------------------------------------------- */
 function summary(){
   var p=pol(),c=cov(),f=flex(),m=mob(),bl=(T().teacherBlocks||[]),tb=new Set(bl.map(function(x){return x.split('|')[0]}));
   var hardN=['enforceMinTeacherFree','enforceMaxTeacherConsecutive','enforceMaxTeacherPeriodsPerDay','enforceMinTeacherPeriodsPerDay'].filter(function(k){return p[k]}).length+((T().schedulePolicy||{}).teacherBothHalves&&(T().schedulePolicy||{}).enforceTeacherBothHalves?1:0)+((T().schedulePolicy||{}).minDoubleFreeDays&&(T().schedulePolicy||{}).enforceDoubleFree?1:0),sr=slotRules().filter(function(r){return !r.off});
-  return {time:days().length+' วัน · วันละ '+P()+' คาบ'+(lunch()?' · พักหลังคาบ '+lunch():''),
+  return {rooms:(function(){var r=T().taskRooms||{},k=Object.keys(r),u={};k.forEach(function(x){u[r[x]]=1});return k.length?Object.keys(u).length+' ห้อง · '+k.length+' วิชา/กลุ่ม':'ไม่กำหนด'})(),
+    time:days().length+' วัน · วันละ '+P()+' คาบ'+(lunch()?' · พักหลังคาบ '+lunch():''),
     blocks:tb.size?tb.size+' คน · '+bl.length+' คาบ':'ทุกคนว่างทุกคาบ',
     rules:(sr.length||(T().dayRules||[]).length)?[sr.length?'กฎคาบ '+sr.length+' ข้อ ('+sr.map(function(r){return C.slotRuleLabel(r).split(',')[0].trim()}).join(', ')+')':'',(T().dayRules||[]).length?'กฎวันแบบเดิม '+(T().dayRules||[]).length+' ข้อ':''].filter(Boolean).join(' · '):'ไม่มี',
     policy:'ว่าง ≥'+p.minTeacherFreePeriods+' · ติดกัน ≤'+p.maxTeacherConsecutivePeriods+' · วันละ ≤'+p.maxTeacherPeriodsPerDay+(p.minTeacherPeriodsPerDay?' · วันละ ≥'+p.minTeacherPeriodsPerDay:'')+((T().schedulePolicy||{}).minTeacherPeriodsPerWeek?' · สัปดาห์ละ ≥'+T().schedulePolicy.minTeacherPeriodsPerWeek:'')+((T().schedulePolicy||{}).teacherBothHalves?' · ทั้งเช้าและบ่าย':'')+((T().schedulePolicy||{}).minDoubleFreeDays?' · ว่าง 2 คาบติด ≥'+T().schedulePolicy.minDoubleFreeDays+' วัน':'')+' · บังคับ '+hardN+' ข้อ',
@@ -21855,6 +21946,7 @@ function node(){
   w.appendChild(section('time','วันและคาบ',s.time,secTime));
   w.appendChild(section('blocks','เวลาที่ครูไม่ว่าง',s.blocks,secBlocks));
   w.appendChild(section('rules','กฎวันและคาบเรียน',s.rules,secRules));
+  w.appendChild(section('rooms','ห้องเรียนเฉพาะ',s.rooms,secRooms));
   w.appendChild(section('homeroom','ครูประจำชั้นพบนักเรียนคาบแรก',s.hr,secHomeroom));
   w.appendChild(section('repeat','วิชาเดิม / ครูเดิม กับชั้นเดิม',s.repeat,secRepeat));
   w.appendChild(section('policy','นโยบายครู',s.policy,secPolicy));
@@ -21862,7 +21954,7 @@ function node(){
   w.appendChild(section('cov','เผื่อครูสอนแทนในอาคาร',s.cov,secCov));
   w.appendChild(section('flex','ครูยืดหยุ่น (ให้ครูคนอื่นช่วยคาบที่ลงไม่ได้)',s.flex,secFlex));
   return w}
-function sig(){var t=T();return JSON.stringify([t.periods,t.days,t.teacherBlocks,t.dayRules,t.slotRules,t.schedulePolicy,t.mobility,t.substituteCoverage,t.flexTeacherSolver&&{a:t.flexTeacherSolver.assignments,e:t.flexTeacherSolver.enabled},order().lunchAfter,order().periodTimes,Object.keys(t.placements||{}).length,S.teacher,UX.optimize.homerooms(),JSON.stringify(t.placements||{}).length])}
+function sig(){var t=T();return JSON.stringify([t.taskRooms,t.periods,t.days,t.teacherBlocks,t.dayRules,t.slotRules,t.schedulePolicy,t.mobility,t.substituteCoverage,t.flexTeacherSolver&&{a:t.flexTeacherSolver.assignments,e:t.flexTeacherSolver.enabled},order().lunchAfter,order().periodTimes,Object.keys(t.placements||{}).length,S.teacher,UX.optimize.homerooms(),JSON.stringify(t.placements||{}).length])}
 UX.ttsetup={node:node,sig:sig,followUp:followUp,runCoverage:runCoverage,runFlex:runFlex,summary:summary,state:S};
 UX.onInit(function(){if(UX.gen)UX.gen.followUp=followUp});
 })(window.UX);
@@ -23436,6 +23528,72 @@ UX.onInit(function(){reroute();organize();toolbar()});
 UX.onSync(function(){reroute();organize();headers();toolbar()});
 })(window.UX);
 
+/* >>> 91-account.js */
+/* 91-account.js — V25.1 แถบผู้ใช้มุมขวาบน แบบเดียวกับ WL Substitute (ต้นแบบของเครือ):
+   [ปุ่มชื่อผู้ใช้: วงกลมอักษรย่อ + ชื่อ + บทบาท ▾] → แผง: ชื่อ/อีเมล/บทบาท · การตั้งค่าของฉัน (จำการเข้าสู่ระบบในเครื่องนี้ · ตำแหน่งเมนู) ·
+   ทางเข้า WL (ทุกแอป) · ออกจากระบบ   และ [ปุ่มกลมออกจากระบบ] ขวาสุด (จอ ≥ 600px).
+   แสดงเมื่อเข้าสู่ระบบเท่านั้น (เว็บแอป); ไฟล์ .html ในเครื่องไม่มีบัญชี จึงไม่มีแถบนี้ และเมนู ⋯ ยังมีตำแหน่งเมนูตามเดิม.
+   เมื่อมีแถบนี้: กล่องบัญชี + ตำแหน่งเมนูในเมนู ⋯ ถูกซ่อน (ที่เดียวต่อหนึ่งเรื่อง). DOM nodes + textContent only. */
+(function(UX){'use strict';
+var $=UX.$;
+if(!window.ASPCore||window.__UX_NO_NEW_FEATURES)return;
+var C=window.ASPCore,NS='http://www.w3.org/2000/svg';
+var ICON={logout:['M14.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3.5','M10 16.5 5.5 12 10 7.5M5.5 12H16'],chev:['m6 9 6 6 6-6'],
+  apps:['M3.5 3.5h7v7h-7zM13.5 3.5h7v7h-7zM3.5 13.5h7v7h-7zM13.5 13.5h7v7h-7z']};
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function svg(name,cls){var s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('aria-hidden','true');s.setAttribute('class','ux-i'+(cls?' '+cls:''));
+  ICON[name].forEach(function(d){var p=document.createElementNS(NS,'path');p.setAttribute('d',d);s.appendChild(p)});return s}
+function session(){try{return UX.auth&&UX.auth.session?UX.auth.session():null}catch(e){return null}}
+function nameOf(u){return C.authDisplayName?C.authDisplayName(u):(u.name||u.email||'')}
+function initial(n){return (String(n).replace(/^(ครู|นาย|นางสาว|นาง)\s*/,'').replace(/^[เแโใไ]/,'').charAt(0))||'?'}
+function roleOf(u){var r=u&&u.role;return r&&C.ADMIN_ROLES&&C.ADMIN_ROLES.indexOf(r)>-1?'ผู้ดูแลระบบ':'ผู้จัดตารางสอน'}
+function setOpen(on){var p=$('uxUserPanel'),b=$('uxUserBtn');if(!p||!b)return;p.hidden=!on;b.setAttribute('aria-expanded',String(on));if(on)paint()}
+function out(){setOpen(false);if(UX.auth&&UX.auth.signOut)UX.auth.signOut()}
+function build(){
+  var row=document.querySelector('#uxPageHead .ux-head-row');if(!row)return null;
+  var w=$('uxUser');if(w){if(w.parentNode!==row)row.appendChild(w);return w}
+  w=el('div','ux-user no-print');w.id='uxUser';
+  var b=el('button','ux-userbtn');b.type='button';b.id='uxUserBtn';b.setAttribute('aria-haspopup','true');b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','เมนูผู้ใช้');
+  var av=el('span','ux-avatar');av.id='uxUserAv';av.setAttribute('aria-hidden','true');b.appendChild(av);
+  var nm=el('span','ux-user-nm');var nb=el('b');nb.id='uxUserName';nm.appendChild(nb);var ns=el('small');ns.id='uxUserRole';nm.appendChild(ns);b.appendChild(nm);b.appendChild(svg('chev','ux-chev'));
+  b.onclick=function(e){e.stopPropagation();setOpen($('uxUserPanel').hidden)};w.appendChild(b);
+  var p=el('div','ux-user-panel');p.id='uxUserPanel';p.hidden=true;p.setAttribute('role','menu');
+  var hd=el('div','ux-user-head');var hb=el('b');hb.id='uxUserHName';hd.appendChild(hb);var he=el('small');he.id='uxUserHMail';hd.appendChild(he);var hr=el('small');hr.id='uxUserHRole';hd.appendChild(hr);p.appendChild(hd);
+  p.appendChild(el('div','ux-user-sec','การตั้งค่าของฉัน'));
+  var keep=el('label','ux-user-chk');var kc=el('input');kc.type='checkbox';kc.id='uxUserKeep';keep.appendChild(kc);
+  var kt=el('span');kt.appendChild(el('b',null,'จำการเข้าสู่ระบบในเครื่องนี้'));kt.appendChild(el('small',null,'ปิดไว้ = ปิดแอปแล้วต้องเข้าสู่ระบบใหม่ (เหมาะกับเครื่องที่ใช้ร่วมกัน)'));keep.appendChild(kt);
+  kc.onchange=function(){if(UX.auth&&UX.auth.setRemember){UX.auth.setRemember(kc.checked);UX.toast(kc.checked?'จำการเข้าสู่ระบบในเครื่องนี้แล้ว':'จะออกจากระบบเมื่อปิดแอป')}};p.appendChild(keep);
+  var seg=el('div','ux-user-seg');seg.id='uxUserNav';seg.setAttribute('role','group');seg.setAttribute('aria-label','ตำแหน่งเมนู');
+  seg.appendChild(el('span','ux-user-segl','ตำแหน่งเมนู'));
+  [['auto','อัตโนมัติ'],['side','ซ้าย'],['bottom','ล่าง']].forEach(function(x){var sb=el('button',null,x[1]);sb.type='button';sb.dataset.v=x[0];
+    sb.onclick=function(e){e.stopPropagation();if(UX.shell&&UX.shell.setPref)UX.shell.setPref(x[0]);paint()};seg.appendChild(sb)});
+  p.appendChild(seg);
+  var a=el('a','ux-user-item');a.href='../';a.setAttribute('role','menuitem');a.appendChild(svg('apps'));a.appendChild(el('span',null,'ทางเข้า WL (ทุกแอป)'));p.appendChild(a);
+  var lo=el('button','ux-user-item');lo.type='button';lo.id='uxUserLogout';lo.setAttribute('role','menuitem');lo.appendChild(svg('logout'));lo.appendChild(el('span',null,'ออกจากระบบ'));lo.onclick=out;p.appendChild(lo);
+  w.appendChild(p);
+  var q=el('button','ux-logout');q.type='button';q.id='uxLogoutBtn';q.title='ออกจากระบบ';q.setAttribute('aria-label','ออกจากระบบ');q.appendChild(svg('logout'));q.onclick=out;w.appendChild(q);
+  row.appendChild(w);
+  document.addEventListener('click',function(e){var pp=$('uxUserPanel');if(pp&&!pp.hidden&&!w.contains(e.target))setOpen(false)});
+  document.addEventListener('keydown',function(e){var pp=$('uxUserPanel');if(e.key==='Escape'&&pp&&!pp.hidden){setOpen(false);b.focus()}});
+  return w}
+function set(id,t){var n=$(id);if(n&&n.textContent!==t)n.textContent=t}
+function paint(){
+  var kc=$('uxUserKeep');if(kc&&UX.auth&&UX.auth.remembered)kc.checked=!!UX.auth.remembered();
+  var pref=UX.shell&&UX.shell.pref?UX.shell.pref():'auto';
+  [].forEach.call(document.querySelectorAll('#uxUserNav button'),function(b){var on=b.dataset.v===pref;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))})}
+function sync(){
+  var s=session(),w=$('uxUser');
+  document.body.classList.toggle('ux-has-user',!!s);
+  if(!s){if(w)w.hidden=true;return}
+  w=build();if(!w)return;w.hidden=false;
+  var u=s.user||{},n=nameOf(u),off=UX.auth.state&&UX.auth.state.offline,role=roleOf(u)+(off?' · ออฟไลน์':'');
+  set('uxUserAv',initial(n));set('uxUserName',n);set('uxUserRole',role);
+  set('uxUserHName',n);set('uxUserHMail',u.email||'');set('uxUserHRole',role);
+  var nb=$('uxUserName');if(nb&&nb.title!==n)nb.title=n}
+UX.account={sync:sync,open:function(){setOpen(true)}};
+UX.onInit(sync);UX.onSync(sync);
+})(window.UX);
+
 /* >>> 99-start.js */
 /* 99-start.js — run after the original app has finished starting up. */
 (function(UX){'use strict';
@@ -23452,7 +23610,7 @@ else{window.addEventListener('load',function(){setTimeout(go,500)});
 /* web-app version: offline cache + ask the browser to keep this device's data (not evicted like an ordinary website)
    V24.32: asks the service worker for the version on the server (version.json) when opened, when brought back and every
    30 min → a bar "มีเวอร์ชันใหม่ — ใช้เวอร์ชันใหม่" (saves, then reloads: the page is network first) */
-(function(){window.__UX_WEBAPP="c10113b16514";window.__UX_WEBAPP_LABEL="25.0";
+(function(){window.__UX_WEBAPP="5cca950e3765";window.__UX_WEBAPP_LABEL="25.1";
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).then(function(reg){
       function ask(){try{reg.update()}catch(e){}var c=navigator.serviceWorker.controller;if(c)c.postMessage('wl-version?')}
